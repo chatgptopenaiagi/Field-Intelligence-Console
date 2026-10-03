@@ -17,6 +17,14 @@ import java.time.Instant
 import java.util.Locale
 import java.util.UUID
 
+internal fun canSaveContactDraft(draft: JsonObject): Boolean =
+    listOf("display_name", "organization").any { draft.text(it).isNotBlank() } ||
+        listOf("phones", "emails").any { key -> draft.array(key).any { it.asJsonObject.text("value").isNotBlank() } } ||
+        draft.array("addresses").any { address ->
+            listOf("original", "po_box", "extended", "street", "neighborhood", "locality", "region", "postal_code", "country")
+                .any { address.asJsonObject.text(it).isNotBlank() }
+        }
+
 @Composable
 internal fun ContactEditor(original: JsonObject, onCancel: () -> Unit, onSave: (JsonObject) -> Unit) {
     var draft by remember(original) { mutableStateOf(original.deepCopy()) }
@@ -84,7 +92,7 @@ internal fun ContactEditor(original: JsonObject, onCancel: () -> Unit, onSave: (
                 draft = updated
             }) { Text("Add saved address") }
         }
-    }, confirmButton = { TextButton(enabled = draft.text("display_name").isNotBlank() || draft.text("organization").isNotBlank(), onClick = {
+    }, confirmButton = { TextButton(enabled = canSaveContactDraft(draft), onClick = {
         val saved = draft.deepCopy()
         saved.array("corrections").add(JsonObject().apply { addProperty("at", Instant.now().toString()); addProperty("source", "user_observation"); addProperty("action", "local edit") })
         onSave(saved)
