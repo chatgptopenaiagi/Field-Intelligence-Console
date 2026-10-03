@@ -114,7 +114,11 @@ jobs:
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           AVDMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager"
           "$SDKMANAGER" --install 'platform-tools' 'emulator' 'system-images;android-34;google_apis;x86_64'
-          printf 'no\n' | "$AVDMANAGER" create avd -n FIC_RELEASE_API34 -k 'system-images;android-34;google_apis;x86_64'
+          export ANDROID_AVD_HOME="$RUNNER_TEMP/fic-owned-avd"
+          mkdir -p "$ANDROID_AVD_HOME"
+          echo "ANDROID_AVD_HOME=$ANDROID_AVD_HOME" >> "$GITHUB_ENV"
+          printf 'no\n' | "$AVDMANAGER" create avd -n FIC_RELEASE_API34 -p "$ANDROID_AVD_HOME/FIC_RELEASE_API34.avd" -k 'system-images;android-34;google_apis;x86_64'
+          test -f "$ANDROID_AVD_HOME/FIC_RELEASE_API34.ini" || { echo 'BLOCKED_RUNTIME: owned AVD metadata not created'; exit 1; }
           boot_deadline=$((SECONDS + 900))
           "$ANDROID_HOME/emulator/emulator" -avd FIC_RELEASE_API34 -port 5580 -accel "$accel" -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$RUNNER_TEMP/fic-release-emulator.local.log" 2>&1 &
           fic_emulator_pid=$!
