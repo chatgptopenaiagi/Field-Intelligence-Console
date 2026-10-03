@@ -5,8 +5,10 @@ import threading
 import time
 import tkinter as tk
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from pathlib import Path
+from types import SimpleNamespace
+import native_ui_check as native
 from fic_windows import Workstation, coordinates, external
 from geocoding_dialog import GeocodingDialog
 
@@ -157,6 +159,63 @@ class WorkstationTests(unittest.TestCase):
         self.assertFalse(dialog.candidates)
         self.assertEqual(self.entity, self.app.store.get_entity(self.entity["id"]))
         dialog.close()
+
+
+class NativeDriverSafetyTests(unittest.TestCase):
+    def test_busy_desktop_times_out_without_native_interaction(self):
+        user, kernel = MagicMock(), MagicMock()
+        user.GetLastInputInfo.return_value = 1
+        kernel.GetTickCount.return_value = 1
+        with patch.object(native.ctypes, "WinDLL", side_effect=[user, kernel]), \
+             patch.object(native.time, "monotonic", side_effect=[0, 0, 31]), \
+             patch.object(native.time, "sleep"), patch.object(native, "send_keys") as keys:
+            self.assertFalse(native.wait_for_desktop_idle())
+            keys.assert_not_called()
+
+    def test_idle_detection_failure_is_fail_closed(self):
+        user, kernel = MagicMock(), MagicMock()
+        user.GetLastInputInfo.return_value = 0
+        with patch.object(native.ctypes, "WinDLL", side_effect=[user, kernel]):
+            self.assertFalse(native.wait_for_desktop_idle())
+
+    def test_absent_focus_is_not_wrapped_as_a_window(self):
+        window = SimpleNamespace(handle=123)
+        for result in (0, 1):
+            with patch.object(native.win32functions, "GetWindowThreadProcessId", return_value=42), \
+                 patch.object(native.win32functions, "GetGUIThreadInfo", return_value=result), \
+                 patch.object(native, "HwndWrapper") as wrap:
+                self.assertIsNone(native.focused_control(window))
+                wrap.assert_not_called()
+
+    def test_present_focus_is_returned(self):
+        def focus_info(thread, pointer):
+            pointer._obj.hwndFocus = 456
+            return 1
+        with patch.object(native.win32functions, "GetWindowThreadProcessId", return_value=42), \
+             patch.object(native.win32functions, "GetGUIThreadInfo", side_effect=focus_info), \
+             patch.object(native, "HwndWrapper", return_value="focused") as wrap:
+            self.assertEqual("focused", native.focused_control(SimpleNamespace(handle=123)))
+            wrap.assert_called_once_with(456)
+
+    def test_capture_rejects_unowned_process(self):
+        with patch.object(native, "process_image", return_value="different.exe"), \
+             patch.object(native.ImageGrab, "grab") as grab:
+            with self.assertRaises(AssertionError):
+                native.save_owned_capture(SimpleNamespace(handle=123, process_id=lambda: 1), "owned.exe", "unused.png")
+            grab.assert_not_called()
+
+    def test_capture_rejects_null_handle_without_desktop_fallback(self):
+        with patch.object(native.ImageGrab, "grab") as grab:
+            with self.assertRaises(AssertionError):
+                native.save_owned_capture(SimpleNamespace(handle=0), "owned.exe", "unused.png")
+            grab.assert_not_called()
+
+    def test_capture_selects_only_explicit_owned_hwnd(self):
+        with patch.object(native, "process_image", return_value="owned.exe"), \
+             patch.object(native.ImageGrab, "grab") as grab:
+            native.save_owned_capture(SimpleNamespace(handle=123, process_id=lambda: 1), "owned.exe", "unused.png")
+            grab.assert_called_once_with(window=123)
+            grab.return_value.save.assert_called_once_with("unused.png")
 
 
 if __name__ == "__main__":

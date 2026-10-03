@@ -87,3 +87,24 @@ No fallback search to stale models. Nine tooling tests and actionlint passed; be
 version Android gate passed97/variant, six API34 tests, both assemblies/lint (0errors).
 Next: freeze repaired source, full All local, fresh hosted inventory and target CI,
 then new beta2 tag/release workflow. Beta1 remains a protected unpublished draft.
+
+Beta2 hosted51dd5f0: Android37118686345, Python37118686359, Windows37118686440,
+and fresh inventory37118686336 PASS. Inventory repair is verified (102Android,
+12Python/runtime,75native inputs, no unresolved Android licenses).
+Local candidate1 stopped at native-input gate after Android/Python and packaged
+Windows28 checks passed. Original AttributeError lacked a stack; independently
+reproduced pywinauto null-focus wrapper defect and repaired it. Region screenshots
+could include other desktop pixels; replaced with owned HWND capture and discarded
+only named generated failed-run PNGs (not uploaded). New focused driver tests cover
+null focus, capture ownership and idle fail-closed behavior; seven pure safety tests
+and nine release-tooling tests PASS. Full Windows suite is now14 tests (hosted gate
+must execute all14); previous12-test intermediate run passed before idle additions.
+Native replays found corrupted synthetic text and foreground loss; documented
+virtual-key ASCII mode passed once but did not eliminate competing desktop focus.
+Quiet-desktop preflight then reported BLOCKED_DESKTOP_BUSY after30s, before launching
+or typing. Stop local interactive retries while shared desktop is busy. Preserve all
+failure receipts; do not attribute every native failure to an app persistence bug.
+Actual beta2 Android SAF flow PASS: cancel empty, import2/reimport2, selectedJSON
+export and report states, APKhash d6225abfff3c5259415ceef59d35fecb469e6f06e4343a20405d1318387ebb3d.
+Continue independent hosted release/UI validation, retaining existing debug signing
+identity securely and using reviewed synthetic SAF inputs for hosted exchange.

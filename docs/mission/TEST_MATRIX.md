@@ -46,3 +46,13 @@ old local graph but generated paths differ. Hosted37117949965 diagnosed missing
 old XML; next hosted run must validate current path in a fresh workspace. Beta2
 preliminary clean c429abb Android97/variant and six API34 runtime PASS; lint0errors,
 4debug/3release advisory warnings. Final exact-source candidate gates still pending.
+
+Native driver source references: Windows GetGUIThreadInfo can report NULL focus;
+pywinauto0.6.9 wraps it unsafely. Safe helper handles absent focus. Pillow12.3 HWND
+capture avoids desktop-region fallback: https://pillow.readthedocs.io/en/stable/reference/ImageGrab.html.
+ASCII native typing uses documented vk_packet=False fallback and separate Ctrl+A:
+https://pywinauto.readthedocs.io/en/latest/code/pywinauto.keyboard.html. Seven pure
+native-safety tests PASS, nine release guards/inventory tests PASS; Windows full
+focused count increases7->14. One virtual-key7native PASS followed by explicit
+foreground loss, then BLOCKED_DESKTOP_BUSY preflight. Do not describe this as local
+repeatability PASS. Hosted isolated gates remain mandatory, with actual GUI checks.

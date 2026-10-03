@@ -17,7 +17,7 @@ class ReleaseGuards(unittest.TestCase):
                             lint=[dict(status="PASS", errors=0) for _ in range(2)],
                             runtime_validation=dict(status="PASS", tests=6))
         self.windows = dict(status="PASS", source_sha=self.sha, worktree_dirty=False,
-                            focused_tests=7, packaged_widget_checks=28, native_checks=7)
+                            focused_tests=14, packaged_widget_checks=28, native_checks=7)
         self.python = dict(status="PASS", source_sha=self.sha, source_dirty=False,
                            unit_tests=45, unit_failures=0, unit_skipped=0, isolated_wheel="Executed")
 
@@ -50,6 +50,9 @@ class ReleaseGuards(unittest.TestCase):
         with self.assertRaises(ValueError): self.check()
 
     def test_no_native_gui_or_no_installed_wheel_fails(self):
+        self.windows["focused_tests"] = 7
+        with self.assertRaises(ValueError): self.check()
+        self.windows["focused_tests"] = 14
         self.windows["native_checks"] = 0
         with self.assertRaises(ValueError): self.check()
         self.windows["native_checks"] = 7

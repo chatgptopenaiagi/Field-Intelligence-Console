@@ -48,3 +48,14 @@ proved obsolete AGP XML path; new exact current model path is selected, with nin
 focused tooling tests passing. Run fresh hosted inventory plus normal three target
 CI gates before tagging/publishing. Final source is not beta1/e6ad925. Retain failed
 beta1 draft/tag, its actual receipts and the reconstructed-v1 limitations.
+
+CURRENT: local Windows native input is BLOCKED_DESKTOP_BUSY (no5s input-free interval
+within30s), not a waived PASS. Stop intrusive local GUI retries until new idle evidence.
+Root is preparing trusted hosted release signing with retained debug identity and a
+hosted actual-SAF exchange gate. Agent python_core owns ONLY new hosted_exchange.py,
+exchange-ci.yml and test_hosted_exchange.py; root owns all other files/Git. No beta2 tag
+yet. Candidate1Android/Python/packagedWindows28 passed but localnative failed. At51dd,
+all3 hostedtargets and inventory passed. New native-driver safety changes require
+fresh hosted14focused/28GUI/7native proof and exact-source release candidate. Emulator
+FIC_MISSION_API34/5580 remains owned and running; actualSAF beta2 receipt/output ready
+in .local/evidence/beta2-android-ui. Do not alter/reset the synthetic app history.

@@ -38,7 +38,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Windows core wheel installation failed.' }
 & $runtime windows/run_focused.py --receipt "$OutputRoot/focused-tests.json" *> "$OutputRoot/focused-tests.log"
 if ($LASTEXITCODE -ne 0) { throw 'Windows focused UI tests failed; inspect local log.' }
 $focusedReceipt = Get-Content -Raw "$OutputRoot/focused-tests.json" | ConvertFrom-Json
-if ($focusedReceipt.tests -lt 7 -or $focusedReceipt.skipped -ne 0 -or $focusedReceipt.status -ne 'PASS') { throw 'Focused test evidence is incomplete.' }
+if ($focusedReceipt.tests -lt 14 -or $focusedReceipt.skipped -ne 0 -or $focusedReceipt.status -ne 'PASS') { throw 'Focused test evidence is incomplete.' }
 & "$projectRoot/windows/build.ps1" -Wheel $Wheel -Python $runtime -Output "$OutputRoot/artifacts" *> "$OutputRoot/package.log"
 $exe = Join-Path $OutputRoot 'artifacts/FieldIntelligenceConsole-4.0.0-beta.2-windows-x64.exe'
 if (-not (Test-Path -LiteralPath $exe)) { throw 'Windows EXE missing.' }

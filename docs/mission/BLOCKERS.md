@@ -35,3 +35,11 @@ Inventory cause is now proven: obsolete AGP lint XML path, masked by local stale
 build output. Current AGP8.5.2 model path has been selected; fresh hosted verification
 is pending. Nine tooling tests and beta2 Android97/variant+six runtime tests passed.
 This repair does not change a dependency, schema or product feature.
+
+Current external local constraint: BLOCKED_DESKTOP_BUSY, verified by native gate's
+30second quiet-input preflight, which started no interaction. Foreground loss during
+prior native input was also detected. HostedWindows native7 passed at51dd, so continue
+isolated CI rather than taking over another session. Native safety helper changes
+must pass hosted14focused/28GUI/7native and final exact-artifact exchange; not waived.
+Local failed-run region screenshots were removed from ignored evidence without upload;
+new screenshots use only the verified owned HWND. No private data enters source/assets.

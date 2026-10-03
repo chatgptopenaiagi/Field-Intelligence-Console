@@ -44,7 +44,7 @@ def validate_receipts(android, windows, python, sha):
     runtime = android.get("runtime_validation", {})
     require(runtime.get("status") == "PASS" and runtime.get("tests", 0) >= 6,
             "Actual Android emulator runtime gate required")
-    require(windows.get("focused_tests", 0) >= 7 and windows.get("packaged_widget_checks", 0) >= 28
+    require(windows.get("focused_tests", 0) >= 14 and windows.get("packaged_widget_checks", 0) >= 28
             and windows.get("native_checks", 0) >= 7, "Packaged Windows GUI evidence incomplete")
     require(python.get("unit_tests", 0) >= 45 and python.get("unit_failures") == 0
             and python.get("unit_skipped") == 0
@@ -133,7 +133,7 @@ Private repository access is required; these are not public downloads.
 
 Verified candidate: 97 or more Android tests per variant, both assemblies/lint,
 six or more isolated-emulator instrumentation tests, 45 or more Python tests and
-clean-wheel workflows, seven Windows focused tests, 28 packaged GUI checks and seven
+clean-wheel workflows, fourteen Windows focused tests, 28 packaged GUI checks and seven
 native mouse/keyboard/restart checks. Exact counts and toolchains are in the manifest.
 
 Limitations: no physical Android-device/ARM64 runtime validation; static APK ABIs

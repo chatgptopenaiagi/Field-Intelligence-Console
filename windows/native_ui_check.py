@@ -9,8 +9,12 @@ import shutil
 import subprocess
 import tempfile
 import time
+import traceback
+from PIL import ImageGrab
 from pywinauto import Desktop
 from pywinauto.keyboard import send_keys
+from pywinauto import win32functions, win32structures
+from pywinauto.controls.hwndwrapper import HwndWrapper
 from field_intelligence_console import Store
 
 
@@ -33,12 +37,57 @@ def process_image(pid):
         kernel.CloseHandle(handle)
 
 
+def focused_control(window):
+    # GetGUIThreadInfo may succeed with hwndFocus=NULL during activation.
+    # pywinauto 0.6.9 get_focus() wraps that NULL and raises AttributeError.
+    info = win32structures.GUITHREADINFO()
+    info.cbSize = ctypes.sizeof(info)
+    thread = win32functions.GetWindowThreadProcessId(window.handle, None)
+    if not win32functions.GetGUIThreadInfo(thread, ctypes.byref(info)) or not info.hwndFocus:
+        return None
+    return HwndWrapper(info.hwndFocus)
+
+
+def save_owned_capture(window, portable, destination):
+    if not window.handle or os.path.normcase(process_image(window.process_id())) != os.path.normcase(str(portable)):
+        raise AssertionError("Capture target is not the owned portable application")
+    # Pillow's HWND capture renders that window; no desktop-region fallback.
+    # https://pillow.readthedocs.io/en/stable/reference/ImageGrab.html
+    ImageGrab.grab(window=window.handle).save(destination)
+
+
+def wait_for_desktop_idle(seconds=5, timeout=30):
+    """Do not start intrusive native input while another actor is using the desktop."""
+    class LastInput(ctypes.Structure):
+        _fields_ = [("cbSize", wintypes.UINT), ("dwTime", wintypes.DWORD)]
+    user = ctypes.WinDLL("user32", use_last_error=True)
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    user.GetLastInputInfo.argtypes = [ctypes.POINTER(LastInput)]
+    kernel.GetTickCount.restype = wintypes.DWORD
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        value = LastInput()
+        value.cbSize = ctypes.sizeof(value)
+        if not user.GetLastInputInfo(ctypes.byref(value)):
+            return False
+        if ((kernel.GetTickCount() - value.dwTime) & 0xffffffff) >= seconds * 1000:
+            return True
+        time.sleep(0.25)
+    return False
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("exe", type=Path)
     parser.add_argument("--evidence", type=Path, required=True)
     args = parser.parse_args()
     args.evidence.mkdir(parents=True, exist_ok=True)
+    if not wait_for_desktop_idle():
+        result = {"status": "FAIL", "check_count": 0, "checks": [],
+                  "failure": "BLOCKED_DESKTOP_BUSY: no five-second input-free interval within thirty seconds; no native interaction started"}
+        (args.evidence / "native-ui.json").write_text(json.dumps(result, indent=2), "utf-8")
+        print(json.dumps(result))
+        return 1
     profile = Path(tempfile.mkdtemp(prefix="FIC-synthetic-native-"))
     portable = profile / "portable-fic.exe"
     shutil.copy2(args.exe, portable)
@@ -63,18 +112,31 @@ def main():
     user = ctypes.WinDLL("user32", use_last_error=True)
     user.GetForegroundWindow.restype = wintypes.HWND
     user.IsChild.argtypes = [wintypes.HWND, wintypes.HWND]
+    user.IsWindow.argtypes = [wintypes.HWND]
 
     def owns_keyboard_focus(window):
-        focus = window.get_focus()
+        focus = focused_control(window)
         return (user.GetForegroundWindow() == window.handle and focus is not None
                 and (focus.handle == window.handle or user.IsChild(window.handle, focus.handle)))
 
     def native_keys(window, keys, **kwargs):
+        focus_transfer = kwargs.pop("focus_transfer", False)
         if not owns_keyboard_focus(window):
             raise AssertionError("Keyboard target is not a focused control of the owned native window")
         # type_keys() attaches input queues and may reset focus/key state after
         # activation. Send real Windows input without a second focus transition.
         send_keys(keys, pause=kwargs.pop("pause", 0.1), **kwargs)
+        if not focus_transfer and user.IsWindow(window.handle) and not owns_keyboard_focus(window):
+            # Closing an editor intentionally transfers focus; surviving windows
+            # must retain it. Do not continue typing into an unrelated application.
+            focus = focused_control(window)
+            foreground = user.GetForegroundWindow()
+            foreground_pid = wintypes.DWORD()
+            win32functions.GetWindowThreadProcessId(foreground, ctypes.byref(foreground_pid))
+            raise AssertionError("Owned keyboard target lost focus during native input: "
+                                 f"foreground_owned={foreground == window.handle}, "
+                                 f"foreground_process_owned={foreground_pid.value == window.process_id()}, "
+                                 f"focus_present={focus is not None}")
     def wait_for_closed(title):
         deadline = time.monotonic() + 5
         while time.monotonic() < deadline:
@@ -111,31 +173,35 @@ def main():
             raise AssertionError("Owned FIC window not uniquely identified")
         window = windows[0]
         activate(window)
-        window.capture_as_image().save(args.evidence / "native-network.png")
+        save_owned_capture(window, portable, args.evidence / "native-network.png")
         checks.append("Packaged EXE rendered native Known Network window")
         # Keyboard shortcut is dispatched by Windows to the owned Tk window.
-        native_keys(window, "^n")
+        native_keys(window, "^n", focus_transfer=True)
         editor = wait_for_owned(r"^Contact details .*")
         # Deliberately exercise a compact owned window: fixed bottom-row coordinates
         # were invalid on the hosted runner. Never click outside this window.
         editor.move_window(x=0, y=0, width=900, height=600)
         activate(editor)
-        editor.capture_as_image().save(args.evidence / "native-contact-editor.png")
+        save_owned_capture(editor, portable, args.evidence / "native-contact-editor.png")
         checks.append("Native Ctrl+N opens real contact editor")
         # Native caption click establishes owned-window mouse interaction. The
         # documented accessibility shortcuts focus and save independently of scale.
         editor.click_input(coords=(300, 14))
         native_keys(editor, "%n")
-        native_keys(editor, "^aSynthetic Native UI Contact", with_spaces=True, pause=0.02)
+        expected_name = "synthetic native ui contact"
+        native_keys(editor, "^a")
+        # Tk/native ASCII probe uses real virtual keys, avoiding mixed VK_PACKET
+        # Unicode delivery. Imported Unicode is exercised by the packaged UI gate.
+        native_keys(editor, expected_name, with_spaces=True, vk_packet=False, pause=0.05)
         time.sleep(0.5)
-        editor.capture_as_image().save(args.evidence / "native-contact-input.png")
-        native_keys(editor, "^{ENTER}")
+        save_owned_capture(editor, portable, args.evidence / "native-contact-input.png")
+        native_keys(editor, "^{ENTER}", focus_transfer=True)
         persisted = False
         deadline = time.monotonic() + 5
         while time.monotonic() < deadline:
             with Store(data / "fic-workstation.sqlite3") as store:
-                created = store.list_entities("Synthetic Native UI Contact")
-                persisted = len(created) == 1 and created[0]["display_name"] == "Synthetic Native UI Contact"
+                created = store.list_entities(expected_name)
+                persisted = len(created) == 1 and created[0]["display_name"] == expected_name
             if persisted:
                 break
             time.sleep(0.1)
@@ -147,23 +213,23 @@ def main():
             store.delete_entity(created[0]["id"])
         checks.append("Native mouse and keyboard create/save a persisted contact")
         activate(window)
-        focus = window.get_focus()
+        focus = focused_control(window)
         result["second_editor_focus"] = {
             "native_class": focus.class_name() if focus else None,
             "ctrl_down": bool(ctypes.windll.user32.GetAsyncKeyState(0x11) & 0x8000),
             "alt_down": bool(ctypes.windll.user32.GetAsyncKeyState(0x12) & 0x8000),
             "shift_down": bool(ctypes.windll.user32.GetAsyncKeyState(0x10) & 0x8000),
         }
-        native_keys(window, "^n")
+        native_keys(window, "^n", focus_transfer=True)
         editor = wait_for_owned(r"^Contact details .*")
         activate(editor)
-        native_keys(editor, "{ESC}")
+        native_keys(editor, "{ESC}", focus_transfer=True)
         wait_for_closed(r"^Contact details .*")
         checks.append("Native Escape cancels a second contact editor")
         activate(window)
         native_keys(window, "^f")
-        native_keys(window, "Synthetic", pause=0.05)
-        window.capture_as_image().save(args.evidence / "native-search.png")
+        native_keys(window, "synthetic", vk_packet=False, pause=0.05)
+        save_owned_capture(window, portable, args.evidence / "native-search.png")
         checks.append("Native Ctrl+F and text search interaction")
         native_keys(window, "^a{BACKSPACE}")
         window.close()
@@ -180,10 +246,13 @@ def main():
     except Exception as exc:
         for failed_window in owned(r"^Field Intelligence Console .*"):
             try:
-                failed_window.capture_as_image().save(args.evidence / "native-failure.png")
+                save_owned_capture(failed_window, portable, args.evidence / "native-failure.png")
             except Exception:
                 pass  # Optional synthetic-window evidence must not hide the failure receipt.
         result["failure_type"] = type(exc).__name__
+        result["failure_code_locations"] = [{"function": f.name, "line": f.lineno}
+                                             for f in traceback.extract_tb(exc.__traceback__)
+                                             if Path(f.filename).name == "native_ui_check.py"]
         result["failure"] = str(exc)[:220] if isinstance(exc, AssertionError) else "Native UI operation failed; inspect local development evidence."
     finally:
         for window in owned(r"^(Field Intelligence Console|Contact details).*"):
