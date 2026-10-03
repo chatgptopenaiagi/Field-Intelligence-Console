@@ -113,14 +113,16 @@ jobs:
           echo "Emulator acceleration: $accel"
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           AVDMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager"
-          "$SDKMANAGER" --install 'platform-tools' 'emulator' 'system-images;android-34;google_apis;x86_64'
+          "$SDKMANAGER" --install 'platform-tools' 'emulator' 'system-images;android-34;default;x86_64'
           export ANDROID_AVD_HOME="$RUNNER_TEMP/fic-owned-avd"
           mkdir -p "$ANDROID_AVD_HOME"
           echo "ANDROID_AVD_HOME=$ANDROID_AVD_HOME" >> "$GITHUB_ENV"
-          printf 'no\n' | "$AVDMANAGER" create avd -n FIC_RELEASE_API34 -p "$ANDROID_AVD_HOME/FIC_RELEASE_API34.avd" -k 'system-images;android-34;google_apis;x86_64'
+          printf 'no\n' | "$AVDMANAGER" create avd -n FIC_RELEASE_API34 -p "$ANDROID_AVD_HOME/FIC_RELEASE_API34.avd" -k 'system-images;android-34;default;x86_64'
           test -f "$ANDROID_AVD_HOME/FIC_RELEASE_API34.ini" || { echo 'BLOCKED_RUNTIME: owned AVD metadata not created'; exit 1; }
-          # Size only this newly created synthetic AVD; never resize an existing user AVD.
-          python3 -c 'import pathlib,sys; p=pathlib.Path(sys.argv[1]); lines=[x for x in p.read_text().splitlines() if not x.startswith("disk.dataPartition.size=")]; p.write_text("\n".join(lines+["disk.dataPartition.size=2G"])+"\n")' "$ANDROID_AVD_HOME/FIC_RELEASE_API34.avd/config.ini"
+          # Official AOSP image saves about 2.52 GiB versus the Google APIs image.
+          # Emulator API>=24 still requires a 6 GiB data partition plus headroom.
+          available_kib=$(df -Pk "$ANDROID_AVD_HOME" | awk 'NR==2 {print $4}')
+          echo "Available AVD storage KiB: $available_kib"
           boot_deadline=$((SECONDS + 900))
           "$ANDROID_HOME/emulator/emulator" -avd FIC_RELEASE_API34 -port 5580 -accel "$accel" -no-window -no-metrics -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$RUNNER_TEMP/fic-release-emulator.local.log" 2>&1 &
           fic_emulator_pid=$!
@@ -160,7 +162,7 @@ jobs:
           $count = [int]$matched.Groups[1].Value
           if ($count -lt 6) { throw 'Incomplete runtime test count.' }
           @{status='PASS';source_sha=$sha;tag=$env:CANDIDATE_TAG;tests=$count;apk_sha256=$apkHash;
-            instrumentation_apk_sha256=$testHash;runtime='Isolated API34 x86_64 emulator';acceleration=$env:FIC_EMULATOR_ACCELERATION;physical_device='NOT_EXECUTED'} |
+            instrumentation_apk_sha256=$testHash;runtime='Isolated API34 AOSP x86_64 emulator';acceleration=$env:FIC_EMULATOR_ACCELERATION;physical_device='NOT_EXECUTED'} |
             ConvertTo-Json | Set-Content .local/ci-release/android-runtime.json -Encoding utf8
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:

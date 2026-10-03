@@ -28,3 +28,11 @@
   when KVM is inaccessible; no chmod, virtualization or host-policy change. Boot is
   bounded to 900 seconds with process/ADB checks; instrumentation remains bounded
   and mandatory. Software mode is recorded and is not presumed to pass.
+- Hosted startup diagnostics proved a separate AVD lookup mismatch; explicitly share
+  ANDROID_AVD_HOME between creator/emulator. Next failure showed default userdata
+  requires 7372.8 MiB with only6687 MiB free. The attempted2GiB setting was ineffective
+  because [official emulator code](https://android.googlesource.com/platform/external/qemu/+/emu-master-dev/android-qemu2-glue/main.cpp)
+  forces6GiB for API>=24; it has been removed. Official archive inventories show
+  API34 AOSP default expands to1,764,599,215 bytes versus Google APIs4,469,083,531.
+  Install only the smaller AOSP image in fresh CI, retain all six tests and record
+  available storage. This does not validate Google Play services or physical GPS.
