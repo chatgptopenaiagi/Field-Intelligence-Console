@@ -11,16 +11,18 @@ Current delegated ownership (verify live agents before edits):
   seven focused tests passed. No unproven production focus change retained.
 Do not overlap writes. Check live agents/processes before resuming.
 
-Candidate2 b9108cd passed the entire clean local All pipeline; assets/manifest under
-.local/release-4.0.0-beta.1-candidate-2. Windows/Python hosted CI passed this SHA.
-Hosted Android emulator run37110135912 failed KVM permission check before testing.
-Official software -accel off fallback now edited in both workflows; no host-policy
-change. Next: commit/audit/push bounded fallback, run Android emulator=true plus
-Python/Windows CI for exact SHA; clean All build into candidate3. No tag/release exists.
-Root-owned FIC_MISSION_API36 emulator5580 remains running; no physical device used.
-Then exact artifact/history/context review, annotated tag, release workflow,
-private draft upload/download hash verification, publication/readback, final report.
-Do not stop at a milestone or claim hosted runtime passed before it executes.
+Candidate3 at8e47a77 passed full clean local All and actual final APK SAF -> fresh
+wheel -> packaged EXE -> second fresh wheel exact round trip. Artifacts/evidence in
+.local/release-4.0.0-beta.1-candidate-3 and .local/evidence/final-roundtrip-candidate3.
+Workflow diagnostics fixed shared AVD home. Google APIs image left6687MiB free vs
+7372.8MiB required; attempted2GiB config cannot override emulator6GiB floor. Now
+fresh CI installs official API34 AOSP default image (~2.52GiB smaller expanded),
+without deleting other tools or changing host permissions. Hosted run37111296019
+is pending. Fix any actual failure; then freeze final source, full clean All gate,
+exactSHA Python/Windows/Android CI, metadata/roundtrip rerun, annotated tag/release.
+No tag/release exists. Root emulator5580 remains running; no physical device used.
+Agents finished/released ownership; verify live state. Preserve all failure evidence.
+Do not turn setup failure into test PASS or stop at an intermediate milestone.
 Known installed working tools: JDK17 under USERPROFILE/.jdks/jdk-17.0.20.1+1,
 Gradle wrapper8.7/AGP8.5.2, Python3.14.7 x64 with Tk9.0.4, gh2.100.0.
 Tool paths are hints: verify before use. Detailed evidence belongs in .local/evidence/.
