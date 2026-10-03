@@ -67,8 +67,8 @@ jobs:
           name: fic-python-evidence-${{ matrix.os }}-${{ github.sha }}
           path: |
             ${{ runner.temp }}/fic-python-gate/gate-receipt.json
-            ${{ runner.temp }}/fic-python-gate/unit-tests.log
-            ${{ runner.temp }}/fic-python-gate/clean-wheel.log
+            ${{ runner.temp }}/fic-python-gate/unit-tests.sanitized.log
+            ${{ runner.temp }}/fic-python-gate/clean-wheel.sanitized.log
           if-no-files-found: warn
           include-hidden-files: false
           retention-days: 7

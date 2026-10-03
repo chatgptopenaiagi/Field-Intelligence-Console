@@ -33,16 +33,24 @@ jobs:
       - name: Build and exercise actual portable workstation
         shell: pwsh
         run: ./tooling/windows_gate.ps1 -Python python -OutputRoot .local/evidence/windows-ci
-      - name: Preserve allowlisted binary and sanitized receipts
-        if: always()
+      - name: Preserve validated portable binary
+        if: success()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: windows-experimental
           retention-days: 7
           include-hidden-files: true
           if-no-files-found: error
+          path: .local/evidence/windows-ci/artifacts/FieldIntelligenceConsole-4.0.0-beta.1-windows-x64.exe
+      - name: Preserve sanitized receipts
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: windows-evidence
+          retention-days: 7
+          include-hidden-files: true
+          if-no-files-found: error
           path: |
-            .local/evidence/windows-ci/artifacts/FieldIntelligenceConsole-4.0.0-beta.1-windows-x64.exe
             .local/evidence/windows-ci/gate-summary.json
             .local/evidence/windows-ci/pe-metadata.json
             .local/evidence/windows-ci/packaged-ui.json

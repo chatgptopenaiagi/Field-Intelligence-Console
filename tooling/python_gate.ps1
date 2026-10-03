@@ -8,6 +8,9 @@ $projectRoot = (Resolve-Path -LiteralPath "$PSScriptRoot/..").Path
 $outputPath = [System.IO.Path]::GetFullPath($OutputRoot)
 $environmentPath = Join-Path $projectRoot '.venv-ci-python'
 New-Item -ItemType Directory -Path $outputPath -Force | Out-Null
+foreach ($stepName in @('unit-tests','clean-wheel')) {
+    Set-Content -LiteralPath (Join-Path $outputPath "$stepName.sanitized.log") -Value 'NOT_EXECUTED in this invocation' -Encoding utf8
+}
 $receiptPath = Join-Path $outputPath 'gate-receipt.json'
 @{status='NOT_COMPLETED'; source_sha=$null; source_dirty=$null} |
     ConvertTo-Json | Set-Content -LiteralPath $receiptPath -Encoding utf8
@@ -28,8 +31,21 @@ function Invoke-PythonGate {
     param([string]$Step, [string[]]$Arguments)
     $log = Join-Path $outputPath "$Step.log"
     & $venvPython @Arguments *> $log
-    if ($LASTEXITCODE -ne 0) {
-        Get-Content -LiteralPath $log -Tail 30
+    $stepExit = $LASTEXITCODE
+    # Export only sanitized diagnostics; raw local logs are never CI artifacts.
+    $safeLog = Get-Content -LiteralPath $log -Raw
+    foreach ($privateRoot in @($projectRoot,$outputPath,$env:USERPROFILE,$env:HOME,$env:TEMP,$env:TMPDIR)) {
+        if ($privateRoot) {
+            $safeLog = $safeLog.Replace($privateRoot,'[local-path]').Replace($privateRoot.Replace('\','/'),'[local-path]')
+        }
+    }
+    $safeLog = $safeLog -replace '(?i)[A-Z]:[\\/][^\r\n"<>]*','[local-path]'
+    $safeLog = $safeLog -replace '/(?:home|Users|tmp|var/folders)/[^\s"<>]+','[local-path]'
+    if ($safeLog.Length -gt 1000000) { $safeLog = $safeLog.Substring($safeLog.Length - 1000000) }
+    $safePath = Join-Path $outputPath "$Step.sanitized.log"
+    Set-Content -LiteralPath $safePath -Value $safeLog -Encoding utf8
+    if ($stepExit -ne 0) {
+        Get-Content -LiteralPath $safePath -Tail 30
         throw "Python gate failed: $Step"
     }
     Write-Output "$Step PASS"
@@ -44,6 +60,7 @@ try {
     $testLog = Get-Content -LiteralPath (Join-Path $outputPath 'unit-tests.log') -Raw
     if ($testLog -notmatch 'Ran (\d+) tests?' -or [int]$Matches[1] -le 0) { throw 'No executed unit-test count was found.' }
     $executedTests = [int]$Matches[1]
+    if ($testLog -match '(?i)\bskipped\s*[=:]\s*[1-9]' -or $testLog -match '(?m)\.\.\. skipped ') { throw 'Skipped Python tests do not satisfy the acceptance gate.' }
     $packagePath = Join-Path $outputPath 'packages'
     Invoke-PythonGate -Step 'package-build' -Arguments @('-m','build','python','--outdir',$packagePath)
     $wheelFiles = @(Get-ChildItem -LiteralPath $packagePath -Filter 'field_intelligence_console-*-py3-none-any.whl')
@@ -65,7 +82,7 @@ try {
     @{
         status='PASS'; source_sha=$sourceSha; source_dirty=$sourceDirty;
         development_override=[bool]$AllowDirtyDevelopment;
-        runtime=$runtime; unit_tests=$executedTests; unit_failures=0; packaging='wheel and sdist built';
+        runtime=$runtime; unit_tests=$executedTests; unit_failures=0; unit_skipped=0; packaging='wheel and sdist built';
         isolated_wheel='five checks passed outside checkout, including shared invalid-contract vectors';
         artifacts=$artifacts;
         limitations='This receipt describes local gate execution; it is not a GitHub CI or final release publication claim.'

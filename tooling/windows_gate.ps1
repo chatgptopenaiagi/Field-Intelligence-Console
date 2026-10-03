@@ -7,11 +7,19 @@ param(
 $ErrorActionPreference = 'Stop'
 $projectRoot = (Resolve-Path "$PSScriptRoot/..").Path
 Set-Location -LiteralPath $projectRoot
-$sourceSha = git rev-parse HEAD
-$sourceDirty = [bool](git status --porcelain)
-if ($sourceDirty -and -not $AllowDirtyDevelopment) { throw 'Release/CI gate requires a clean source candidate. Use -AllowDirtyDevelopment only for explicitly preliminary builds.' }
 New-Item -ItemType Directory -Force $OutputRoot | Out-Null
 $OutputRoot = (Resolve-Path -LiteralPath $OutputRoot).Path
+foreach ($receiptName in @('gate-summary.json','pe-metadata.json','focused-tests.json','packaged-ui.json','native/native-ui.json','native/native-restart.json')) {
+    $receiptPath = Join-Path $OutputRoot $receiptName
+    New-Item -ItemType Directory -Force (Split-Path -Parent $receiptPath) | Out-Null
+    @{status='NOT_COMPLETED'} | ConvertTo-Json | Set-Content -LiteralPath $receiptPath -Encoding utf8
+}
+$sourceSha = (& git rev-parse HEAD).Trim()
+if ($LASTEXITCODE -ne 0 -or $sourceSha -notmatch '^[0-9a-f]{40}$') { throw 'Cannot verify source commit.' }
+$sourceStatus = @(& git status --porcelain --untracked-files=normal)
+if ($LASTEXITCODE -ne 0) { throw 'Cannot verify source status.' }
+$sourceDirty = $sourceStatus.Count -gt 0
+if ($sourceDirty -and -not $AllowDirtyDevelopment) { throw 'Release/CI gate requires a clean source candidate. Use -AllowDirtyDevelopment only for explicitly preliminary builds.' }
 $environment = Join-Path $projectRoot '.venv-windows'
 $runtime = Join-Path $environment 'Scripts/python.exe'
 if (-not (Test-Path -LiteralPath $runtime)) {
@@ -21,7 +29,7 @@ if (-not (Test-Path -LiteralPath $runtime)) {
 & $runtime -m pip install --disable-pip-version-check -r windows/requirements-build.txt
 if ($LASTEXITCODE -ne 0) { throw 'Windows build dependencies failed.' }
 if (-not $Wheel) {
-    & "$PSScriptRoot/python_gate.ps1" -Python $Python -OutputRoot "$OutputRoot/python"
+    & "$PSScriptRoot/python_gate.ps1" -Python $Python -OutputRoot "$OutputRoot/python" -AllowDirtyDevelopment:$AllowDirtyDevelopment
     $Wheel = "$OutputRoot/python/packages/field_intelligence_console-4.0.0b1-py3-none-any.whl"
 }
 $Wheel = (Resolve-Path -LiteralPath $Wheel).Path
@@ -65,6 +73,12 @@ $metadata = $metadataScript | & $runtime - $exe
 if ($LASTEXITCODE -ne 0) { throw 'PE architecture validation failed.' }
 $metadata | Set-Content -Encoding utf8 "$OutputRoot/pe-metadata.json"
 $signature = (Get-AuthenticodeSignature -LiteralPath $exe).Status.ToString()
+$endingSha = (& git rev-parse HEAD).Trim()
+if ($LASTEXITCODE -ne 0 -or $endingSha -ne $sourceSha) { throw 'Source commit changed during Windows gate; rebuild candidate.' }
+$endingStatus = @(& git status --porcelain --untracked-files=normal)
+if ($LASTEXITCODE -ne 0) { throw 'Cannot recheck source status.' }
+$sourceDirty = $sourceDirty -or $endingStatus.Count -gt 0
+if ($sourceDirty -and -not $AllowDirtyDevelopment) { throw 'Source changed during Windows gate; rebuild clean candidate.' }
 $summary = @{
     status = 'PASS'
     focused_tests = $focusedReceipt.tests

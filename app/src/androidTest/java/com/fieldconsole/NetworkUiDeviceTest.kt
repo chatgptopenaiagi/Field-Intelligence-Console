@@ -70,4 +70,18 @@ class NetworkUiDeviceTest {
         try { assertEquals("Synthetic UI Contact", runBlocking { reopened.networkDao().entities().single().displayName }) }
         finally { reopened.close() }
     }
+    @Test fun geographicScopeShowsUnknownUntilQualifiedPlaceThenSavedAssociation() {
+        preview(); confirm()
+        compose.onNodeWithText("Scope: ALL").performScrollTo().performClick()
+        compose.onNodeWithText("city").performClick()
+        compose.onNodeWithText("INSUFFICIENT ADDRESS DATA", substring = true).assertExists()
+        compose.onNodeWithText("0 saved associations", substring = true).assertDoesNotExist()
+        compose.onNodeWithText("Select place").performScrollTo().performClick()
+        compose.onNodeWithText("locality", substring = false).performScrollTo().performTextInput("Example City")
+        compose.onNodeWithText("country", substring = false).performScrollTo().performTextInput("Example Country")
+        compose.onNodeWithText("Use selected place").performClick()
+        compose.onNodeWithText("MATCHES FOUND", substring = true).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("1 saved associations (unique entities)", substring = true).assertExists()
+        compose.onNodeWithText("Alex Éxample").performScrollTo().assertIsDisplayed()
+    }
 }
