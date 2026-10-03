@@ -356,3 +356,16 @@ explicitly authorized by the user. The protected tag remains unchanged.
 - Final gate (`02-gate-final.log`): 18 tests executed per variant, 0 failures/errors;
   debug/release and instrumentation APKs built; both lint variants passed with the
   same 4 existing warnings. Instrumentation test count: 2 added, **not executed**.
+
+### Checkpoint 3: emergency dialing safety
+
+- Source audit found only ACTION_DIAL call sites, so CALL_PHONE was removed. Both
+  emergency-number and facility-phone buttons use one small dialer helper that opens
+  ACTION_DIAL, never ACTION_CALL. All invocations remain explicit button actions.
+  A missing phone app now shows the number instead of crashing.
+- Four focused Robolectric tests verify the merged manifest permission, outgoing dial
+  action/number, missing-handler message, and offline catalog availability for every
+  supported country plus unknown-country fallback. The numbers themselves are unchanged;
+  this does not certify their correctness or local eligibility.
+- Focused tests passed. Full gate evidence: `build/milestone2/03-gate.log`.
+  Gate passed: 22 tests per variant, both app builds, lint 0 errors / 4 existing warnings.

@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.fieldconsole.data.emergency.EmergencyNumber
 import com.fieldconsole.data.local.entity.EmergencyService
 import com.fieldconsole.intent.IntentDispatcher
+import com.fieldconsole.intent.EmergencyDialer
 import com.fieldconsole.location.GeoContext
 import com.fieldconsole.viewmodel.EmergencyViewModel
 
@@ -191,7 +192,7 @@ private fun EmergencyNumberCard(num: EmergencyNumber) {
             }
             Row {
                 IconButton(onClick = {
-                    context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${num.number}")))
+                    EmergencyDialer.open(context, num.number)
                 }) {
                     Icon(Icons.Default.Call, "Call", tint = Color(0xFF2E7D32))
                 }
@@ -263,7 +264,7 @@ private fun EmergencyServiceCard(svc: EmergencyService) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 if (svc.phone.isNotBlank()) {
                     TextButton(onClick = {
-                        context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${svc.phone}")))
+                        EmergencyDialer.open(context, svc.phone)
                     }) {
                         Icon(Icons.Default.Call, null, modifier = Modifier.size(16.dp))
                         Spacer(Modifier.width(4.dp))
