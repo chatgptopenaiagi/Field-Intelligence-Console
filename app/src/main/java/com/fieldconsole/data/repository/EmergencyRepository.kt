@@ -8,6 +8,7 @@ import com.fieldconsole.data.remote.emergency.OverpassFailure
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -25,21 +26,35 @@ class EmergencyRepository @Inject constructor(
     private var lastEmptyLookup: Triple<Double, Double, Long>? = null
 
     companion object {
+        private const val RADIUS_M = 5000
         private const val CACHE_TTL_MS = 60 * 60 * 1000L  // 1 hour
     }
 
     fun observeNearby(lat: Double, lon: Double): Flow<List<EmergencyService>> =
-        dao.observeNearby(lat, lon)
+        dao.observeNearby(lat, lon).map { validCachedServices(it, lat, lon) }
+
+    // Older caches may contain out-of-radius area centers and heuristic status/ETA.
+    private fun validCachedServices(rows: List<EmergencyService>, lat: Double, lon: Double) =
+        rows.mapNotNull { row ->
+            if (!row.lat.isFinite() || !row.lon.isFinite() || row.lat !in -90.0..90.0 ||
+                row.lon !in -180.0..180.0) return@mapNotNull null
+            val distance = haversineM(lat, lon, row.lat, row.lon)
+            if (!distance.isFinite() || distance > RADIUS_M) null
+            else row.copy(distanceM = distance, travelTimeMin = 0, isOpen = false)
+        }.sortedBy { it.distanceM }
 
     suspend fun refreshNearby(lat: Double, lon: Double): Result<List<EmergencyService>> =
         withContext(Dispatchers.IO) {
           refreshMutex.withLock {
             try {
+                require(lat.isFinite() && lon.isFinite() && lat in -90.0..90.0 && lon in -180.0..180.0) {
+                    "Invalid scan coordinates."
+                }
                 // Check cache freshness
                 val cached = dao.getNearby(lat, lon)
                 val now = System.currentTimeMillis()
                 if (cached.isNotEmpty() && cached.all { now - it.fetchedAt in 0 until CACHE_TTL_MS }) {
-                    return@withContext Result.success(cached)
+                    return@withContext Result.success(validCachedServices(cached, lat, lon))
                 }
                 val empty = lastEmptyLookup
                 if (cached.isEmpty() && empty != null && empty.first == lat && empty.second == lon &&
@@ -47,7 +62,7 @@ class EmergencyRepository @Inject constructor(
                     return@withContext Result.success(emptyList())
                 }
 
-                val response = api.query(OverpassApi.emergencyQuery(lat, lon))
+                val response = api.query(OverpassApi.emergencyQuery(lat, lon, RADIUS_M))
                 if (!response.remark.isNullOrBlank()) {
                     throw OverpassFailure("Emergency service query did not complete. Try again later.")
                 }
@@ -98,7 +113,7 @@ class EmergencyRepository @Inject constructor(
         val phone   = tags["phone"] ?: tags["contact:phone"] ?: ""
         val is24h   = tags["opening_hours"] == "24/7"
         val dist    = haversineM(scanLat, scanLon, lat, lon)
-        val travelMin = (dist / 1000f / 40f * 60f).toInt().coerceAtLeast(1) // assume 40 km/h
+        if (!dist.isFinite() || dist > RADIUS_M) return null
 
         return EmergencyService(
             scanLat       = scanLat,
@@ -110,8 +125,8 @@ class EmergencyRepository @Inject constructor(
             lat           = lat,
             lon           = lon,
             distanceM     = dist,
-            travelTimeMin = travelMin,
-            isOpen        = true, // Overpass doesn't return real-time open status
+            travelTimeMin = 0, // Unknown; never presented as an ETA
+            isOpen        = false, // No verified open-now evidence; UI presents status as unknown
             is24h         = is24h,
             fetchedAt     = System.currentTimeMillis()
         )
@@ -134,6 +149,6 @@ class EmergencyRepository @Inject constructor(
         val dLon = Math.toRadians(lon2 - lon1)
         val a = sin(dLat / 2).pow(2) +
                 cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) * sin(dLon / 2).pow(2)
-        return (2 * r * atan2(sqrt(a), sqrt(1 - a))).toFloat()
+        return (2 * r * atan2(sqrt(a.coerceIn(0.0, 1.0)), sqrt(1 - a.coerceIn(0.0, 1.0)))).toFloat()
     }
 }

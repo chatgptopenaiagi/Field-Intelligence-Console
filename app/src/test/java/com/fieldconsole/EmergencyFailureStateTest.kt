@@ -61,7 +61,7 @@ class EmergencyFailureStateTest {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         val store = ViewModelStore()
         try {
-            val cached = EmergencyService(name = "Cached hospital", fetchedAt = 1)
+            val cached = EmergencyService(name = "Cached hospital", lat = 48.2, lon = 16.3, fetchedAt = 1)
             val dao = FakeEmergencyServiceDao().apply { rows.value = listOf(cached) }
             val requestStarted = CompletableDeferred<Unit>()
             val releaseFailure = CompletableDeferred<Unit>()

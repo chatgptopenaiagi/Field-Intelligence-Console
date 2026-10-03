@@ -242,7 +242,7 @@ private fun EmergencyServiceCard(svc: EmergencyService) {
                      modifier = Modifier.weight(1f))
                 if (svc.is24h) {
                     Surface(color = Color(0xFF2E7D32), shape = MaterialTheme.shapes.extraSmall) {
-                        Text("24h", color = Color.White, fontSize = 10.sp,
+                        Text("Tagged 24/7", color = Color.White, fontSize = 10.sp,
                              modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp))
                     }
                 }
@@ -254,10 +254,10 @@ private fun EmergencyServiceCard(svc: EmergencyService) {
             }
             Spacer(Modifier.height(4.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("%.0f m".format(svc.distanceM),
+                Text("%.0f m straight-line".format(svc.distanceM),
                      style = MaterialTheme.typography.labelSmall,
                      color = MaterialTheme.colorScheme.primary)
-                Text("~${svc.travelTimeMin} min",
+                Text("Travel time / open now: unknown",
                      style = MaterialTheme.typography.labelSmall,
                      color = MaterialTheme.colorScheme.onSurfaceVariant)
             }

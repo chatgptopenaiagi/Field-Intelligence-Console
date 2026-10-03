@@ -54,12 +54,12 @@ object EmergencyNumbers {
         EmergencyNumber("European Emergency",  "112",  "EU standard",                   EmergencyNumber.Category.GENERAL),
         EmergencyNumber("NHS Non-Emergency",   "111",  "Medical advice",                EmergencyNumber.Category.MEDICAL_ADVICE),
         EmergencyNumber("Police Non-Emergency","101",  "Non-urgent police",             EmergencyNumber.Category.POLICE),
-        EmergencyNumber("Poison Centre",       "+44-344-892-0111","National Poisons Information", EmergencyNumber.Category.POISON)
+        EmergencyNumber("Poison Centre",       "+44-344-892-0111","NPIS: healthcare professionals only; public: NHS 111 (England/Scotland/Wales)", EmergencyNumber.Category.POISON)
     )
 
     private val USA = listOf(
         EmergencyNumber("Emergency Services",  "911",  "Police, Fire, Ambulance",       EmergencyNumber.Category.GENERAL),
-        EmergencyNumber("Poison Control",      "1-800-222-1222", "ASPCA Poison Control", EmergencyNumber.Category.POISON),
+        EmergencyNumber("Poison Control",      "1-800-222-1222", "US Poison Help (human)", EmergencyNumber.Category.POISON),
         EmergencyNumber("Crisis Line",         "988",  "Suicide & Crisis Lifeline",     EmergencyNumber.Category.MEDICAL_ADVICE)
     )
 
