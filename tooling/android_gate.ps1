@@ -54,7 +54,8 @@ function Invoke-Bounded {
         $safe=Protect-Diagnostic $text
         Set-Content -LiteralPath (Join-Path $runPath "$Step.log") -Value $safe -Encoding utf8
         if($process.ExitCode -ne 0) {
-            $safe -split "`n" | Select-Object -Last 25 | Write-Output
+            # Host stream survives callers assigning the success-output stream.
+            $safe -split "`n" | Select-Object -Last 25 | ForEach-Object { Write-Host $_ }
             throw "Gate step failed: $Step (exit $($process.ExitCode))"
         }
         return $text

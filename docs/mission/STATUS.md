@@ -56,3 +56,11 @@ Protected baseline resolves to e45f9b863892b1796774a8132a213ea99c4518d2.
   limit remains600s. Local development gate passed97 tests per variant, six device
   tests, both assemblies/lint; actionlint and six release-guard tests passed.
   Hosted retry is required to distinguish software delay from a real state failure.
+
+- Candidate5 (d9ac982) passed clean local All, exact-artifact round trip and all11
+  contextual/metadata checks; Windows37113159746/Python37113158011 passed. Hosted
+  Android37113156492 boot/build/unit/lint passed but APK installation failed before
+  instrumentation. Its install diagnostic was lost from assigned output and omitted
+  from artifact allowlist. Preserve bounded host-stream/install/emulator diagnostics
+  for the next attempt; do not infer the install cause or claim hosted runtime PASS.
+  Two additional compact320x480dp local UI tests passed; original display restored.

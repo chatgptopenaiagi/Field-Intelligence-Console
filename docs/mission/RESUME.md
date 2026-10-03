@@ -26,3 +26,9 @@ Root owns emulator5580; no physical device used. Agents released file ownership.
 Known installed working tools: JDK17 under USERPROFILE/.jdks/jdk-17.0.20.1+1,
 Gradle wrapper8.7/AGP8.5.2, Python3.14.7 x64 with Tk9.0.4, gh2.100.0.
 Tool paths are hints: verify before use. Detailed evidence belongs in .local/evidence/.
+
+Latest: candidate5 atd9ac982 full local All/roundtrip PASS, exactSHA Win/Python CI
+PASS. Hosted37113156492 failed APK install before instrumentation, cause unavailable
+from old diagnostic upload. Next retry preserves install/emulator failure output.
+Defer another full three-platform candidate rebuild until hosted runtime resolves.
+No tag/release exists; source/test behavior unchanged by diagnostic-only repair.
