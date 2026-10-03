@@ -40,3 +40,11 @@ pushing its diagnostic-only commit. Inspect actual stage/type/code location, rep
 only proven cause, then select a new coordinated prerelease/tag (never retarget beta1).
 Three target CI workflows and full local candidate6 already passed at e6ad925.
 No emulator/build is running locally. Root owns all files; agents released ownership.
+
+NEXT AFTER INVENTORY REPAIR: full clean beta2 candidate at new HEAD using
+.local/release-4.0.0-beta.2-candidate-1, isolated FIC_MISSION_API34/emulator5580.
+Owned emulator launcher33652 is active; verify identity. Inventory hosted reproduction
+proved obsolete AGP XML path; new exact current model path is selected, with nine
+focused tooling tests passing. Run fresh hosted inventory plus normal three target
+CI gates before tagging/publishing. Final source is not beta1/e6ad925. Retain failed
+beta1 draft/tag, its actual receipts and the reconstructed-v1 limitations.

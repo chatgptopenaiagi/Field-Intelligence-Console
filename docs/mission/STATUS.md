@@ -75,3 +75,15 @@ at dependency inventory after platform gates; runtime/finalize jobs did not exec
 Underlying error was hidden. Add path-free stage/type/code-location diagnostics and
 run focused hosted inventory reproduction before choosing the next release candidate.
 No owned emulator currently running; both isolated AVDs preserved. Do not move beta1.
+
+Inventory cause verified by hosted37117949965: expected old Android XML absent,
+all other explicit inputs present; FileNotFoundError in android_inventory. The old
+incremental/lintReportDebug mainArtifact model was left over locally from older AGP.
+AGP8.5.2 actually generates lint_report_lint_model/debug/generateDebugLintReportModel/
+debug-artifact-dependencies.xml. Current and obsolete local package graphs are equal
+(102 dependencies), but obsolete evidence cannot support a clean build. Both local
+release and hosted inventory entrypoints now select only the current exact path.
+No fallback search to stale models. Nine tooling tests and actionlint passed; beta2
+version Android gate passed97/variant, six API34 tests, both assemblies/lint (0errors).
+Next: freeze repaired source, full All local, fresh hosted inventory and target CI,
+then new beta2 tag/release workflow. Beta1 remains a protected unpublished draft.

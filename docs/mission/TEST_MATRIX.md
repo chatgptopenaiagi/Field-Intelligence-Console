@@ -39,3 +39,10 @@ windows-gate-final-development and android-ui-installed-wheel under `.local/evid
 Latest shared gates deliberately record dirty development state; repeat from the clean
 candidate before publication. Release guard tests: six pass for dirty/mixed-SHA,
 unexecuted runtime, skipped tests, missing GUI/wheel and stale receipt rejection.
+
+Beta2 inventory tooling: nine unit tests PASS (six release guards, three inventory
+privacy/package-graph tests), actionlint PASS; current AGP package graph102 equals
+old local graph but generated paths differ. Hosted37117949965 diagnosed missing
+old XML; next hosted run must validate current path in a fresh workspace. Beta2
+preliminary clean c429abb Android97/variant and six API34 runtime PASS; lint0errors,
+4debug/3release advisory warnings. Final exact-source candidate gates still pending.

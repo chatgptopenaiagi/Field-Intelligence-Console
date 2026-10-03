@@ -30,3 +30,8 @@ publication blocked by release37116367024 inventory failure, cause still unknown
 This is an in-scope tooling failure under investigation, not an external blocker.
 Two diagnostic tests plus six release guards passed; actionlint passed (ShellCheck
 unavailable). No checks were disabled and no release success is claimed.
+
+Inventory cause is now proven: obsolete AGP lint XML path, masked by local stale
+build output. Current AGP8.5.2 model path has been selected; fresh hosted verification
+is pending. Nine tooling tests and beta2 Android97/variant+six runtime tests passed.
+This repair does not change a dependency, schema or product feature.

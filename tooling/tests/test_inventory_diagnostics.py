@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import zipfile
 
 spec = importlib.util.spec_from_file_location("release_inventory", Path(__file__).parents[1] / "release_inventory.py")
 inventory = importlib.util.module_from_spec(spec)
@@ -31,6 +32,30 @@ class InventoryDiagnostics(unittest.TestCase):
         diagnostic = inventory.failure_diagnostic(ValueError("synthetic-secret-value"))
         self.assertNotIn("synthetic-secret-value", json.dumps(diagnostic))
         self.assertEqual("FAIL", diagnostic["status"])
+
+    def test_only_current_package_graph_is_inventoried(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            folder = root / "example.synthetic" / "runtime" / "1.0" / "hash"
+            folder.mkdir(parents=True)
+            with zipfile.ZipFile(folder / "runtime-1.0.jar", "w") as archive:
+                archive.writestr("META-INF/LICENSE", "Synthetic test notice")
+            (folder / "runtime-1.0.pom").write_text(
+                "<project><licenses><license><name>MIT</name></license></licenses></project>", "utf-8")
+            metadata = root / "debug-artifact-dependencies.xml"
+            metadata.write_text('<dependencies><compile roots="not:packaged:1@jar"/>'
+                                '<package roots="example.synthetic:runtime:1.0@jar">'
+                                '<dependency name="example.synthetic:runtime:1.0@jar"/>'
+                                '</package></dependencies>', "utf-8")
+            components, notices, unresolved = inventory.android_inventory(metadata, root)
+            self.assertEqual(["runtime"], [item["name"] for item in components])
+            self.assertEqual([], unresolved)
+            self.assertTrue(any("Synthetic test notice" in notice for notice in notices))
+            self.assertEqual(inventory.sha(folder / "runtime-1.0.jar"), components[0]["hashes"][0]["content"])
+            # Missing current metadata must fail even if an obsolete model exists.
+            metadata.rename(root / "debug-mainArtifact-dependencies.xml")
+            with self.assertRaises(FileNotFoundError):
+                inventory.android_inventory(metadata, root)
 
 
 if __name__ == "__main__":

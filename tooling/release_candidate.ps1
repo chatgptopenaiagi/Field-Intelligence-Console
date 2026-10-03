@@ -116,7 +116,7 @@ if ($Stage -in @('Build','All')) {
     $runtime = Join-Path $projectRoot '.venv-windows/Scripts/python.exe'
     $gradleRoot = if ($env:GRADLE_USER_HOME) { $env:GRADLE_USER_HOME } else { Join-Path $env:USERPROFILE '.gradle' }
     $inventoryArgs = @('tooling/release_inventory.py',
-        '--android-dependencies','app/build/intermediates/incremental/lintReportDebug/debug-mainArtifact-dependencies.xml',
+        '--android-dependencies','app/build/intermediates/lint_report_lint_model/debug/generateDebugLintReportModel/debug-artifact-dependencies.xml',
         '--gradle-cache',"$gradleRoot/caches/modules-2/files-2.1",
         '--python-executable',$runtime,
         '--windows-toc',".local/build/windows/FieldIntelligenceConsole-$version-windows-x64/Analysis-00.toc",

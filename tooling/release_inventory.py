@@ -1,7 +1,9 @@
 """Generate a traceable CycloneDX inventory from actual build/installed metadata.
 
 No network access, guessed versions, workspace-wide uploads or private absolute paths.
-The Android input must be the current variant's AGP lint *mainArtifact-dependencies.xml.
+The Android input must be the current variant's generated AGP lint report model:
+AGP 8.5.2 uses lint_report_lint_model/debug/generateDebugLintReportModel/
+debug-artifact-dependencies.xml. Never fall back to obsolete incremental outputs.
 Its <package> graph is used, never the larger compile/test graph. Windows native files
 come from the matching PyInstaller Analysis TOC; pure Python packages come from the
 actual packaging environment's installed FIC dependency graph.
