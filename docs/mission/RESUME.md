@@ -1,61 +1,45 @@
 # Resume
 
-Read MISSION.md, STATUS.md, DECISIONS.md, TEST_MATRIX.md and BLOCKERS.md.
-Verify actual Git status/branch/HEAD and `v3-recovered-baseline^{commit}`. Do not reset.
-Current mission starts at e1f8c90; completed earlier Android repairs remain intact.
+Read MISSION.md and the current entries at the end of STATUS.md, TEST_MATRIX.md,
+DECISIONS.md and BLOCKERS.md. Earlier entries are historical, not current gates.
+Canonical root F:/FieldIntelligenceConsole; branch v4-development. Verify status,
+HEAD, worktrees and protected v3-recovered-baseline^{commit}=e45f9b8; never reset.
+Mission starting commit e1f8c90. Protected beta1 tag peels to e6ad925; never move it.
 
-Coordinator owns Git integration and shared contracts/platform sequencing.
-Current delegated ownership (verify live agents before edits):
-- All agents completed and released ownership. Root owns Git/SDK/final builds.
-- Native driver repair passed three consecutive fresh-profile seven-check runs;
-  seven focused tests passed. No unproven production focus change retained.
-Do not overlap writes. Check live agents/processes before resuming.
+Current: beta2 version4.0.0-beta.2 / Python4.0.0b2 / Androidcode5 / Windows4.0.0.2.
+Private GitHub repo chatgptopenaiagi/Field-Intelligence-Console exists. Beta1 remains
+an unpublished draft because its combined release inventory gate failed. Cause was
+obsolete AGP XML path; fixed51dd5f0 and fresh hosted inventory37118686336 passed.
+Three target CI runs at51dd also passed. No beta2 tag yet.
 
-Candidate4 at0359591 passed full clean local All and actual final APK SAF -> fresh
-wheel -> packaged EXE -> second fresh wheel exact round trip. Evidence lives in
-.local/release-4.0.0-beta.1-candidate-4 and final-roundtrip-candidate4.
-Hosted Android37111296019 boot/build/unit/lint passed; three migration tests passed,
-three UI tests timed out at10s. Software CI now explicitly allows bounded60s waits,
-with sanitized state diagnostics and unchanged assertions. Local default10s gate
-passed97 unit tests per variant/six device tests/assemblies/lint after this change.
-NEXT: audit/push this fix and rerun hosted Android with emulator=true. Inspect state
-diagnostics if it fails; do not infer that delay is the cause or claim a PASS.
-Then freeze source, full clean All, exactSHA three-platform CI, final metadata and
-roundtrip checks, annotated tag and verified private prerelease. No tag/release yet.
-Root owns emulator5580; no physical device used. Agents released file ownership.
-Known installed working tools: JDK17 under USERPROFILE/.jdks/jdk-17.0.20.1+1,
-Gradle wrapper8.7/AGP8.5.2, Python3.14.7 x64 with Tk9.0.4, gh2.100.0.
-Tool paths are hints: verify before use. Detailed evidence belongs in .local/evidence/.
+Local candidate1 Android97/variant+six runtime and Python45/cleanwheel passed;
+packaged Windows28 checks passed but native input failed. Foreground loss was proven.
+Quiet-desktop preflight now refuses busy input before opening/typing. Do not compete
+with another session. New owned-HWND capture/null-focus/input guards committed;
+Windows now requires14focused/28packaged/7native checks. Local busy desktop is NOT a
+waived gate. Use isolated hosted runner and exact final APK/EXE/wheel validation.
 
-Latest: candidate5 atd9ac982 full local All/roundtrip PASS, exactSHA Win/Python CI
-PASS. Hosted37113156492 failed APK install before instrumentation, cause unavailable
-from old diagnostic upload. Next retry preserves install/emulator failure output.
-Defer another full three-platform candidate rebuild until hosted runtime resolves.
-No tag/release exists; source/test behavior unchanged by diagnostic-only repair.
+Retained debug keystore securely provisioned as private repo Actions secret.
+Release-only restore step and both-APK public certificate pin committed; never log
+secret bytes or replace local identity. Only trusted release workflow references it.
+Finalization installs candidate wheel in isolated venv for release guard tests.
 
-CURRENT NEXT ACTION: private beta1 draft/tag exist at e6ad925 and all11 assets match,
-but combined release37116367024 failed inventory. Earlier no-tag/runtime-pending
-notes are historical. Run the new manual inventory-ci workflow after reviewing and
-pushing its diagnostic-only commit. Inspect actual stage/type/code location, repair
-only proven cause, then select a new coordinated prerelease/tag (never retarget beta1).
-Three target CI workflows and full local candidate6 already passed at e6ad925.
-No emulator/build is running locally. Root owns all files; agents released ownership.
+NEXT: finish hosted exchange review/tests, audit new reachable history, commit/push
+explicit reviewed branch, run exact-source target CI. Freeze clean candidate, create
+NEW annotated beta2 tag, audit/push it, run combined hosted release. Download all11
+verified assets and inspect exact hashes/signing/source/SBOM/privacy. Bind actual
+Android SAF exports to distributed APK hash (re-execute on owned emulator if needed).
+Dispatch synthetic hosted wheel/EXE/wheel exchange, then create/download-verify/publish
+PRIVATE experimental beta2 release only when every required gate passes. Write final
+report and handoff, verify refs/status, then mark persistent goal complete.
 
-NEXT AFTER INVENTORY REPAIR: full clean beta2 candidate at new HEAD using
-.local/release-4.0.0-beta.2-candidate-1, isolated FIC_MISSION_API34/emulator5580.
-Owned emulator launcher33652 is active; verify identity. Inventory hosted reproduction
-proved obsolete AGP XML path; new exact current model path is selected, with nine
-focused tooling tests passing. Run fresh hosted inventory plus normal three target
-CI gates before tagging/publishing. Final source is not beta1/e6ad925. Retain failed
-beta1 draft/tag, its actual receipts and the reconstructed-v1 limitations.
-
-CURRENT: local Windows native input is BLOCKED_DESKTOP_BUSY (no5s input-free interval
-within30s), not a waived PASS. Stop intrusive local GUI retries until new idle evidence.
-Root is preparing trusted hosted release signing with retained debug identity and a
-hosted actual-SAF exchange gate. Agent python_core owns ONLY new hosted_exchange.py,
-exchange-ci.yml and test_hosted_exchange.py; root owns all other files/Git. No beta2 tag
-yet. Candidate1Android/Python/packagedWindows28 passed but localnative failed. At51dd,
-all3 hostedtargets and inventory passed. New native-driver safety changes require
-fresh hosted14focused/28GUI/7native proof and exact-source release candidate. Emulator
-FIC_MISSION_API34/5580 remains owned and running; actualSAF beta2 receipt/output ready
-in .local/evidence/beta2-android-ui. Do not alter/reset the synthetic app history.
+Ownership: root owns Git/SDK/final builds/signing. Agent python_core temporarily owns
+ONLY tooling/hosted_exchange.py, tooling/tests/test_hosted_exchange.py and exchange-ci.yml;
+verify release of ownership before edits. Audit agent read-only. Android agent verifies
+ignored synthetic SAF receipt only. No local native GUI/build currently running.
+Owned emulator FIC_MISSION_API34 on5580 launcher33652 remains active; verify process
+identity before stopping. No real personal databases/contacts or physical device used.
+Actual SAF evidence .local/evidence/beta2-android-ui; detailed build/failed native logs
+under ignored .local/evidence and .local/release-4.0.0-beta.2-candidate-1.
+Tools: verify JDK17 USERPROFILE/.jdks/jdk-17.0.20.1+1, wrapper8.7/AGP8.5.2,
+Python3.14.7 x64 C:/Python314/python.exe, gh2.100.0. No global tool/security changes.

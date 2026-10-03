@@ -56,3 +56,9 @@ native-safety tests PASS, nine release guards/inventory tests PASS; Windows full
 focused count increases7->14. One virtual-key7native PASS followed by explicit
 foreground loss, then BLOCKED_DESKTOP_BUSY preflight. Do not describe this as local
 repeatability PASS. Hosted isolated gates remain mandatory, with actual GUI checks.
+
+Hosted exchange preparation: all21 tooling tests PASS (10exchange,3inventory,8release
+guards); seven native-driver safety tests PASS without GUI/input. First native-test
+invocation used wrong module search directory and failed import before execution;
+correct windows working directory executed all7 successfully. actionlint PASS;
+PowerShell AST checks PASS. Full14 Windows tests and hosted runtime remain pending.

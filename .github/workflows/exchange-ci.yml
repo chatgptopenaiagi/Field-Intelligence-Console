@@ -1,0 +1,67 @@
+name: Explicit synthetic cross-platform exchange
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing reviewed annotated experimental tag
+        required: true
+        type: string
+      candidate_run_id:
+        description: Successful release.yml run for that exact tag and source
+        required: true
+        type: string
+      network_base64:
+        description: Explicitly reviewed synthetic Android SAF Network JSON, base64 (32 KiB decoded maximum)
+        required: true
+        type: string
+      report_base64:
+        description: Explicitly reviewed synthetic Android SAF FieldReport JSON, base64
+        required: true
+        type: string
+      android_receipt_base64:
+        description: Synthetic Android SAF receipt with actual observed source and APK hash, base64
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+jobs:
+  exchange:
+    runs-on: windows-2025
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.release_tag }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.14.7'
+          architecture: x64
+      - name: Verify private repository, annotated tag and exact successful candidate run
+        id: candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python tooling/hosted_exchange.py --preflight
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: fic-verified-experimental-assets
+          digest-mismatch: error
+          run-id: ${{ steps.candidate.outputs.candidate_run_id }}
+          github-token: ${{ github.token }}
+          path: .local/exchange-assets
+      - name: Install checked-out contract validator
+        run: python -m pip install --disable-pip-version-check ./python
+      - name: Validate every asset and run exact packaged exchange
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python tooling/hosted_exchange.py --assets .local/exchange-assets --output .local/exchange/receipt.json
+      - name: Preserve only sanitized success receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: fic-hosted-exchange-receipt
+          path: .local/exchange/receipt.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
