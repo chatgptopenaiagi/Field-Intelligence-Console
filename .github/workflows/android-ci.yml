@@ -64,7 +64,8 @@ jobs:
           set -euo pipefail
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           test -x "$SDKMANAGER"
-          "$SDKMANAGER" --help >/dev/null
+          # This SDK manager prints valid --help but returns 1; its install syntax
+          # was verified from the actual hosted-runner help before this change.
           "$SDKMANAGER" --install 'platform-tools' 'platforms;android-34' 'build-tools;34.0.0'
       - name: Start an explicitly requested isolated emulator
         if: github.event_name == 'workflow_dispatch' && inputs.emulator
