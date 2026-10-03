@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!--
+        GradleDependency: newer versions exist but we pin to tested, compatible versions.
+        Updating all transitive deps would require re-testing the full build chain.
+    -->
+    <issue id="GradleDependency" severity="ignore" />
+
+    <!--
+        UnusedResources: string and color resources are defined for future use and for
+        external tooling (e.g. Fastlane, CI scripts, future i18n). R8 will strip truly
+        unused resources from the release APK via resource shrinking (isShrinkResources=true).
+    -->
+    <issue id="UnusedResources" severity="ignore" />
+</lint>
