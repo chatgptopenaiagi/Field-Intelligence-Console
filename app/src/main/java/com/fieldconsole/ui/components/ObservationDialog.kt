@@ -60,7 +60,7 @@ fun ObservationDialog(
                         Spacer(Modifier.width(6.dp))
                         Column {
                             Text(
-                                text       = geo.fullPlaceName,
+                                text       = listOfNotNull(geo.fullPlaceName, geo.geocodingNotice).joinToString("\n"),
                                 style      = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color      = MaterialTheme.colorScheme.onPrimaryContainer

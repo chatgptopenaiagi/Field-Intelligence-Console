@@ -369,3 +369,17 @@ explicitly authorized by the user. The protected tag remains unchanged.
   this does not certify their correctness or local eligibility.
 - Focused tests passed. Full gate evidence: `build/milestone2/03-gate.log`.
   Gate passed: 22 tests per variant, both app builds, lint 0 errors / 4 existing warnings.
+
+### Checkpoint 4: bounded reverse geocoding
+
+- Address lookup has a three-second deadline, explicit failure/empty/timeout notices,
+  and cancellation propagation. Coordinates, accuracy and timestamp remain available.
+  Scan observation and action-matrix headers display the notice; no address is invented.
+- API 33+ handles both callbacks; older blocking calls run on a bounded daemon worker.
+  Cancellation interrupts best-effort: Android Binder may ignore interruption, in which
+  case new requests fail promptly rather than accumulating blocked threads. Device-level
+  behavior is still a validation gate, not proven by JVM callback tests.
+- Six focused tests cover timeout, preserved coordinates, late/duplicate callbacks,
+  cancellation, backend failure, empty result and successful address mapping.
+- `build/milestone2/04-focused.log` and `04-gate.log`: focused and full suites passed,
+  28 tests per variant, both APK builds passed, lint 0 errors / 4 existing warnings.

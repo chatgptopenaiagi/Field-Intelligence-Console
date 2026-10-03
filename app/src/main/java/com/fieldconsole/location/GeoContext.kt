@@ -15,7 +15,8 @@ data class GeoContext(
     val latitude:    Double  = 0.0,
     val longitude:   Double  = 0.0,
     val accuracy:    Float   = 0f,
-    val timestamp:   Long    = System.currentTimeMillis()
+    val timestamp:   Long    = System.currentTimeMillis(),
+    val geocodingNotice: String? = null
 ) {
     /** Short display label: "Street, City" or fallback to coordinates. */
     val shortLabel: String get() {

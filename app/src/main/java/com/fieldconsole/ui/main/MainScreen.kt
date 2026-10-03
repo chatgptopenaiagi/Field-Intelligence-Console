@@ -275,7 +275,7 @@ private fun ActionMatrixContent(
                 Spacer(Modifier.width(8.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text       = geo.fullPlaceName,
+                        text       = listOfNotNull(geo.fullPlaceName, geo.geocodingNotice).joinToString("\n"),
                         style      = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold
                     )
