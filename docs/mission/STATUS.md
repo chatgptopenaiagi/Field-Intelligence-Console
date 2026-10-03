@@ -1,4 +1,8 @@
-# Mission status
+# Mission status — PAUSED by owner on 2026-10-03
+
+Current status: usage/credit preservation; beta2 INCOMPLETE and unpublished.
+Read PAUSE_CHECKPOINT_2026-10-03.md and RESUME.md first. Everything below the
+pause summary is historical. No development/publication during this pause.
 
 Active: Revision 2026-10-03.1. Overall IN_PROGRESS.
 Starting commit: e1f8c90fcca5b7581d51bbad8a2d8efd37874706, v4-development.
@@ -120,12 +124,10 @@ review; no beta2 tag/publication yet.
 # OWNER PAUSE — 2026-10-03
 
 PAUSED for usage/credit preservation. BETA2 INCOMPLETE; no publication this session.
-This supersedes historical autonomous next actions below. Read RESUME.md and
+This supersedes historical autonomous next actions above. Read RESUME.md and
 [PAUSE_CHECKPOINT_2026-10-03.md](PAUSE_CHECKPOINT_2026-10-03.md).
 Frozen source2967304 and existing beta2 tag preserved; standalone three-target CI PASS.
 Combined37121395951 last observed IN_PROGRESS/build active; allowed to finish remotely.
 Owned emulator stopped; evidence preserved. Next session reads actual run result.
 Final exact-APK runtime/exchange/delivery remain unverified. Documentation checkpoint
 push/remote SHA verification is recorded in local pause-final-receipt.json.
-
-## Historical ledger
