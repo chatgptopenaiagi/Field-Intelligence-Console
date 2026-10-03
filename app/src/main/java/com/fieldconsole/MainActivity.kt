@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,6 +17,11 @@ import com.fieldconsole.ui.search.openSearchEntry
 import com.fieldconsole.viewmodel.MainViewModel
 import com.fieldconsole.ui.settings.EngineSettingsScreen
 import com.fieldconsole.ui.theme.FieldIntelligenceTheme
+import com.fieldconsole.ui.theme.AppearanceDialog
+import com.fieldconsole.ui.network.NetworkScreen
+import com.fieldconsole.ui.network.ReportScreen
+import com.fieldconsole.location.GeoContext
+import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,14 +43,29 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            FieldIntelligenceTheme {
+            val preferences = remember { getSharedPreferences("fic_appearance", MODE_PRIVATE) }
+            var theme by remember { mutableStateOf(preferences.getString("theme", "system") ?: "system") }
+            var textScale by remember { mutableFloatStateOf(preferences.getFloat("text_scale", 1f)) }
+            var appearance by remember { mutableStateOf(false) }
+            FieldIntelligenceTheme(theme, textScale) {
                 val nav = rememberNavController()
+                var networkGeo by remember { mutableStateOf<GeoContext?>(null) }
+                var networkSource by remember { mutableStateOf("unavailable") }
+                var currentReport by remember { mutableStateOf<JsonObject?>(null) }
+                if (appearance) AppearanceDialog(theme, textScale, onClose = { appearance = false }) { selectedTheme, scale ->
+                    theme = selectedTheme; textScale = scale
+                    preferences.edit().putString("theme", theme).putFloat("text_scale", scale).apply()
+                    appearance = false
+                }
                 NavHost(navController = nav, startDestination = "main") {
 
                     composable("main") {
                         MainScreen(
                             dispatcher           = dispatcher,
                             onNavigateToSettings = { nav.navigate("settings") },
+                            onNavigateToNetwork = { geo -> networkGeo = geo; networkSource = if (geo == null) "unavailable" else "device scan"; nav.navigate("network") },
+                            onNavigateToReports = { report -> currentReport = report; nav.navigate("reports") },
+                            onAppearance = { appearance = true },
                             onNavigateToHistory  = { nav.navigate("history") },
                             onNavigateToSearch   = { nav.navigate("search") }
                         )
@@ -53,6 +73,17 @@ class MainActivity : ComponentActivity() {
 
                     composable("settings") {
                         EngineSettingsScreen(onBack = { nav.popBackStack() })
+                    }
+
+                    composable("network") { NetworkScreen(networkGeo, { nav.popBackStack() }, initialPlaceSource = networkSource) }
+                    composable("reports") {
+                        ReportScreen(currentReport, { nav.popBackStack() }, onSelectPlace = { report ->
+                            val location = report.getAsJsonObject("location")
+                            networkGeo = if (location.get("latitude").isJsonNull || location.get("longitude").isJsonNull) null
+                                else GeoContext(latitude = location.get("latitude").asDouble, longitude = location.get("longitude").asDouble)
+                            networkSource = "report-derived (original ${location.get("source").asString})"
+                            nav.navigate("network")
+                        })
                     }
 
                     composable("history") {

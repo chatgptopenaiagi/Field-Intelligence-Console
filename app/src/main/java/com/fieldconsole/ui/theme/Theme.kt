@@ -2,7 +2,17 @@ package com.fieldconsole.ui.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.Slider
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.graphics.Color
 
 // ── Colour palette — dark, high-contrast, industrial ─────────────────────────
@@ -47,10 +57,26 @@ private val FicDarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun FieldIntelligenceTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colorScheme = FicDarkColorScheme,
-        typography  = FicTypography,
-        content     = content
-    )
+fun FieldIntelligenceTheme(theme: String = "system", textScale: Float = 1f, content: @Composable () -> Unit) {
+    val dark = when (theme) { "light" -> false; "dark", "contrast" -> true; else -> isSystemInDarkTheme() }
+    val colors = when {
+        theme == "contrast" -> FicDarkColorScheme.copy(primary = Color.Yellow, onPrimary = Color.Black, background = Color.Black, surface = Color.Black, onSurface = Color.White, onBackground = Color.White)
+        dark -> FicDarkColorScheme
+        else -> lightColorScheme(primary = Color(0xFF005B79), secondary = Color(0xFF00685D), background = Color(0xFFF9FAFC), surface = Color.White)
+    }
+    val density = LocalDensity.current
+    CompositionLocalProvider(LocalDensity provides Density(density.density, density.fontScale * textScale.coerceIn(1f, 1.5f))) {
+        MaterialTheme(colorScheme = colors, typography = FicTypography, content = content)
+    }
+}
+
+@Composable
+fun AppearanceDialog(theme: String, scale: Float, onClose: () -> Unit, onSave: (String, Float) -> Unit) {
+    var selected by remember { mutableStateOf(theme) }
+    var size by remember { mutableFloatStateOf(scale) }
+    AlertDialog(onDismissRequest = onClose, title = { Text("Appearance") }, text = { Column {
+        listOf("system", "light", "dark", "contrast").forEach { option -> TextButton(onClick = { selected = option }) { Text(if (selected == option) "✓ ${option.uppercase()}" else option.uppercase()) } }
+        Text("Text scale: ${(size * 100).toInt()}% (in addition to system setting)")
+        Slider(size, { size = it }, valueRange = 1f..1.5f, steps = 4)
+    } }, confirmButton = { TextButton(onClick = { onSave(selected, size) }) { Text("Save") } }, dismissButton = { TextButton(onClick = onClose) { Text("Cancel") } })
 }

@@ -26,6 +26,10 @@ fun EngineSettingsScreen(
     val uiState           by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
+    LaunchedEffect(uiState.error) {
+        uiState.error?.let { snackbarHostState.showSnackbar(it); viewModel.clearTransientState() }
+    }
+
     LaunchedEffect(uiState.saveSuccess) {
         uiState.saveSuccess?.let {
             snackbarHostState.showSnackbar("${it.displayName} key saved.")
@@ -81,8 +85,8 @@ fun EngineSettingsScreen(
                     Spacer(Modifier.width(8.dp))
                     Text(
                         text  = "API keys are encrypted with AES-256-GCM using the Android " +
-                                "Keystore. All features remain available without keys via " +
-                                "intent-based fallback.",
+                                "Keystore. In-app provider analysis is not activated in this experimental release. " +
+                                "AI ANALYSIS uses the existing external prompt action; saving a key does not enable a CAD or AI integration.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

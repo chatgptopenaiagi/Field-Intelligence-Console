@@ -7,12 +7,14 @@ import com.fieldconsole.security.ApiProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
 
 data class EngineSettingsUiState(
     val configuredProviders: Set<ApiProvider> = emptySet(),
     val saveSuccess: ApiProvider?             = null,
-    val deleteSuccess: ApiProvider?           = null
+    val deleteSuccess: ApiProvider?           = null,
+    val error: String? = null
 )
 
 /**
@@ -33,31 +35,39 @@ class EngineSettingsViewModel @Inject constructor(
 
     fun saveKey(provider: ApiProvider, rawKey: String) {
         viewModelScope.launch {
+            try {
             keyStore.saveKey(provider, rawKey.trim())
             _uiState.value = _uiState.value.copy(
                 configuredProviders = keyStore.configuredProviders(),
-                saveSuccess         = provider
+                saveSuccess         = provider, error = null
             )
+            } catch (e: CancellationException) { throw e }
+            catch (_: Exception) { _uiState.update { it.copy(error = "Secure storage unavailable. Key was not saved; try again on this device.") } }
         }
     }
 
     fun deleteKey(provider: ApiProvider) {
         viewModelScope.launch {
+            try {
             keyStore.deleteKey(provider)
             _uiState.value = _uiState.value.copy(
                 configuredProviders = keyStore.configuredProviders(),
-                deleteSuccess       = provider
+                deleteSuccess       = provider, error = null
             )
+            } catch (e: CancellationException) { throw e }
+            catch (_: Exception) { _uiState.update { it.copy(error = "Key removal failed. Please try again.") } }
         }
     }
 
     fun clearTransientState() {
-        _uiState.value = _uiState.value.copy(saveSuccess = null, deleteSuccess = null)
+        _uiState.value = _uiState.value.copy(saveSuccess = null, deleteSuccess = null, error = null)
     }
 
     private fun refreshState() {
         _uiState.value = EngineSettingsUiState(
-            configuredProviders = keyStore.configuredProviders()
+            configuredProviders = keyStore.configuredProviders(),
+            error = if (ApiProvider.entries.any { keyStore.status(it) == ApiKeyStore.Status.UNREADABLE })
+                "A stored key is unreadable on this device. Re-enter or deliberately remove it; the stored record has been preserved." else null
         )
     }
 }

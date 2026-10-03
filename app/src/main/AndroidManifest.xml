@@ -9,6 +9,8 @@
     <!-- Network access for Weather API, Overpass API, optional AI engines -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Requested only by the explicit read-only phone-contact import action. -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <!-- Required hardware features (not required = won't block install) -->
     <uses-feature android:name="android.hardware.location.gps"     android:required="false" />
@@ -31,7 +33,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

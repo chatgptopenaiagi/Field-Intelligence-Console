@@ -31,12 +31,17 @@ import com.fieldconsole.ui.emergency.EmergencyScreen
 import com.fieldconsole.ui.theme.*
 import com.fieldconsole.viewmodel.MainUiState
 import com.fieldconsole.viewmodel.MainViewModel
+import com.fieldconsole.export.ReportExchange
+import com.google.gson.JsonObject
 
 @Composable
 fun MainScreen(
     mainViewModel:   MainViewModel         = hiltViewModel(),
     dispatcher:      IntentDispatcher,
     onNavigateToSettings: () -> Unit,
+    onNavigateToNetwork: (GeoContext?) -> Unit,
+    onNavigateToReports: (JsonObject?) -> Unit,
+    onAppearance: () -> Unit,
     onNavigateToHistory:  () -> Unit = {},
     onNavigateToSearch:   () -> Unit = {}
 ) {
@@ -81,7 +86,10 @@ fun MainScreen(
                 entryCount = mainViewModel.entryCount.collectAsState().value,
                 onSettings = onNavigateToSettings,
                 onHistory  = onNavigateToHistory,
-                onSearch   = onNavigateToSearch
+                onSearch   = onNavigateToSearch,
+                onNetwork = { onNavigateToNetwork(null) },
+                onReports = { onNavigateToReports(null) },
+                onAppearance = onAppearance
             )
         },
         containerColor = MaterialTheme.colorScheme.background
@@ -122,7 +130,9 @@ fun MainScreen(
                         dispatcher = dispatcher,
                         context    = context,
                         onBack     = mainViewModel::onReset,
-                        onEmergency = { mainViewModel.onEmergencyPressed(state.geo) }
+                        onEmergency = { mainViewModel.onEmergencyPressed(state.geo) },
+                        onNetwork = { onNavigateToNetwork(state.geo) },
+                        onReport = { onNavigateToReports(ReportExchange.fromEntry(state.entry, state.geo)) }
                     )
 
                     is MainUiState.Emergency -> { /* handled above */ }
@@ -147,9 +157,13 @@ fun MainScreen(
 private fun FicTopBar(
     entryCount: Int,
     onSettings: () -> Unit,
+    onNetwork: () -> Unit,
+    onReports: () -> Unit,
+    onAppearance: () -> Unit,
     onHistory:  () -> Unit = {},
     onSearch:   () -> Unit = {}
 ) {
+    var toolsExpanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = {
             Column {
@@ -177,8 +191,14 @@ private fun FicTopBar(
                     Icon(Icons.Default.History, contentDescription = "History")
                 }
             }
-            IconButton(onClick = onSettings) {
-                Icon(Icons.Default.Settings, contentDescription = "Settings")
+            Box {
+                IconButton(onClick = { toolsExpanded = true }) { Icon(Icons.Default.MoreVert, contentDescription = "Tools and settings") }
+                DropdownMenu(toolsExpanded, { toolsExpanded = false }) {
+                    listOf("Known Network" to onNetwork, "Field reports" to onReports,
+                        "Appearance" to onAppearance, "Engines & APIs" to onSettings).forEach { (label, action) ->
+                        DropdownMenuItem(text = { Text(label) }, onClick = { toolsExpanded = false; action() })
+                    }
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
@@ -251,7 +271,9 @@ private fun ActionMatrixContent(
     dispatcher:  IntentDispatcher,
     context:     android.content.Context,
     onBack:      () -> Unit,
-    onEmergency: () -> Unit
+    onEmergency: () -> Unit,
+    onNetwork: () -> Unit,
+    onReport: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -334,6 +356,14 @@ private fun ActionMatrixContent(
         }
 
         Spacer(Modifier.height(8.dp))
+
+        Card(onClick = onNetwork, modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(16.dp)) {
+                Text("KNOWN NETWORK", fontWeight = FontWeight.Bold)
+                Text("People, organizations and contacts associated with this place.", style = MaterialTheme.typography.bodySmall)
+            }
+        }
+        OutlinedButton(onClick = onReport, modifier = Modifier.fillMaxWidth()) { Text("FIC REPORT EXCHANGE") }
 
         // ── Copy Location ─────────────────────────────────────────────────────
         OutlinedButton(

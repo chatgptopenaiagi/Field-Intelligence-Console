@@ -12,26 +12,26 @@ enum class ApiProvider(val displayName: String, val prefKey: String, val descrip
     OPENAI(
         displayName  = "OpenAI / ChatGPT",
         prefKey      = "api_openai",
-        description  = "In-app AI analysis via GPT-4o. Replaces intent-based ChatGPT sharing."
+        description  = "Reserved provider setting. In-app analysis is not connected; AI ANALYSIS opens the existing external prompt action."
     ),
     GOOGLE_MAPS(
         displayName  = "Google Maps & Places",
         prefKey      = "api_google_maps",
-        description  = "Live nearby-place enrichment for Logistics, Risk, and Info Scan."
+        description  = "Reserved provider setting. Live Places enrichment is not connected."
     ),
     GOOGLE_EARTH(
         displayName  = "Google Earth Engine",
         prefKey      = "api_google_earth",
-        description  = "Satellite imagery metadata and land-use context for Navigation & History."
+        description  = "Reserved provider setting. Satellite and land-use integration is not connected."
     ),
     SOLIDWORKS(
         displayName  = "SolidWorks / 3DEXPERIENCE",
         prefKey      = "api_solidworks",
-        description  = "CAD/part lookup by field tag for infrastructure and engineering contexts."
+        description  = "Incomplete CAD adapter; saving a key does not activate a working integration."
     ),
     AUTODESK(
         displayName  = "Autodesk APS / Forge",
         prefKey      = "api_autodesk",
-        description  = "BIM and infrastructure model context. Format: clientId:clientSecret"
+        description  = "Incomplete BIM adapter. Do not enter confidential server client secrets in this mobile application."
     )
 }

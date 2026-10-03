@@ -80,14 +80,25 @@ class ApiKeyStore @Inject constructor(private val context: Context) {
             .apply()
     }
 
-    /** Decrypt and return the key for [provider], or null if not stored. */
-    fun getKey(provider: ApiProvider): String? {
-        val encB64 = prefs.getString(provider.prefKey,            null) ?: return null
-        val ivB64  = prefs.getString(provider.prefKey + IV_SUFFIX, null) ?: return null
+    enum class Status { MISSING, AVAILABLE, UNREADABLE }
+
+    /** Unreadable credentials remain stored for deliberate replacement/removal. */
+    fun status(provider: ApiProvider): Status = if (!hasKey(provider)) Status.MISSING
+        else if (getKey(provider) == null) Status.UNREADABLE else Status.AVAILABLE
+
+    /** Never regenerate a missing decryption key or expose cryptographic diagnostics. */
+    fun getKey(provider: ApiProvider): String? = try { decrypt(provider) } catch (_: Exception) { null }
+
+    private fun decrypt(provider: ApiProvider): String? {
+        val encB64 = prefs.getString(provider.prefKey, null) ?: return null
+        val ivB64 = prefs.getString(provider.prefKey + IV_SUFFIX, null) ?: return null
         val enc    = Base64.decode(encB64, Base64.DEFAULT)
         val iv     = Base64.decode(ivB64,  Base64.DEFAULT)
+        require(iv.size == 12 && enc.size >= 16)
+        val ks = KeyStore.getInstance(ANDROID_KS).apply { load(null) }
+        val key = (ks.getEntry(KEYSTORE_ALIAS, null) as? KeyStore.SecretKeyEntry)?.secretKey ?: return null
         val cipher = Cipher.getInstance(TRANSFORMATION)
-        cipher.init(Cipher.DECRYPT_MODE, getOrCreateSecretKey(), GCMParameterSpec(GCM_TAG_LENGTH, iv))
+        cipher.init(Cipher.DECRYPT_MODE, key, GCMParameterSpec(GCM_TAG_LENGTH, iv))
         return String(cipher.doFinal(enc), Charsets.UTF_8)
     }
 
@@ -100,7 +111,7 @@ class ApiKeyStore @Inject constructor(private val context: Context) {
     }
 
     /** Returns true if a key is stored for [provider]. */
-    fun hasKey(provider: ApiProvider): Boolean = prefs.contains(provider.prefKey)
+    fun hasKey(provider: ApiProvider): Boolean = prefs.contains(provider.prefKey) || prefs.contains(provider.prefKey + IV_SUFFIX)
 
     /** Returns the set of providers that currently have a stored key. */
     fun configuredProviders(): Set<ApiProvider> =
