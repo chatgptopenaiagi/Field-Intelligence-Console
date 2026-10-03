@@ -64,3 +64,14 @@ Protected baseline resolves to e45f9b863892b1796774a8132a213ea99c4518d2.
   from artifact allowlist. Preserve bounded host-stream/install/emulator diagnostics
   for the next attempt; do not infer the install cause or claim hosted runtime PASS.
   Two additional compact320x480dp local UI tests passed; original display restored.
+
+Latest delivery checkpoint (supersedes earlier pending-runtime entries): candidate6
+at e6ad925 passed full local All, Android97/variant and six API34 device tests,
+Python45/clean wheel, Windows7/28/7, exact SAF/wheel/EXE round trip and artifact review.
+Exact-source Android37114334538, Python37116022808 and Windows37116024885 CI passed.
+Annotated v4.0.0-beta.1 is protected at e6ad925; private draft exists, all11 uploaded
+assets downloaded byte-identically. It is NOT published. Release37116367024 failed
+at dependency inventory after platform gates; runtime/finalize jobs did not execute.
+Underlying error was hidden. Add path-free stage/type/code-location diagnostics and
+run focused hosted inventory reproduction before choosing the next release candidate.
+No owned emulator currently running; both isolated AVDs preserved. Do not move beta1.

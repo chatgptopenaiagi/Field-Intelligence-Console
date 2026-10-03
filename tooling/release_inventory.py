@@ -22,6 +22,20 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 
+STAGE = "arguments"
+
+
+def failure_diagnostic(error):
+    """Only code locations/types, never exception values or private input paths."""
+    frames = []
+    trace = error.__traceback__
+    while trace is not None:
+        if Path(trace.tb_frame.f_code.co_filename).resolve() == Path(__file__).resolve():
+            frames.append({"function": trace.tb_frame.f_code.co_name, "line": trace.tb_lineno})
+        trace = trace.tb_next
+    return {"status": "FAIL", "stage": STAGE, "error_type": type(error).__name__, "code_locations": frames}
+
+
 def sha(path):
     digest = hashlib.sha256()
     with Path(path).open("rb") as stream:
@@ -228,6 +242,7 @@ def native_inventory(toc):
 
 
 def main():
+    global STAGE
     parser = argparse.ArgumentParser()
     parser.add_argument("--android-dependencies", type=Path, required=True)
     parser.add_argument("--gradle-cache", type=Path, required=True)
@@ -241,9 +256,19 @@ def main():
     args = parser.parse_args()
     if not re.fullmatch(r"[0-9a-f]{40}", args.source_sha):
         parser.error("source SHA must be a full commit ID")
+    print(json.dumps({"inventory_inputs_present": {
+        "android_metadata": args.android_dependencies.is_file(),
+        "gradle_cache": args.gradle_cache.is_dir(),
+        "python_executable": args.python_executable.is_file(),
+        "windows_toc": args.windows_toc.is_file(),
+        "windows_notices": args.windows_notices.is_dir()}}), flush=True)
+    STAGE = "android"
     android, android_notices, unresolved = android_inventory(args.android_dependencies, args.gradle_cache)
+    STAGE = "python"
     python, python_notices, edges, runtime = python_inventory(args.python_executable)
+    STAGE = "windows_native"
     native = native_inventory(args.windows_toc)
+    STAGE = "artifacts"
     artifact_inventory = []
     for path in args.artifact:
         if not path.is_file():
@@ -261,6 +286,7 @@ def main():
            "components": components, "dependencies": edges,
            "properties": [{"name": "fic:scope", "value": "Resolved Android package graph; installed FIC Python dependencies; packaged Windows native inputs. Build-tool/transitive-source audit is not exhaustive."},
                           {"name": "fic:unresolved-android-license-metadata", "value": json.dumps(unresolved)}]}
+    STAGE = "write_inventory"
     args.output.mkdir(parents=True, exist_ok=True)
     (args.output / "SBOM.cdx.json").write_text(json.dumps(bom, ensure_ascii=True, indent=2) + "\n", "utf-8")
     (args.output / "artifact-inventory.json").write_text(json.dumps({"source_sha": args.source_sha, "artifacts": artifact_inventory, "runtime": runtime}, indent=2) + "\n", "utf-8")
@@ -276,6 +302,6 @@ def main():
 if __name__ == "__main__":
     try:
         raise SystemExit(main())
-    except (OSError, ValueError, KeyError, ET.ParseError, zipfile.BadZipFile):
-        print("Inventory failed: verify the explicit build metadata/artifact inputs; nothing was inferred.", file=sys.stderr)
+    except (OSError, ValueError, KeyError, ET.ParseError, zipfile.BadZipFile, subprocess.TimeoutExpired) as error:
+        print(json.dumps(failure_diagnostic(error)), file=sys.stderr)
         raise SystemExit(1)

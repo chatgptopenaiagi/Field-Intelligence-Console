@@ -23,3 +23,10 @@ Hosted software emulator now boots using the smaller official AOSP image. Run
 37111296019 passed builds/unit/lint/three migrations but failed three UI10s waits.
 Bounded60s software-only waits plus state diagnostics await hosted verification.
 This is an unresolved test failure, not yet a demonstrated external blocker.
+
+Latest: hosted Android runtime37114334538 passed all six tests. Candidate6 and all
+three target CI gates passed. Private beta1 draft/tag and downloaded assets verified;
+publication blocked by release37116367024 inventory failure, cause still unknown.
+This is an in-scope tooling failure under investigation, not an external blocker.
+Two diagnostic tests plus six release guards passed; actionlint passed (ShellCheck
+unavailable). No checks were disabled and no release success is claimed.

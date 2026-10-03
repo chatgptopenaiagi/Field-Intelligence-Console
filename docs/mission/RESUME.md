@@ -32,3 +32,11 @@ PASS. Hosted37113156492 failed APK install before instrumentation, cause unavail
 from old diagnostic upload. Next retry preserves install/emulator failure output.
 Defer another full three-platform candidate rebuild until hosted runtime resolves.
 No tag/release exists; source/test behavior unchanged by diagnostic-only repair.
+
+CURRENT NEXT ACTION: private beta1 draft/tag exist at e6ad925 and all11 assets match,
+but combined release37116367024 failed inventory. Earlier no-tag/runtime-pending
+notes are historical. Run the new manual inventory-ci workflow after reviewing and
+pushing its diagnostic-only commit. Inspect actual stage/type/code location, repair
+only proven cause, then select a new coordinated prerelease/tag (never retarget beta1).
+Three target CI workflows and full local candidate6 already passed at e6ad925.
+No emulator/build is running locally. Root owns all files; agents released ownership.

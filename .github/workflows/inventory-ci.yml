@@ -1,0 +1,41 @@
+name: Release inventory diagnostics
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: windows-2025
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.14.7"
+          architecture: x64
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
+        with:
+          distribution: temurin
+          java-version: "17"
+          verify-signature: true
+          overwrite-settings: false
+      - name: Resolve actual Android inventory inputs
+        shell: pwsh
+        run: |
+          ./gradlew.bat --no-daemon --console=plain lintDebug
+          if ($LASTEXITCODE -ne 0) { throw 'Android metadata build failed.' }
+      - name: Build and test Windows package inputs
+        shell: pwsh
+        run: ./tooling/windows_gate.ps1 -Python python -OutputRoot .local/inventory-diagnostics/windows
+      - name: Inspect the real resolved inventory
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $version = [regex]::Match((Get-Content -Raw app/build.gradle.kts),'versionName\s*=\s*"([^"]+)"').Groups[1].Value
+          $gradleRoot = if ($env:GRADLE_USER_HOME) { $env:GRADLE_USER_HOME } else { Join-Path $env:USERPROFILE '.gradle' }
+          $exe = ".local/inventory-diagnostics/windows/artifacts/FieldIntelligenceConsole-$version-windows-x64.exe"
+          & .venv-windows/Scripts/python.exe tooling/release_inventory.py --android-dependencies app/build/intermediates/incremental/lintReportDebug/debug-mainArtifact-dependencies.xml --gradle-cache "$gradleRoot/caches/modules-2/files-2.1" --python-executable .venv-windows/Scripts/python.exe --windows-toc ".local/build/windows/FieldIntelligenceConsole-$version-windows-x64/Analysis-00.toc" --windows-notices windows/notices --source-sha (git rev-parse HEAD) --version $version --output .local/inventory-diagnostics/inventory --artifact $exe
+          if ($LASTEXITCODE -ne 0) { throw 'Inventory diagnostic failed; see structured stage/code-location output.' }
+          # This diagnostic is not a release gate or artifact publication path.

@@ -57,6 +57,15 @@ function Invoke-Bounded {
         $log = $stdout.GetAwaiter().GetResult() + $stderr.GetAwaiter().GetResult()
         if ($log.Length -gt 20000000) { $log = $log.Substring(0,20000000) }
         Set-Content -LiteralPath (Join-Path $OutputRoot "$Name.local.log") -Value $log -Encoding utf8
+        if ($Name -eq 'inventory') {
+            # The inventory emits only bounded, path-free structured diagnostics.
+            # Never forward a raw traceback or captured build log to CI artifacts.
+            $safeInventory = @($log -split "`n" | Where-Object {
+                $_.Length -le 4096 -and $_ -match '^\{"(?:inventory_inputs_present|status|android_components)":'
+            })
+            $safeInventory | Set-Content -LiteralPath (Join-Path $OutputRoot 'inventory.sanitized.log') -Encoding utf8
+            $safeInventory | ForEach-Object { Write-Host $_ }
+        }
         if ($process.ExitCode -ne 0) { throw "Release step failed: $Name. Inspect its local-only log." }
     } finally { $process.Dispose() }
 }

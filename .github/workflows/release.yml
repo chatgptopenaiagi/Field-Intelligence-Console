@@ -79,6 +79,15 @@ jobs:
             .local/ci-release/receipts/artifact-scan.json
             .local/ci-release/android-test/app-debug-androidTest.apk
             .local/ci-release/build-receipt.json
+      - name: Preserve bounded inventory diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: fic-inventory-diagnostics
+          retention-days: 7
+          include-hidden-files: true
+          if-no-files-found: ignore
+          path: .local/ci-release/inventory.sanitized.log
 
   android-runtime:
     needs: build
