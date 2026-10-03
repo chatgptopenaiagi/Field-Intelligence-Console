@@ -14,3 +14,7 @@ seven-check runs. A new full clean candidate remains required. Final candidate,
 artifact audit, source/asset metadata and remote prerelease verification are pending.
 Android version/target advisory lint warnings remain unsuppressed; old custom-check
 compatibility failures were resolved by the tested AGP8.5.2 change.
+
+Hosted Android runtime37110135912: BLOCKED_RUNTIME because /dev/kvm was not
+readable/writable. Local runtime passed all six tests. Official software fallback
+is being attempted under finite limits; no hosted runtime success claimed yet.

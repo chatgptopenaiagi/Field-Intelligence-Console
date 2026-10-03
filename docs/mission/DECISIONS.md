@@ -23,3 +23,8 @@
 - Installed avdmanager --help also returns 1 for valid usage (17 lines); remove
   that help-only fatal CI probe before enabling hosted runtime. Actual SDK install,
   AVD creation, boot and instrumentation remain mandatory failure gates.
+- Hosted runtime run37110135912 proved /dev/kvm unavailable to the job. Attempt the
+  [official emulator -accel off fallback](https://developer.android.com/studio/run/emulator-commandline)
+  when KVM is inaccessible; no chmod, virtualization or host-policy change. Boot is
+  bounded to 900 seconds with process/ADB checks; instrumentation remains bounded
+  and mandatory. Software mode is recorded and is not presumed to pass.

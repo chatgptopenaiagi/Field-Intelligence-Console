@@ -11,18 +11,16 @@ Current delegated ownership (verify live agents before edits):
   seven focused tests passed. No unproven production focus change retained.
 Do not overlap writes. Check live agents/processes before resuming.
 
-Candidate1 at 6f224c2 failed only local Windows native second-editor opening after
-three checks; Android97/variant +6 emulator, Python45/fresh-wheel and Windows6/28
-passed. All three GitHub target workflows passed this SHA. No release tag exists.
-Next: commit reviewed driver/metadata gate repair and ledger, rerun full clean
-All gate into a NEW output directory, audit/push exact SHA and rerun target CI.
-Command: tooling/release_candidate.ps1 -Tag v4.0.0-beta.1 -Stage All
--Python C:/Python314/python.exe -DeviceSerial emulator-5580 -OutputRoot <new ignored dir>.
-Root-owned FIC_MISSION_API36 emulator serial5580 uses .local/avd; do not touch others.
-No physical device used. Detailed candidate1 logs: .local/release-4.0.0-beta.1-candidate-1.
-Then final artifact/context review, explicit annotated tag/push, release workflow,
-private draft upload/download hash verification, publication/readback and final report.
-Do not stop after a milestone or publish failed/preliminary candidate artifacts.
+Candidate2 b9108cd passed the entire clean local All pipeline; assets/manifest under
+.local/release-4.0.0-beta.1-candidate-2. Windows/Python hosted CI passed this SHA.
+Hosted Android emulator run37110135912 failed KVM permission check before testing.
+Official software -accel off fallback now edited in both workflows; no host-policy
+change. Next: commit/audit/push bounded fallback, run Android emulator=true plus
+Python/Windows CI for exact SHA; clean All build into candidate3. No tag/release exists.
+Root-owned FIC_MISSION_API36 emulator5580 remains running; no physical device used.
+Then exact artifact/history/context review, annotated tag, release workflow,
+private draft upload/download hash verification, publication/readback, final report.
+Do not stop at a milestone or claim hosted runtime passed before it executes.
 Known installed working tools: JDK17 under USERPROFILE/.jdks/jdk-17.0.20.1+1,
 Gradle wrapper8.7/AGP8.5.2, Python3.14.7 x64 with Tk9.0.4, gh2.100.0.
 Tool paths are hints: verify before use. Detailed evidence belongs in .local/evidence/.

@@ -23,7 +23,7 @@ on:
   workflow_dispatch:
     inputs:
       emulator:
-        description: Run isolated API 34 x86_64 migration and UI instrumentation (requires KVM)
+        description: Run isolated API 34 x86_64 migration and UI instrumentation (software fallback without KVM)
         type: boolean
         default: false
 
@@ -37,7 +37,7 @@ concurrency:
 jobs:
   android:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 75
     steps:
       # Official upstream commit identities and action.yml reviewed 2026-10-03.
       - name: Checkout exact source
@@ -72,20 +72,26 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # No host-policy changes: unavailable KVM fails the requested runtime gate.
-          test -r /dev/kvm && test -w /dev/kvm || { echo 'BLOCKED_RUNTIME: KVM unavailable'; exit 1; }
+          # Official emulator software fallback; no host permissions/policy changes.
+          accel=on
+          if ! { test -r /dev/kvm && test -w /dev/kvm; }; then accel=off; fi
+          echo "FIC_EMULATOR_ACCELERATION=$accel" >> "$GITHUB_ENV"
+          echo "Emulator acceleration: $accel"
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           AVDMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager"
           "$SDKMANAGER" --install 'emulator' 'system-images;android-34;google_apis;x86_64'
           # Reviewed avdmanager help prints valid usage but exits 1; creation is the gate.
           printf 'no\n' | "$AVDMANAGER" create avd -n FIC_CI_API34 -k 'system-images;android-34;google_apis;x86_64'
           "$ANDROID_HOME/emulator/emulator" -help >/dev/null
-          "$ANDROID_HOME/emulator/emulator" -avd FIC_CI_API34 -port 5580 -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$RUNNER_TEMP/fic-emulator.log" 2>&1 &
-          echo "$!" > "$RUNNER_TEMP/fic-emulator.pid"
-          timeout 180 "$ANDROID_HOME/platform-tools/adb" -s emulator-5580 wait-for-device
+          boot_deadline=$((SECONDS + 900))
+          "$ANDROID_HOME/emulator/emulator" -avd FIC_CI_API34 -port 5580 -accel "$accel" -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$RUNNER_TEMP/fic-emulator.log" 2>&1 &
+          fic_emulator_pid=$!
+          echo "$fic_emulator_pid" > "$RUNNER_TEMP/fic-emulator.pid"
           ready=false
-          for attempt in $(seq 1 120); do
-            if [[ "$("$ANDROID_HOME/platform-tools/adb" -s emulator-5580 shell getprop sys.boot_completed | tr -d '\r')" == 1 ]]; then ready=true; break; fi
+          while (( SECONDS < boot_deadline )); do
+            kill -0 "$fic_emulator_pid" 2>/dev/null || { echo 'BLOCKED_RUNTIME: owned emulator exited'; exit 1; }
+            booted="$(timeout 10 "$ANDROID_HOME/platform-tools/adb" -s emulator-5580 shell getprop sys.boot_completed 2>/dev/null | tr -d '\r' || true)"
+            if [[ "$booted" == 1 ]]; then ready=true; break; fi
             sleep 2
           done
           "$ready" || { echo 'BLOCKED_RUNTIME: emulator boot timed out'; exit 1; }

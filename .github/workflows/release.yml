@@ -83,7 +83,7 @@ jobs:
   android-runtime:
     needs: build
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -106,17 +106,24 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test -r /dev/kvm && test -w /dev/kvm || { echo 'BLOCKED_RUNTIME: KVM unavailable'; exit 1; }
+          # Official emulator software fallback; no host permissions/policy changes.
+          accel=on
+          if ! { test -r /dev/kvm && test -w /dev/kvm; }; then accel=off; fi
+          echo "FIC_EMULATOR_ACCELERATION=$accel" >> "$GITHUB_ENV"
+          echo "Emulator acceleration: $accel"
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           AVDMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager"
           "$SDKMANAGER" --install 'platform-tools' 'emulator' 'system-images;android-34;google_apis;x86_64'
           printf 'no\n' | "$AVDMANAGER" create avd -n FIC_RELEASE_API34 -k 'system-images;android-34;google_apis;x86_64'
-          "$ANDROID_HOME/emulator/emulator" -avd FIC_RELEASE_API34 -port 5580 -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$RUNNER_TEMP/fic-release-emulator.local.log" 2>&1 &
-          echo "$!" > "$RUNNER_TEMP/fic-release-emulator.pid"
-          timeout 180 "$ANDROID_HOME/platform-tools/adb" -s emulator-5580 wait-for-device
+          boot_deadline=$((SECONDS + 900))
+          "$ANDROID_HOME/emulator/emulator" -avd FIC_RELEASE_API34 -port 5580 -accel "$accel" -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$RUNNER_TEMP/fic-release-emulator.local.log" 2>&1 &
+          fic_emulator_pid=$!
+          echo "$fic_emulator_pid" > "$RUNNER_TEMP/fic-release-emulator.pid"
           ready=false
-          for attempt in $(seq 1 120); do
-            if [[ "$("$ANDROID_HOME/platform-tools/adb" -s emulator-5580 shell getprop sys.boot_completed | tr -d '\r')" == 1 ]]; then ready=true; break; fi
+          while (( SECONDS < boot_deadline )); do
+            kill -0 "$fic_emulator_pid" 2>/dev/null || { echo 'BLOCKED_RUNTIME: owned emulator exited'; exit 1; }
+            booted="$(timeout 10 "$ANDROID_HOME/platform-tools/adb" -s emulator-5580 shell getprop sys.boot_completed 2>/dev/null | tr -d '\r' || true)"
+            if [[ "$booted" == 1 ]]; then ready=true; break; fi
             sleep 2
           done
           "$ready" || { echo 'BLOCKED_RUNTIME: emulator boot timed out'; exit 1; }
@@ -144,7 +151,7 @@ jobs:
           $count = [int]$matched.Groups[1].Value
           if ($count -lt 6) { throw 'Incomplete runtime test count.' }
           @{status='PASS';source_sha=$sha;tag=$env:CANDIDATE_TAG;tests=$count;apk_sha256=$apkHash;
-            instrumentation_apk_sha256=$testHash;runtime='Isolated API34 x86_64 emulator';physical_device='NOT_EXECUTED'} |
+            instrumentation_apk_sha256=$testHash;runtime='Isolated API34 x86_64 emulator';acceleration=$env:FIC_EMULATOR_ACCELERATION;physical_device='NOT_EXECUTED'} |
             ConvertTo-Json | Set-Content .local/ci-release/android-runtime.json -Encoding utf8
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:

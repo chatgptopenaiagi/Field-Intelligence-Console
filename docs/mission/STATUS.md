@@ -30,6 +30,13 @@ Protected baseline resolves to e45f9b863892b1796774a8132a213ea99c4518d2.
   focus behavior passed both-tab regression without a production change.
   Static APK identities/signature/four ABIs and 16KB alignment passed; this is
   not ARM64 physical or 16KB-page runtime proof.
+- Candidate2 (b9108cd) passed the full clean local release pipeline: Android97 per
+  variant, six emulator tests, Python45/fresh wheel, Windows7 focused/28 packaged/7
+  native, artifact scan and final manifest. Hosted Windows37110135862 and
+  Python37110138049 passed; explicit Android runtime37110135912 failed before
+  tests because KVM access was unavailable. An official -accel off software fallback
+  is now being tested, without host permission changes. Candidate2 remains local;
+  workflow changes require another exact-source clean build before release.
 - M7–M8: not complete; no prerelease created/published yet.
 - No personal databases or contacts inspected. No physical device connected previously;
   runtime availability will be checked before claiming validation.

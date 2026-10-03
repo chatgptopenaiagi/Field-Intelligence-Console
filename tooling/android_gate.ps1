@@ -140,7 +140,7 @@ try {
         if($result -notmatch 'OK \((\d+) tests?\)' -or $result -match 'FAILURES|INSTRUMENTATION_FAILED|Process crashed') {throw 'Emulator instrumentation did not pass.'}
         $deviceCount=[int]([regex]::Match($result,'OK \((\d+) tests?\)').Groups[1].Value)
         if($deviceCount -lt 6) {throw 'Expected migration and UI instrumentation tests were not all executed.'}
-        $device=@{status='PASS';tests=$deviceCount;kind='isolated emulator';physical_device='NOT_EXECUTED'}
+        $device=@{status='PASS';tests=$deviceCount;kind='isolated emulator';physical_device='NOT_EXECUTED';acceleration=$(if($env:FIC_EMULATOR_ACCELERATION){$env:FIC_EMULATOR_ACCELERATION}else{'existing local emulator; mode not asserted'})}
     }
     if((& git rev-parse HEAD).Trim() -ne $source) {throw 'Source commit changed during the gate.'}
     if(-not $AllowDirty -and @(& git status --porcelain).Count -ne 0) {throw 'Tracked candidate changed during build; regenerate and recommit before release.'}
