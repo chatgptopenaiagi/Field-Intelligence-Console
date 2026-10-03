@@ -119,8 +119,10 @@ jobs:
           echo "ANDROID_AVD_HOME=$ANDROID_AVD_HOME" >> "$GITHUB_ENV"
           printf 'no\n' | "$AVDMANAGER" create avd -n FIC_RELEASE_API34 -p "$ANDROID_AVD_HOME/FIC_RELEASE_API34.avd" -k 'system-images;android-34;google_apis;x86_64'
           test -f "$ANDROID_AVD_HOME/FIC_RELEASE_API34.ini" || { echo 'BLOCKED_RUNTIME: owned AVD metadata not created'; exit 1; }
+          # Size only this newly created synthetic AVD; never resize an existing user AVD.
+          python3 -c 'import pathlib,sys; p=pathlib.Path(sys.argv[1]); lines=[x for x in p.read_text().splitlines() if not x.startswith("disk.dataPartition.size=")]; p.write_text("\n".join(lines+["disk.dataPartition.size=2G"])+"\n")' "$ANDROID_AVD_HOME/FIC_RELEASE_API34.avd/config.ini"
           boot_deadline=$((SECONDS + 900))
-          "$ANDROID_HOME/emulator/emulator" -avd FIC_RELEASE_API34 -port 5580 -accel "$accel" -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$RUNNER_TEMP/fic-release-emulator.local.log" 2>&1 &
+          "$ANDROID_HOME/emulator/emulator" -avd FIC_RELEASE_API34 -port 5580 -accel "$accel" -no-window -no-metrics -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$RUNNER_TEMP/fic-release-emulator.local.log" 2>&1 &
           fic_emulator_pid=$!
           echo "$fic_emulator_pid" > "$RUNNER_TEMP/fic-release-emulator.pid"
           emulator_diagnostic() {
