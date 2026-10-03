@@ -18,3 +18,8 @@ compatibility failures were resolved by the tested AGP8.5.2 change.
 Hosted Android runtime37110135912: BLOCKED_RUNTIME because /dev/kvm was not
 readable/writable. Local runtime passed all six tests. Official software fallback
 is being attempted under finite limits; no hosted runtime success claimed yet.
+
+Hosted software emulator now boots using the smaller official AOSP image. Run
+37111296019 passed builds/unit/lint/three migrations but failed three UI10s waits.
+Bounded60s software-only waits plus state diagnostics await hosted verification.
+This is an unresolved test failure, not yet a demonstrated external blocker.

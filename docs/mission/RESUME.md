@@ -11,18 +11,18 @@ Current delegated ownership (verify live agents before edits):
   seven focused tests passed. No unproven production focus change retained.
 Do not overlap writes. Check live agents/processes before resuming.
 
-Candidate3 at8e47a77 passed full clean local All and actual final APK SAF -> fresh
-wheel -> packaged EXE -> second fresh wheel exact round trip. Artifacts/evidence in
-.local/release-4.0.0-beta.1-candidate-3 and .local/evidence/final-roundtrip-candidate3.
-Workflow diagnostics fixed shared AVD home. Google APIs image left6687MiB free vs
-7372.8MiB required; attempted2GiB config cannot override emulator6GiB floor. Now
-fresh CI installs official API34 AOSP default image (~2.52GiB smaller expanded),
-without deleting other tools or changing host permissions. Hosted run37111296019
-is pending. Fix any actual failure; then freeze final source, full clean All gate,
-exactSHA Python/Windows/Android CI, metadata/roundtrip rerun, annotated tag/release.
-No tag/release exists. Root emulator5580 remains running; no physical device used.
-Agents finished/released ownership; verify live state. Preserve all failure evidence.
-Do not turn setup failure into test PASS or stop at an intermediate milestone.
+Candidate4 at0359591 passed full clean local All and actual final APK SAF -> fresh
+wheel -> packaged EXE -> second fresh wheel exact round trip. Evidence lives in
+.local/release-4.0.0-beta.1-candidate-4 and final-roundtrip-candidate4.
+Hosted Android37111296019 boot/build/unit/lint passed; three migration tests passed,
+three UI tests timed out at10s. Software CI now explicitly allows bounded60s waits,
+with sanitized state diagnostics and unchanged assertions. Local default10s gate
+passed97 unit tests per variant/six device tests/assemblies/lint after this change.
+NEXT: audit/push this fix and rerun hosted Android with emulator=true. Inspect state
+diagnostics if it fails; do not infer that delay is the cause or claim a PASS.
+Then freeze source, full clean All, exactSHA three-platform CI, final metadata and
+roundtrip checks, annotated tag and verified private prerelease. No tag/release yet.
+Root owns emulator5580; no physical device used. Agents released file ownership.
 Known installed working tools: JDK17 under USERPROFILE/.jdks/jdk-17.0.20.1+1,
 Gradle wrapper8.7/AGP8.5.2, Python3.14.7 x64 with Tk9.0.4, gh2.100.0.
 Tool paths are hints: verify before use. Detailed evidence belongs in .local/evidence/.

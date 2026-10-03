@@ -24,6 +24,30 @@ class NetworkUiDeviceTest {
     private val name = "network-ui-test-${UUID.randomUUID()}.db"
     private lateinit var db: AppDatabase
     private lateinit var vm: NetworkViewModel
+    private val uiWaitMillis: Long by lazy {
+        val arguments = InstrumentationRegistry.getArguments()
+        val supplied = arguments.getString("ficUiWaitMillis")
+        val timeout = supplied?.toLongOrNull() ?: if (supplied == null) 10_000L else error("Invalid ficUiWaitMillis")
+        require(timeout in 10_000L..60_000L) { "ficUiWaitMillis must be between 10000 and 60000" }
+        require(timeout == 10_000L || arguments.getString("ficEmulatorMode") == "software") {
+            "Extended UI wait requires explicit ficEmulatorMode=software"
+        }
+        timeout
+    }
+
+    private fun awaitState(step: String, condition: () -> Boolean) {
+        try {
+            compose.waitUntil(uiWaitMillis, condition)
+        } catch (failure: ComposeTimeoutException) {
+            // Only state flags/counts from this isolated synthetic store: no notes, contacts or paths.
+            val queryFailed = vm.notice.value?.startsWith("QUERY FAILED") == true
+            throw AssertionError(
+                "$step timed out: busy=${vm.busy.value}, previewPresent=${vm.preview.value != null}, " +
+                    "entityCount=${vm.entities.value.size}, " +
+                    "queryFailure=$queryFailed", failure
+            )
+        }
+    }
 
     @Before fun setup() {
         db = AppDatabase.create(context, name)
@@ -38,13 +62,13 @@ class NetworkUiDeviceTest {
     private fun preview() {
         val bytes = instrumentation.context.assets.open("fixtures/contacts.vcf").use { it.readBytes() }
         compose.runOnIdle { vm.readPreview({ bytes }, "vcf") }
-        compose.waitUntil(10_000) { vm.preview.value != null && !vm.busy.value }
+        awaitState("preview") { vm.preview.value != null && !vm.busy.value }
         compose.onNodeWithText("Review import").assertIsDisplayed()
     }
     private fun confirm() {
         compose.onNodeWithText("Select all valid records").performClick()
         compose.onNodeWithText("Import selected").performClick()
-        compose.waitUntil(10_000) { vm.preview.value == null && !vm.busy.value }
+        awaitState("confirm import") { vm.preview.value == null && !vm.busy.value }
     }
     @Test fun previewCancelImportRepeatAndSearchUseActualUiState() {
         preview(); assertEquals(0, count())
@@ -64,7 +88,7 @@ class NetworkUiDeviceTest {
         compose.onNodeWithText("Add contact").performClick()
         compose.onNodeWithText("display name").performTextInput("Synthetic UI Contact")
         compose.onNodeWithText("Save locally").performClick()
-        compose.waitUntil(10_000) { !vm.busy.value && vm.entities.value.size == 1 }
+        awaitState("save manual contact") { !vm.busy.value && vm.entities.value.size == 1 }
         assertEquals(1, count())
         val reopened = AppDatabase.create(context, name)
         try { assertEquals("Synthetic UI Contact", runBlocking { reopened.networkDao().entities().single().displayName }) }

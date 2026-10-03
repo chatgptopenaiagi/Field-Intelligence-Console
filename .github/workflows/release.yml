@@ -156,13 +156,19 @@ jobs:
             $installed = & $adb -s emulator-5580 install -r $package
             if ($LASTEXITCODE -ne 0 -or "$installed" -notmatch 'Success') { throw 'Non-destructive emulator installation failed.' }
           }
-          $result = & timeout 600 $adb -s emulator-5580 shell am instrument -w -e class 'com.fieldconsole.DatabaseMigrationDeviceTest,com.fieldconsole.NetworkUiDeviceTest' com.fieldconsole.debug.test/androidx.test.runner.AndroidJUnitRunner
+          $uiWaitMillis = 10000
+          $emulatorArguments = @()
+          if ($env:FIC_EMULATOR_ACCELERATION -eq 'off') {
+            $uiWaitMillis = 60000
+            $emulatorArguments = @('-e','ficEmulatorMode','software','-e','ficUiWaitMillis','60000')
+          }
+          $result = & timeout 600 $adb -s emulator-5580 shell am instrument -w @emulatorArguments -e class 'com.fieldconsole.DatabaseMigrationDeviceTest,com.fieldconsole.NetworkUiDeviceTest' com.fieldconsole.debug.test/androidx.test.runner.AndroidJUnitRunner
           $matched = [regex]::Match("$result",'OK \((\d+) tests?\)')
           if ($LASTEXITCODE -ne 0 -or -not $matched.Success -or "$result" -match 'FAILURES|INSTRUMENTATION_FAILED|Process crashed') { throw 'Actual APK instrumentation did not pass.' }
           $count = [int]$matched.Groups[1].Value
           if ($count -lt 6) { throw 'Incomplete runtime test count.' }
           @{status='PASS';source_sha=$sha;tag=$env:CANDIDATE_TAG;tests=$count;apk_sha256=$apkHash;
-            instrumentation_apk_sha256=$testHash;runtime='Isolated API34 AOSP x86_64 emulator';acceleration=$env:FIC_EMULATOR_ACCELERATION;physical_device='NOT_EXECUTED'} |
+            instrumentation_apk_sha256=$testHash;runtime='Isolated API34 AOSP x86_64 emulator';acceleration=$env:FIC_EMULATOR_ACCELERATION;ui_wait_millis=$uiWaitMillis;instrumentation_timeout_seconds=600;physical_device='NOT_EXECUTED'} |
             ConvertTo-Json | Set-Content .local/ci-release/android-runtime.json -Encoding utf8
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:

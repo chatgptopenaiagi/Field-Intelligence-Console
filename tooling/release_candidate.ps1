@@ -155,7 +155,7 @@ if ($Stage -in @('Finalize','All')) {
             $runtimeProof.instrumentation_apk_sha256 -ne $build.instrumentation_apk_sha256 -or $runtimeProof.tests -lt 6) {
             throw 'Runtime receipt is not PASS for these exact tested APKs and source commit.'
         }
-        $android.runtime_validation = @{status='PASS';tests=$runtimeProof.tests;kind='isolated emulator';acceleration=$runtimeProof.acceleration;physical_device='NOT_EXECUTED';evidence='Hash-bound CI runtime receipt'}
+        $android.runtime_validation = @{status='PASS';tests=$runtimeProof.tests;kind='isolated emulator';acceleration=$runtimeProof.acceleration;ui_wait_millis=$runtimeProof.ui_wait_millis;instrumentation_timeout_seconds=$runtimeProof.instrumentation_timeout_seconds;physical_device='NOT_EXECUTED';evidence='Hash-bound CI runtime receipt'}
         $android | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath "$receipts/android.json" -Encoding utf8
     }
     if ($android.status -ne 'PASS' -or $android.source_dirty -or $android.source_sha -ne $sourceSha -or $android.runtime_validation.status -ne 'PASS') { throw 'Android runtime gate has not passed for this candidate.' }

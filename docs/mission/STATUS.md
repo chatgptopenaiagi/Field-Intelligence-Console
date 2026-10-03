@@ -42,8 +42,17 @@ Protected baseline resolves to e45f9b863892b1796774a8132a213ea99c4518d2.
   metadata/checksums/SBOM agree (189 components, no unresolved license metadata or
   private paths). Hosted Windows37110405842/Python37110407598 passed.
   Runtime setup failures: AVD lookup mismatch fixed; hosted disk shortfall now
-  addressed using smaller official AOSP image. Run37111296019 is pending; no hosted
-  runtime PASS or release is claimed. Final source rebuild remains mandatory.
+  addressed using smaller official AOSP image. Run37111296019 booted and built successfully, then passed three migration
+  tests and failed three UI waits at 10 seconds. No hosted runtime PASS or release
+  is claimed. Final source rebuild remains mandatory.
 - M7–M8: not complete; no prerelease created/published yet.
 - No personal databases or contacts inspected. No physical device connected previously;
   runtime availability will be checked before claiming validation.
+
+- Candidate4 (0359591) passed all clean local gates and fresh-wheel/packaged-EXE
+  round trip; hosted Python37111384639 and Windows37111382864 passed.
+  Software CI UI waits now explicitly allow up to60s (local default10s unchanged),
+  with sanitized state diagnostics and unchanged assertions; total instrumentation
+  limit remains600s. Local development gate passed97 tests per variant, six device
+  tests, both assemblies/lint; actionlint and six release-guard tests passed.
+  Hosted retry is required to distinguish software delay from a real state failure.
