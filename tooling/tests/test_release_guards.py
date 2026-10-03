@@ -27,6 +27,18 @@ class ReleaseGuards(unittest.TestCase):
     def test_complete_receipt_contract(self):
         self.check()
 
+    def test_retained_testing_signing_identity(self):
+        expected = release.read(Path(__file__).parents[2] / "shared" / "release-signing.json")["android_testing_certificate_sha256"]
+        artifacts = [dict(variant=v, certificate_sha256=expected, signature_verified=True) for v in ("debug", "release")]
+        release.validate_signing(artifacts)
+        artifacts[0]["certificate_sha256"] = "f" * 64
+        with self.assertRaises(ValueError): release.validate_signing(artifacts)
+
+    def test_missing_or_unverified_signing_identity_fails_closed(self):
+        with self.assertRaises(ValueError): release.validate_signing([])
+        with self.assertRaises(ValueError):
+            release.validate_signing([dict(variant=v, signature_verified=True) for v in ("debug", "release")])
+
     def test_preliminary_dirty_build_cannot_be_released(self):
         for receipt, key in ((self.android, "source_dirty"), (self.windows, "worktree_dirty"), (self.python, "source_dirty")):
             receipt[key] = True

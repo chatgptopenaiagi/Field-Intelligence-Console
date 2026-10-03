@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "android_testing_certificate_sha256": "3d19d2bf5995a48c262fa41184978195d68526810aa637eb8bab7527029e095f",
+  "signing_kind": "Retained Android debug/testing identity; not production signing"
+}

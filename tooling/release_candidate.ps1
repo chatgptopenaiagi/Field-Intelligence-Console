@@ -87,6 +87,11 @@ if ($Stage -in @('Build','All')) {
     $androidArguments = @('-NoProfile','-File',"$PSScriptRoot/android_gate.ps1",'-OutputRoot',$androidOutput)
     if ($DeviceSerial) { $androidArguments += @('-DeviceSerial',$DeviceSerial) }
     Invoke-Bounded -Program $pwsh -Arguments $androidArguments -Name 'android' -Seconds 3600
+    $androidAttestation = Get-Content -Raw -LiteralPath "$androidOutput/gate-receipt.json" | ConvertFrom-Json
+    $signing = Get-Content -Raw -LiteralPath shared/release-signing.json | ConvertFrom-Json
+    if ($androidAttestation.artifacts.Count -ne 2 -or @($androidAttestation.artifacts | Where-Object {
+        $_.certificate_sha256 -ne $signing.android_testing_certificate_sha256 -or -not $_.signature_verified
+    }).Count -ne 0) { throw 'Release APKs do not retain the approved testing certificate; no replacement signing identity is allowed.' }
     $pythonOutput = Join-Path $OutputRoot 'python-gate'
     Invoke-Bounded -Program $pwsh -Arguments @('-NoProfile','-File',"$PSScriptRoot/python_gate.ps1",'-Python',$Python,'-OutputRoot',$pythonOutput) -Name 'python' -Seconds 1200
     $wheel = @(Get-ChildItem -LiteralPath "$pythonOutput/packages" -Filter 'field_intelligence_console-*-py3-none-any.whl')
@@ -169,7 +174,13 @@ if ($Stage -in @('Finalize','All')) {
     }
     if ($android.status -ne 'PASS' -or $android.source_dirty -or $android.source_sha -ne $sourceSha -or $android.runtime_validation.status -ne 'PASS') { throw 'Android runtime gate has not passed for this candidate.' }
     if (-not (Test-Path -LiteralPath tooling/finalize_release.py)) { throw 'Final manifest generator is unavailable; candidate stays incomplete.' }
-    Invoke-Bounded -Program (Get-Command $Python).Source -Arguments @('-m','unittest','discover','-s','tooling/tests','-v') -Name 'release-guard-tests' -Seconds 120
+    $guardEnvironment = Join-Path $OutputRoot 'guard-environment'
+    Invoke-Bounded -Program (Get-Command $Python).Source -Arguments @('-m','venv',$guardEnvironment) -Name 'release-guard-environment' -Seconds 120
+    $guardPython = Join-Path $guardEnvironment $(if ($IsWindows) { 'Scripts/python.exe' } else { 'bin/python' })
+    $guardWheel = @(Get-ChildItem -LiteralPath $assets -Filter 'field_intelligence_console-*-py3-none-any.whl')
+    if ($guardWheel.Count -ne 1) { throw 'Exactly one candidate wheel required for release guard dependencies.' }
+    Invoke-Bounded -Program $guardPython -Arguments @('-m','pip','install','--disable-pip-version-check',$guardWheel[0].FullName) -Name 'release-guard-install' -Seconds 180
+    Invoke-Bounded -Program $guardPython -Arguments @('-m','unittest','discover','-s','tooling/tests','-v') -Name 'release-guard-tests' -Seconds 120
     Invoke-Bounded -Program (Get-Command $Python).Source -Arguments @('tooling/finalize_release.py',
         '--candidate-dir',$assets,'--tag',$Tag,'--source-sha',$sourceSha,
         '--android-receipt',"$receipts/android.json",'--windows-receipt',"$receipts/windows.json",'--python-receipt',"$receipts/python.json",

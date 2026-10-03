@@ -27,6 +27,14 @@ def digest(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
+def validate_signing(artifacts):
+    expected = read(Path(__file__).parents[1] / "shared" / "release-signing.json")["android_testing_certificate_sha256"]
+    require(len(artifacts) == 2 and {a.get("variant") for a in artifacts} == {"debug", "release"},
+            "Both signed Android variants required")
+    require(all(a.get("certificate_sha256") == expected and a.get("signature_verified") is True for a in artifacts),
+            "Retained testing certificate mismatch")
+
+
 def validate_receipts(android, windows, python, sha):
     for name, receipt, dirty in (("Android", android, "source_dirty"),
                                   ("Windows", windows, "worktree_dirty"),
@@ -73,6 +81,7 @@ def main():
     require(all(scanned.get(name, {}).get("sha256") == digest(path) for name, path in paths.items()),
             "Artifact scan does not cover these exact assets")
     debug = next((x for x in android["artifacts"] if x["variant"] == "debug"), {})
+    validate_signing(android["artifacts"])
     require(debug.get("package") == "com.fieldconsole.debug" and debug.get("version") == VERSION
             and debug.get("version_code") == 5 and debug.get("signature_verified") is True,
             "Android identity/version/signature mismatch")

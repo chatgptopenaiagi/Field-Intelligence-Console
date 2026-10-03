@@ -108,3 +108,12 @@ Actual beta2 Android SAF flow PASS: cancel empty, import2/reimport2, selectedJSO
 export and report states, APKhash d6225abfff3c5259415ceef59d35fecb469e6f06e4343a20405d1318387ebb3d.
 Continue independent hosted release/UI validation, retaining existing debug signing
 identity securely and using reviewed synthetic SAF inputs for hosted exchange.
+
+Hosted release preparation: retained local debug identity securely provisioned as
+private-repository Actions secret (no key bytes in source/logs). Trusted tag workflow
+restores only an absent runner key and cleans its owned copy; public certificate
+pin is mandatory for both APK variants. Eight release guard tests, PowerShell AST
+and actionlint passed; non-hosted restoration explicitly refused and local key hash
+remained unchanged. Finalization installs the candidate wheel in an isolated guard
+environment for exchange contract tests. Hosted exchange integration remains under
+review; no beta2 tag/publication yet.

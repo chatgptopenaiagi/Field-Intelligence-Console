@@ -51,6 +51,12 @@ jobs:
           # Only the actual install operation below is an installation gate.
           & $sdkManager --install 'platform-tools' 'platforms;android-34' 'build-tools;34.0.0'
           if ($LASTEXITCODE -ne 0) { throw 'SDK installation failed.' }
+      - name: Restore retained testing identity only for this trusted private release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FIC_DEBUG_KEYSTORE_B64: ${{ secrets.FIC_DEBUG_KEYSTORE_B64 }}
+        run: ./tooling/ci_debug_signing.ps1 -Mode Restore
       - name: Build actual APK, EXE and wheel with shared clean-candidate gates
         shell: pwsh
         run: ./tooling/release_candidate.ps1 -Stage Build -Tag $env:CANDIDATE_TAG -RequireExistingTag -Python python -OutputRoot .local/ci-release
@@ -88,6 +94,10 @@ jobs:
           include-hidden-files: true
           if-no-files-found: ignore
           path: .local/ci-release/inventory.sanitized.log
+      - name: Remove only this job's signing material
+        if: always()
+        shell: pwsh
+        run: ./tooling/ci_debug_signing.ps1 -Mode Cleanup
 
   android-runtime:
     needs: build

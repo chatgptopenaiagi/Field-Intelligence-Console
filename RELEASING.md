@@ -25,7 +25,7 @@ push, move a release tag, overwrite published assets or publish to PyPI.
    counts, artifact hashes, package identity, source ZIP commit and inventory before
    writing notes, manifest and checksums. Checksums omit themselves; the manifest
    does not hash itself. Byte reproducibility is not claimed.
-6. After local gates pass, create a new annotated version tag on that commit. Verify
+6. After focused checks pass, create a new annotated version tag on that commit. Verify
    no existing tag/release collision; never retarget. Review tag/source history and
    explicitly push the branch/tag, then verify remote refs. A planned local version
    name is not evidence that its tag already exists.
@@ -38,6 +38,19 @@ push, move a release tag, overwrite published assets or publish to PyPI.
    bytes/SHA-256 to the local candidate, then publish the draft as a private experimental
    prerelease. Read back repository visibility, release/tag/source SHA, draft/prerelease
    flags, asset names/sizes and returned download URLs. No missing-platform release.
+
+The same release script may run on isolated hosted runners when the local desktop
+is busy. Local native-input refusal remains a recorded failure; it is never treated
+as a pass. Hosted builds must pass all fourteen Windows focused tests, twenty-eight
+packaged GUI checks and seven native-input checks, plus the Android and wheel gates.
+The release-only signing step restores the retained testing key from the private
+repository Actions secret, then removes only its owned runner copy. Repository
+secrets are not intrinsically workflow-restricted: only this trusted tag workflow
+references it; ordinary/PR workflows do not. Both APK certificates must match the
+public fingerprint in shared/release-signing.json. No replacement key is accepted.
+The exchange workflow accepts only explicitly reviewed synthetic SAF exports,
+binds them to the actual distributed APK hash, and tests the exact released wheel
+and EXE on an isolated runner. Publication still requires asset/download review.
 
 Version mapping: FIC `4.0.0-beta.2`; Python `4.0.0b2`; Android code5; Windows numeric
 file version4.0.0.2. Shared data contracts v1 and Room v3 are independent. Android
