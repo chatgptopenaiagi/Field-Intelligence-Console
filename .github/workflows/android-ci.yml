@@ -77,7 +77,7 @@ jobs:
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           AVDMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager"
           "$SDKMANAGER" --install 'emulator' 'system-images;android-34;google_apis;x86_64'
-          "$AVDMANAGER" --help >/dev/null
+          # Reviewed avdmanager help prints valid usage but exits 1; creation is the gate.
           printf 'no\n' | "$AVDMANAGER" create avd -n FIC_CI_API34 -k 'system-images;android-34;google_apis;x86_64'
           "$ANDROID_HOME/emulator/emulator" -help >/dev/null
           "$ANDROID_HOME/emulator/emulator" -avd FIC_CI_API34 -port 5580 -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$RUNNER_TEMP/fic-emulator.log" 2>&1 &

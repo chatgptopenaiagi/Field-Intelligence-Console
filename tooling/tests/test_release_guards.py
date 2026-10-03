@@ -17,9 +17,9 @@ class ReleaseGuards(unittest.TestCase):
                             lint=[dict(status="PASS", errors=0) for _ in range(2)],
                             runtime_validation=dict(status="PASS", tests=6))
         self.windows = dict(status="PASS", source_sha=self.sha, worktree_dirty=False,
-                            focused_tests=6, packaged_widget_checks=28, native_checks=7)
+                            focused_tests=7, packaged_widget_checks=28, native_checks=7)
         self.python = dict(status="PASS", source_sha=self.sha, source_dirty=False,
-                           unit_tests=45, unit_failures=0, isolated_wheel="Executed")
+                           unit_tests=45, unit_failures=0, unit_skipped=0, isolated_wheel="Executed")
 
     def check(self):
         release.validate_receipts(self.android, self.windows, self.python, self.sha)
@@ -44,6 +44,9 @@ class ReleaseGuards(unittest.TestCase):
         with self.assertRaises(ValueError): self.check()
         self.android["runtime_validation"]["status"] = "PASS"
         self.android["unit"][0]["skipped"] = 1
+        with self.assertRaises(ValueError): self.check()
+        self.android["unit"][0]["skipped"] = 0
+        self.python["unit_skipped"] = 1
         with self.assertRaises(ValueError): self.check()
 
     def test_no_native_gui_or_no_installed_wheel_fails(self):

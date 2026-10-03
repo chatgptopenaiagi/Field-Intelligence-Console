@@ -1,5 +1,6 @@
 """Fail-closed release metadata for one clean, tested three-platform candidate."""
 import argparse
+from email.parser import BytesParser
 import hashlib
 import json
 from pathlib import Path
@@ -43,9 +44,10 @@ def validate_receipts(android, windows, python, sha):
     runtime = android.get("runtime_validation", {})
     require(runtime.get("status") == "PASS" and runtime.get("tests", 0) >= 6,
             "Actual Android emulator runtime gate required")
-    require(windows.get("focused_tests", 0) >= 6 and windows.get("packaged_widget_checks", 0) >= 28
+    require(windows.get("focused_tests", 0) >= 7 and windows.get("packaged_widget_checks", 0) >= 28
             and windows.get("native_checks", 0) >= 7, "Packaged Windows GUI evidence incomplete")
     require(python.get("unit_tests", 0) >= 45 and python.get("unit_failures") == 0
+            and python.get("unit_skipped") == 0
             and python.get("isolated_wheel"), "Installed-wheel evidence incomplete")
 
 
@@ -77,6 +79,7 @@ def main():
     require(digest(paths[names[0]]) == debug.get("sha256"), "APK differs from tested artifact")
     pe = read(Path(args.windows_receipt).parent / "pe-metadata.json")
     require(pe.get("machine") == "AMD64" and pe.get("subsystem") == "Windows GUI"
+            and pe.get("file_version") == "4.0.0.1" and pe.get("product_version") == VERSION
             and digest(paths[names[1]]) == pe.get("sha256"), "EXE differs from tested AMD64 GUI artifact")
     py_assets = {x["name"]: x for x in python["artifacts"]}
     for name in names[2:4]:
@@ -84,7 +87,13 @@ def main():
     with zipfile.ZipFile(paths[names[2]]) as wheel:
         metadata = wheel.read(f"field_intelligence_console-{PYTHON_VERSION}.dist-info/WHEEL").decode()
         require("Root-Is-Purelib: true" in metadata and "Tag: py3-none-any" in metadata, "Wheel tags mismatch")
-        require(any(n.endswith("schemas/network-v1.schema.json") for n in wheel.namelist()), "Wheel schema missing")
+        package = BytesParser().parsebytes(wheel.read(f"field_intelligence_console-{PYTHON_VERSION}.dist-info/METADATA"))
+        require(package["Name"] == "field-intelligence-console" and package["Version"] == PYTHON_VERSION
+                and package["Requires-Python"] == ">=3.11" and package["License-Expression"] == "MIT"
+                and package.get_all("Requires-Dist") == ["jsonschema<5,>=4.26"], "Wheel package metadata mismatch")
+        for schema in ("network-v1.schema.json", "field-report-v1.schema.json"):
+            require(any(n.endswith("schemas/" + schema) for n in wheel.namelist()), "Wheel schema missing")
+        require(any(n.endswith(".dist-info/licenses/LICENSE") for n in wheel.namelist()), "Wheel license missing")
     with zipfile.ZipFile(paths[names[4]]) as source:
         require(source.comment.decode("ascii") == args.source_sha, "Source ZIP is not git archive of the tested commit")
         require(not any(n.startswith("/") or ".." in Path(n).parts for n in source.namelist()), "Unsafe source archive member")
@@ -124,7 +133,7 @@ Private repository access is required; these are not public downloads.
 
 Verified candidate: 97 or more Android tests per variant, both assemblies/lint,
 six or more isolated-emulator instrumentation tests, 45 or more Python tests and
-clean-wheel workflows, six Windows focused tests, 28 packaged GUI checks and seven
+clean-wheel workflows, seven Windows focused tests, 28 packaged GUI checks and seven
 native mouse/keyboard/restart checks. Exact counts and toolchains are in the manifest.
 
 Limitations: no physical Android-device/ARM64 runtime validation; static APK ABIs

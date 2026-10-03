@@ -13,3 +13,13 @@
   after clean local gates; never retarget an existing tag to repair a candidate.
 - Runtime evidence is target-specific: emulator x86_64 and Windows native GUI tested;
   static Android ARM ABI presence is not physical-device proof.
+- A successful database commit is not proof that a native editor has closed or
+  restored keyboard focus. Keep native interaction gates and verify close/activation
+  state before the next action; do not promote a partial or intermittent GUI run.
+- Release finalization independently rejects skipped Python tests, in addition to
+  the upstream test gate. The Windows gate requires the complete focused UI regression set.
+- Finalization checks embedded EXE file/product versions and wheel package, dependency,
+  license and both schema resources against the coordinated prerelease mapping.
+- Installed avdmanager --help also returns 1 for valid usage (17 lines); remove
+  that help-only fatal CI probe before enabling hosted runtime. Actual SDK install,
+  AVD creation, boot and instrumentation remain mandatory failure gates.

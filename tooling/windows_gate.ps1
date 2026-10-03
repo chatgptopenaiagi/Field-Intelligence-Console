@@ -38,7 +38,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Windows core wheel installation failed.' }
 & $runtime windows/run_focused.py --receipt "$OutputRoot/focused-tests.json" *> "$OutputRoot/focused-tests.log"
 if ($LASTEXITCODE -ne 0) { throw 'Windows focused UI tests failed; inspect local log.' }
 $focusedReceipt = Get-Content -Raw "$OutputRoot/focused-tests.json" | ConvertFrom-Json
-if ($focusedReceipt.tests -lt 5 -or $focusedReceipt.skipped -ne 0 -or $focusedReceipt.status -ne 'PASS') { throw 'Focused test evidence is incomplete.' }
+if ($focusedReceipt.tests -lt 7 -or $focusedReceipt.skipped -ne 0 -or $focusedReceipt.status -ne 'PASS') { throw 'Focused test evidence is incomplete.' }
 & "$projectRoot/windows/build.ps1" -Wheel $Wheel -Python $runtime -Output "$OutputRoot/artifacts" *> "$OutputRoot/package.log"
 $exe = Join-Path $OutputRoot 'artifacts/FieldIntelligenceConsole-4.0.0-beta.1-windows-x64.exe'
 if (-not (Test-Path -LiteralPath $exe)) { throw 'Windows EXE missing.' }
@@ -64,10 +64,14 @@ if ($LASTEXITCODE -ne 0) { throw 'Native Windows mouse/keyboard gate failed; it 
 $nativeReceipt = Get-Content -Raw "$OutputRoot/native/native-ui.json" | ConvertFrom-Json
 if ($nativeReceipt.status -ne 'PASS' -or $nativeReceipt.check_count -lt 7) { throw 'Native Windows evidence is incomplete.' }
 $metadataScript = @'
-import hashlib,json,pathlib,pefile,sys
+import hashlib,importlib.metadata,json,pathlib,pefile,sys
 p=pathlib.Path(sys.argv[1]);pe=pefile.PE(str(p))
 assert pe.FILE_HEADER.Machine==0x8664 and pe.OPTIONAL_HEADER.Subsystem==2
-print(json.dumps({"machine":"AMD64","subsystem":"Windows GUI","bytes":p.stat().st_size,"sha256":hashlib.sha256(p.read_bytes()).hexdigest()}))
+strings={k.decode():v.decode() for group in pe.FileInfo for block in group if block.Key==b'StringFileInfo' for table in block.StringTable for k,v in table.entries.items()}
+assert strings['FileVersion']=='4.0.0.1' and strings['ProductVersion']=='4.0.0-beta.1'
+fixed=pe.VS_FIXEDFILEINFO[0]
+assert (fixed.FileVersionMS,fixed.FileVersionLS)==(4<<16,1)
+print(json.dumps({"machine":"AMD64","subsystem":"Windows GUI","file_version":strings['FileVersion'],"product_version":strings['ProductVersion'],"python":sys.version.split()[0],"packager":"PyInstaller "+importlib.metadata.version('pyinstaller'),"bytes":p.stat().st_size,"sha256":hashlib.sha256(p.read_bytes()).hexdigest()}))
 '@
 $metadata = $metadataScript | & $runtime - $exe
 if ($LASTEXITCODE -ne 0) { throw 'PE architecture validation failed.' }
@@ -88,6 +92,7 @@ $summary = @{
     source_sha = $sourceSha
     worktree_dirty = $sourceDirty
     artifact = (Split-Path -Leaf $exe)
+    binary_metadata = ($metadata | ConvertFrom-Json)
     limitations = @('Synthetic profiles only', 'No live provider key used', 'Unsigned experimental Windows application')
 }
 $summary | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 "$OutputRoot/gate-summary.json"

@@ -7,16 +7,16 @@ recovered-project output. No physical-device validation or real contact data use
 | Gate | Status |
 |---|---|
 | M0 safety regression | PASS: 48 JVM tests per variant at safety commit |
-| Reachable history audit | Reviewed through 74c9837; final candidate audit pending |
+| Reachable history audit | Reviewed through 6f224c2: 20 commits/284 blobs; next candidate audit pending |
 | Shared contracts and Python core | PASS: 45 tests, including 35 shared invalid mutations |
-| Android integrated JVM | PASS: 92 tests per variant, zero failures/skips |
+| Android integrated JVM | PASS: 97 tests per variant, zero failures/skips |
 | Android assembly/lint | PASS: both assemblies; debug 0 errors/4 warnings, release 0/3 |
-| Android migration/emulator UI | PASS: 3 migrations + 2 real Compose tests on isolated API36 x86_64 |
+| Android migration/emulator UI | PASS: 3 migrations + 3 real Compose tests on isolated API36 x86_64 |
 | Wheel clean install/CLI | PASS: five checks outside checkout, packaged resources/CLI/workflows |
-| Windows packaged GUI/restart | PASS: 5 focused, 28 packaged widget checks, 7 native interaction checks |
+| Windows packaged GUI/restart | PASS: 6 focused, 28 packaged widget checks, 7 native interaction checks |
 | Cross-platform actual exchange | PASS: APK SAF → fresh wheel → packaged EXE → fresh-wheel readback |
-| Final exact-candidate local gates | NOT_EXECUTED |
-| GitHub CI | NOT_EXECUTED |
+| Final exact-candidate local gates | Candidate1 failed native second-editor opening after 3 checks; other gates passed |
+| GitHub CI | PASS at 6f224c2: Android37109052933, Python37109054558, Windows37109056700 |
 | Uploaded release asset verification | NOT_EXECUTED |
 
 Scenario mapping:
