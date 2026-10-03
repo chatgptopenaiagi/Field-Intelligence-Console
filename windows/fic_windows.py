@@ -427,7 +427,10 @@ class Workstation:
         dialog.title("Contact details — saved record, not current presence")
         dialog.geometry("920x740")
         dialog.transient(self.root)
+        focus_job = None
         def close():
+            if focus_job is not None:
+                dialog.after_cancel(focus_job)
             dialog.destroy()
             self.editor_window = None
         dialog.protocol("WM_DELETE_WINDOW", close)
@@ -453,11 +456,14 @@ class Workstation:
         values.update({key: address.get(key, "") for key in ADDRESS_FIELDS})
         self.editor_vars = {}
         for row, (key, value) in enumerate(values.items()):
-            ttk.Label(basic, text=key.replace("_", " ").title()).grid(row=row, column=0, sticky="w", pady=3)
+            label = "Display name (Alt+N)" if key == "display_name" else key.replace("_", " ").title()
+            ttk.Label(basic, text=label).grid(row=row, column=0, sticky="w", pady=3)
             variable = tk.StringVar(value=value)
             self.editor_vars[key] = variable
             widget = ttk.Combobox(basic, textvariable=variable, values=("person", "organization"), state="readonly") if key == "kind" else ttk.Entry(basic, textvariable=variable, width=60)
             widget.grid(row=row, column=1, sticky="ew", pady=3)
+            if key == "display_name":
+                self.display_name_entry = widget
         basic.columnconfigure(1, weight=1)
         ttk.Label(basic, text="Private notes").grid(row=len(values), column=0, sticky="nw")
         self.editor_notes = tk.Text(basic, height=4, wrap="word")
@@ -514,8 +520,10 @@ class Workstation:
             self.refresh_network()
             self.status.set("Contact saved locally. No address was transmitted.")
         bar = ttk.Frame(dialog)
-        bar.pack(fill="x", padx=10, pady=8)
-        self.save_contact_button = self.button(bar, "Save local record", lambda: self.guard("Save contact", save))
+        # Reserve the action row before the expanding notebook so it remains
+        # reachable on compact desktops and at larger text sizes.
+        bar.pack(side="bottom", fill="x", padx=10, pady=8, before=tabs)
+        self.save_contact_button = self.button(bar, "Save (Ctrl+Enter)", lambda: self.guard("Save contact", save))
         self.button(bar, "Cancel", close)
         self.button(bar, "Phone app", lambda: self.contact_action("tel", self.editor_vars["phone"].get()))
         self.button(bar, "Email app", lambda: self.contact_action("mailto", self.editor_vars["email"].get()))
@@ -532,6 +540,19 @@ class Workstation:
             tabs.select(advanced)
         self.button(bar, "Associate saved point", lambda: self.guard("Saved point", add_point))
         dialog.bind("<Escape>", lambda _: close())
+        def focus_name(_=None):
+            tabs.select(basic_page)
+            canvas.yview_moveto(0)
+            self.display_name_entry.focus_set()
+            self.display_name_entry.selection_range(0, "end")
+            return "break"
+        def keyboard_save(_=None):
+            self.guard("Save contact", save)
+            return "break"
+        dialog.bind("<Alt-n>", focus_name)
+        dialog.bind("<Alt-N>", focus_name)
+        dialog.bind("<Control-Return>", keyboard_save)
+        focus_job = dialog.after_idle(focus_name)
 
     @staticmethod
     def association(address_id=None, point=None):

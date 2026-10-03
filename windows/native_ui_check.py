@@ -49,6 +49,14 @@ def main():
     def owned(title):
         return [w for w in desktop.windows(title_re=title, visible_only=True)
                 if os.path.normcase(process_image(w.process_id())) == os.path.normcase(str(portable))]
+    def wait_for_owned(title, timeout=5):
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            matches = owned(title)
+            if len(matches) == 1:
+                return matches[0]
+            time.sleep(0.1)
+        raise AssertionError("Expected owned native window did not appear within five seconds")
     checks = []
     result = {"status": "FAIL", "checks": checks, "scope": "Unique copied portable EXE; synthetic isolated profile"}
     try:
@@ -68,32 +76,40 @@ def main():
         checks.append("Packaged EXE rendered native Known Network window")
         # Keyboard shortcut is dispatched by Windows to the owned Tk window.
         window.type_keys("^n", pause=0.1)
-        time.sleep(0.4)
-        dialogs = owned(r"^Contact details .*")
-        if len(dialogs) != 1:
-            raise AssertionError("Ctrl+N did not open contact editor")
-        editor = dialogs[0]
+        editor = wait_for_owned(r"^Contact details .*")
+        # Deliberately exercise a compact owned window: fixed bottom-row coordinates
+        # were invalid on the hosted runner. Never click outside this window.
+        editor.move_window(x=0, y=0, width=900, height=600)
         editor.set_focus()
+        time.sleep(0.2)
         editor.capture_as_image().save(args.evidence / "native-contact-editor.png")
         checks.append("Native Ctrl+N opens real contact editor")
-        # Real mouse click focuses the first display-name field, then keyboard edits.
-        editor.click_input(coords=(360, 108))
+        # Native caption click establishes owned-window mouse interaction. The
+        # documented accessibility shortcuts focus and save independently of scale.
+        editor.click_input(coords=(300, 14))
+        editor.type_keys("%n", pause=0.1)
         editor.type_keys("^aSynthetic Native UI Contact", with_spaces=True, pause=0.02)
         time.sleep(0.5)
         editor.capture_as_image().save(args.evidence / "native-contact-input.png")
-        editor.click_input(coords=(95, 740))
-        time.sleep(0.4)
+        editor.type_keys("^{ENTER}")
+        persisted = False
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            with Store(data / "fic-workstation.sqlite3") as store:
+                created = store.list_entities("Synthetic Native UI Contact")
+                persisted = len(created) == 1 and created[0]["display_name"] == "Synthetic Native UI Contact"
+            if persisted:
+                break
+            time.sleep(0.1)
+        if not persisted:
+            raise AssertionError("Native contact entry/save did not persist the typed value")
         with Store(data / "fic-workstation.sqlite3") as store:
-            created = store.list_entities("Synthetic Native UI Contact")
-            if len(created) != 1 or created[0]["display_name"] != "Synthetic Native UI Contact":
-                raise AssertionError("Native contact entry/save did not persist the typed value")
             # Remove only this synthetic test-created row so repeatable fixture checks stay unchanged.
             store.delete_entity(created[0]["id"])
         checks.append("Native mouse and keyboard create/save a persisted contact")
         window.set_focus()
         window.type_keys("^n")
-        time.sleep(0.3)
-        editor = owned(r"^Contact details .*")[0]
+        editor = wait_for_owned(r"^Contact details .*")
         editor.type_keys("{ESC}")
         time.sleep(0.3)
         if owned(r"^Contact details .*"):

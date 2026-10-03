@@ -58,6 +58,25 @@ class WorkstationTests(unittest.TestCase):
         self.assertIsNone(saved["associations"][0]["point"])
         self.assertEqual("unresolved", saved["associations"][0]["geocode_status"])
 
+    def test_compact_editor_keyboard_focus_and_save(self):
+        self.app.edit_contact()
+        self.app.editor_window.geometry("900x500")
+        self.root.update()
+        self.app.editor_window.focus_force()
+        self.root.update()
+        self.assertLessEqual(
+            self.app.save_contact_button.winfo_rooty() + self.app.save_contact_button.winfo_height(),
+            self.app.editor_window.winfo_rooty() + self.app.editor_window.winfo_height())
+        self.app.editor_window.event_generate("<Alt-n>")
+        self.root.update()
+        self.app.display_name_entry.delete(0, "end")
+        self.app.display_name_entry.insert(0, "Synthetic keyboard contact")
+        self.app.display_name_entry.event_generate("<Control-Return>")
+        self.root.update()
+        saved = self.app.store.list_entities("Synthetic keyboard contact")
+        self.assertEqual(1, len(saved))
+        self.assertIsNone(self.app.editor_window)
+
     def test_geocoding_requires_consent_then_candidate_selection(self):
         class Fake:
             calls = []
