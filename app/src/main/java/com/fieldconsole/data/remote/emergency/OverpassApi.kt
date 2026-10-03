@@ -70,7 +70,8 @@ interface OverpassApi {
 // ── Response models ───────────────────────────────────────────────────────────
 
 data class OverpassResponse(
-    val elements: List<OverpassElement> = emptyList()
+    val elements: List<OverpassElement>? = null,
+    val remark: String? = null
 )
 
 data class OverpassElement(

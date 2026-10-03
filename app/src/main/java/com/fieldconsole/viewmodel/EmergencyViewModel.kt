@@ -16,8 +16,13 @@ data class EmergencyUiData(
     val numbers:         List<EmergencyNumber>   = emptyList(),
     val isLoading:       Boolean                 = false,
     val error:           String?                 = null,
-    val countryCode:     String                  = "INT"
-)
+    val countryCode:     String                  = "INT",
+    val lookupSucceeded: Boolean                = false
+) {
+    val showNoResults: Boolean get() = lookupSucceeded && !isLoading && error == null && services.isEmpty()
+    val staleWarning: String? get() = if (error != null && services.isNotEmpty())
+        "STALE CACHED SERVICES — refresh failed; availability may have changed." else null
+}
 
 @HiltViewModel
 class EmergencyViewModel @Inject constructor(
@@ -28,7 +33,7 @@ class EmergencyViewModel @Inject constructor(
     val state: StateFlow<EmergencyUiData> = _state.asStateFlow()
 
     fun load(lat: Double, lon: Double, countryCode: String = "AT") {
-        _state.update { it.copy(isLoading = true, error = null, countryCode = countryCode) }
+        _state.update { it.copy(isLoading = true, error = null, countryCode = countryCode, lookupSucceeded = false) }
         _state.update { it.copy(numbers = EmergencyNumbers.forCountry(countryCode)) }
 
         // Observe cached services immediately
@@ -41,7 +46,7 @@ class EmergencyViewModel @Inject constructor(
         // Refresh from network
         viewModelScope.launch {
             repository.refreshNearby(lat, lon)
-                .onSuccess { _state.update { it.copy(isLoading = false) } }
+                .onSuccess { services -> _state.update { it.copy(isLoading = false, services = services, lookupSucceeded = true) } }
                 .onFailure { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
         }
     }

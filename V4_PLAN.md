@@ -290,3 +290,32 @@ Audit commit changes only `.gitattributes`, `V4_PLAN.md`, `gradle.properties`,
 SDK levels, version and package IDs remain identical to `v3-recovered-baseline`.
 Local-only changes are downloaded JDK/SDK packages and ignored build/probe artifacts.
 No v4 application implementation was started. Stop after committing this milestone.
+
+## Milestone 2: bounded defect repairs (2026-10-03)
+
+The following sections supersede the first-milestone stop instruction for the repairs
+explicitly authorized by the user. The protected tag remains unchanged.
+
+### Checkpoint 1: Overpass request identification and failure semantics
+
+- A dedicated HTTP client identifies every Overpass request centrally using
+  `FieldIntelligenceConsole/<versionName> (Android)`; production DI supplies the app's
+  existing BuildConfig version. No endpoint or query text was changed for the 406 fix.
+- HTTP 400/406/429/5xx, socket/network errors, malformed or missing elements, and
+  nonblank Overpass remarks are failures. Raw response bodies are not UI messages.
+  Cancellation propagates. Only a successful empty response enables NO RESULTS.
+- The UI retains existing cache rows on refresh failure and renders the explicit
+  `STALE CACHED SERVICES` warning. The ViewModel state test waits for an actual failed
+  refresh and proves row retention, error state, stale warning and offline numbers.
+- `OverpassContractTest` exercises the production provider with MockWebServer:
+  multiple identified requests, form/query preservation, 406/429/5xx mappings,
+  empty success, remark failure, missing elements, malformed JSON, timeout,
+  cancellation and failed-refresh cache preservation. `EmergencyFailureStateTest`
+  verifies the cache/UI state behavior. Twelve new tests in total.
+- Geometry is **not solved at this checkpoint**: node-only filtering and omitted
+  way/relation coordinates remain a separate defect. Any later geometry repair must
+  have explicit reproduction tests and cannot be credited to this HTTP fix.
+- Focused tests passed; final debug/release builds, all unit tests and lint results
+  are recorded in `build/milestone2/01-checkpoint-gate.log` (local ignored evidence).
+  Gate passed: 14 tests per variant (2 original + 12 new), both APKs assembled,
+  lint 0 errors / 4 pre-existing warnings per variant. No new warning suppressions.

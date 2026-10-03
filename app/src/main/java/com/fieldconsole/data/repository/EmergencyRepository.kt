@@ -4,6 +4,8 @@ import com.fieldconsole.data.local.dao.EmergencyServiceDao
 import com.fieldconsole.data.local.entity.EmergencyService
 import com.fieldconsole.data.remote.emergency.OverpassApi
 import com.fieldconsole.data.remote.emergency.OverpassElement
+import com.fieldconsole.data.remote.emergency.OverpassFailure
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -34,7 +36,11 @@ class EmergencyRepository @Inject constructor(
                 }
 
                 val response = api.query(OverpassApi.emergencyQuery(lat, lon))
-                val services = response.elements
+                if (!response.remark.isNullOrBlank()) {
+                    throw OverpassFailure("Emergency service query did not complete. Try again later.")
+                }
+                val services = (response.elements
+                    ?: throw OverpassFailure("Emergency service response is missing results."))
                     .filter { it.type == "node" && it.lat != 0.0 }
                     .mapNotNull { el -> mapElement(el, lat, lon) }
                     .sortedBy { it.distanceM }
@@ -42,10 +48,11 @@ class EmergencyRepository @Inject constructor(
                 dao.deleteForLocation(lat, lon)
                 dao.insertAll(services)
                 Result.success(services)
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
-                val cached = dao.getNearby(lat, lon)
-                if (cached.isNotEmpty()) Result.success(cached)
-                else Result.failure(e)
+                // The UI can keep its cached rows, but a failed refresh is never an empty success.
+                Result.failure(OverpassFailure.from(e))
             }
         }
 

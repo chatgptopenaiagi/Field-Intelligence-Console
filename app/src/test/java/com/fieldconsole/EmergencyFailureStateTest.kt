@@ -1,0 +1,56 @@
+package com.fieldconsole
+
+import androidx.lifecycle.ViewModelStore
+import com.fieldconsole.data.local.entity.EmergencyService
+import com.fieldconsole.data.remote.emergency.*
+import com.fieldconsole.data.repository.EmergencyRepository
+import com.fieldconsole.viewmodel.EmergencyViewModel
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.*
+import okhttp3.ResponseBody.Companion.toResponseBody
+import org.junit.Assert.*
+import org.junit.Test
+import retrofit2.HttpException
+import retrofit2.Response
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class EmergencyFailureStateTest {
+    @Test fun `refresh failure keeps cached rows and exposes visible stale warning`() = runBlocking {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        val store = ViewModelStore()
+        try {
+            val cached = EmergencyService(name = "Cached hospital", fetchedAt = 1)
+            val dao = FakeEmergencyServiceDao().apply { rows.value = listOf(cached) }
+            val requestStarted = CompletableDeferred<Unit>()
+            val releaseFailure = CompletableDeferred<Unit>()
+            val api = object : OverpassApi {
+                override suspend fun query(query: String): OverpassResponse {
+                    requestStarted.complete(Unit)
+                    releaseFailure.await()
+                    throw HttpException(Response.error<OverpassResponse>(406, "blocked".toResponseBody()))
+                }
+            }
+            val vm = EmergencyViewModel(EmergencyRepository(api, dao))
+            store.put("emergency", vm)
+            vm.load(48.2, 16.3, "AT")
+            withTimeout(5000) { requestStarted.await() }
+            assertEquals(listOf(cached), vm.state.value.services)
+            assertTrue(vm.state.value.isLoading)
+            assertFalse(vm.state.value.showNoResults)
+            releaseFailure.complete(Unit)
+            val failed = withTimeout(5000) { vm.state.first { it.error != null } }
+            assertEquals(listOf(cached), failed.services)
+            assertFalse(failed.isLoading)
+            assertFalse(failed.lookupSucceeded)
+            assertFalse(failed.showNoResults)
+            assertTrue(failed.error!!.contains("406"))
+            // EmergencyScreen renders this property alongside the failure message.
+            assertTrue(failed.staleWarning!!.contains("STALE CACHED SERVICES"))
+            assertTrue(failed.numbers.isNotEmpty())
+        } finally {
+            store.clear()
+            Dispatchers.resetMain()
+        }
+    }
+}

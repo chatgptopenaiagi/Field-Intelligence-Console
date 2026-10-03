@@ -1,11 +1,13 @@
 package com.fieldconsole.di
 
 import android.content.Context
+import com.fieldconsole.BuildConfig
 import com.fieldconsole.data.local.dao.EmergencyServiceDao
 import com.fieldconsole.data.local.dao.FieldEntryDao
 import com.fieldconsole.data.local.dao.WeatherDao
 import com.fieldconsole.data.local.database.AppDatabase
 import com.fieldconsole.data.remote.emergency.OverpassApi
+import com.fieldconsole.data.remote.emergency.OverpassHttpClient
 import com.fieldconsole.data.remote.weather.OpenMeteoApi
 import com.fieldconsole.data.repository.EmergencyRepository
 import com.fieldconsole.data.repository.FieldEntryRepository
@@ -71,6 +73,7 @@ object AppModule {
     fun provideOverpassRetrofit(gson: Gson): Retrofit =
         Retrofit.Builder()
             .baseUrl(OverpassApi.BASE_URL)
+            .client(OverpassHttpClient.create(BuildConfig.VERSION_NAME))
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 

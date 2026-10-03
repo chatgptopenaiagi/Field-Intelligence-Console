@@ -125,13 +125,13 @@ fun EmergencyScreen(
 
             state.error?.let { err ->
                 Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
-                    Text(err, modifier = Modifier.padding(12.dp),
+                    Text(listOfNotNull(err, state.staleWarning).joinToString("\n"), modifier = Modifier.padding(12.dp),
                          style = MaterialTheme.typography.bodySmall,
                          color = MaterialTheme.colorScheme.onErrorContainer)
                 }
             }
 
-            if (state.services.isEmpty() && !state.isLoading) {
+            if (state.showNoResults) {
                 Text("No emergency services found in 5 km radius.",
                      style = MaterialTheme.typography.bodySmall,
                      color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))

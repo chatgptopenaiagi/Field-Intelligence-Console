@@ -44,10 +44,12 @@ room-compiler                    = { group = "androidx.room",             name =
 play-services-location           = { group = "com.google.android.gms",   name = "play-services-location",      version.ref = "playServicesLocation" }
 okhttp                           = { group = "com.squareup.okhttp3",      name = "okhttp",                     version.ref = "okhttp" }
 okhttp-logging                   = { group = "com.squareup.okhttp3",      name = "logging-interceptor",        version.ref = "okhttp" }
+mockwebserver                    = { group = "com.squareup.okhttp3",      name = "mockwebserver",               version.ref = "okhttp" }
 retrofit                         = { group = "com.squareup.retrofit2",    name = "retrofit",                   version.ref = "retrofit" }
 retrofit-gson                    = { group = "com.squareup.retrofit2",    name = "converter-gson",             version.ref = "retrofit" }
 gson                             = { group = "com.google.code.gson",      name = "gson",                       version.ref = "gson" }
 kotlinx-coroutines-android       = { group = "org.jetbrains.kotlinx",    name = "kotlinx-coroutines-android",  version.ref = "coroutines" }
+kotlinx-coroutines-test          = { group = "org.jetbrains.kotlinx",    name = "kotlinx-coroutines-test",     version.ref = "coroutines" }
 datastore-prefs                  = { group = "androidx.datastore",        name = "datastore-preferences",      version.ref = "datastore" }
 junit                            = { group = "junit",                     name = "junit",                      version.ref = "junit" }
 junit-ext                        = { group = "androidx.test.ext",         name = "junit",                      version.ref = "junitExt" }
