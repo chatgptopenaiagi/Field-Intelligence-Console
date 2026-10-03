@@ -407,3 +407,92 @@ explicitly authorized by the user. The protected tag remains unchanged.
 - Database version stays 2 with unchanged identity hash. Tests use in-memory Room databases;
   the production database is untouched. Full polygon/entrance/routing geometry is not solved.
   Existing heuristic travel times and unverified open-status values remain separate risks.
+
+### Checkpoint 6: disconnected-feature contracts and minimum repair
+
+| Surface/component | Classification | Verified contract and decision |
+|---|---|---|
+| AI ANALYSIS external action | WORKING (intent contract) | Main action copies a generated prompt and opens ChatGPT/browser. Two-way external completion is not observed. Preserve it. |
+| In-app AI integration | PARTIAL | AiAnalysisViewModel and engine factory have no UI caller. OpenAI/Places adapters exist, but Earth is a stub, Autodesk lists account hubs and SolidWorks uses a placeholder tenant. Key presence cannot define equivalent analysis capability. Do not auto-activate providers. |
+| Weather integration | IMPLEMENTED BUT DISCONNECTED | Screen, ViewModel, API and cache exist, but no route/action reaches WeatherScreen. Missing-value defaults, stale-data presentation and timezone semantics must be repaired/tested before exposing operational assessments. No new surface added. |
+| File export integration | IMPLEMENTED BUT DISCONNECTED | Markdown/JSON/text exporter and FileProvider exist, but no UI callers. Existing inline report sharing is connected and its intent payload is tested. File-format selection, schema/provenance, timestamps and the old v2 report labels need an explicit contract before exposure. |
+| Search actions | PARTIAL -> WORKING (state/navigation contract) | Results invoke onEntrySelect, whose empty default made taps do nothing. The existing MainViewModel.openEntry establishes the intended reopen contract. Selection now uses the main back-stack ViewModel and returns to that same destination. No new observation is inserted. |
+
+- The search callback is mandatory, preventing another silent no-op call site. A JVM
+  integration test searches an in-memory Room database, selects a saved observation,
+  exercises the production action with a real NavHostController, preserves the main
+  back-stack entry and every original observation field, and proves no database write.
+  Address lookup failure still permits reopening with coordinates.
+- Two intent-contract tests prove existing AI prompt clipboard/browser dispatch and inline
+  report sharing. They intercept intents: no external app/service is contacted, no key is
+  loaded, and they do not certify remote provider behavior or Compose rendering on a device.
+- Prototype integrations are retained, not deleted as dead code. Their missing contracts
+  are recorded above; wiring them now would exceed bounded defect repair.
+- Focused checkpoint tests passed. The first full gate caught a new Navigation Compose
+  lint error: the remembered main entry lacked the current back-stack entry as its key.
+  This was corrected without suppression. `06-gate-final.log` passed with 38 tests per
+  variant, zero failures/errors/skips, debug/release APKs and the instrumentation APK
+  assembled, and lint 0 errors / 4 existing warnings in each variant.
+
+### Milestone 2 completion and remaining gates
+
+- Root: F:\FieldIntelligenceConsole; branch: v4-development; protected baseline:
+  v3-recovered-baseline -> e45f9b863892b1796774a8132a213ea99c4518d2.
+- APK inspection confirms package com.fieldconsole (debug com.fieldconsole.debug),
+  versionName 3.0.0 / versionCode 3, minSdk 29, target/compileSdk 34, unchanged.
+- Tests added: 36 JVM tests (38 total including the original two), executed for both
+  debug and release; 2 device migration tests added and compiled, not executed.
+  DatabaseSafetyTest: all 4 pass in each variant. Reconstructed v1 -> current v2 and
+  fresh v2 are supported by this evidence; unsupported/malformed paths fail closed.
+  Schema version 2 and identity hash unchanged. REAL DATABASE TOUCHED: NO.
+- The v1 fixture is reconstructed. There is no authentic historical v1 export/binary;
+  complete historical migration compatibility is not proven. No unsupported migrations
+  were invented. Device validation of migration, geocoding, navigation and dialing remains.
+- Existing lint limitations remain: OldTargetApi, RedundantLabel and two skipped library
+  lint registries (ObsoleteLintCustomCheck). No new lint suppressions. Release is still
+  debug-signed and is not a distribution-ready artifact.
+- Geometry repair covers valid nodes and approximate way/relation centers only, not
+  entrances, polygon accessibility, routing or real-time availability. Heuristic travel
+  times/open-state assumptions remain; emergency-number catalogs need local verification.
+- AI provider activation, weather unknown/stale/timezone handling and file-export format
+  contracts remain deferred as described above. Keystore recovery, stored place metadata,
+  permission granularity and broader lifecycle/persistence issues remain in the original
+  audit backlog. No broad architecture rewrite or new product surface was introduced.
+- Validation evidence is local under build/milestone2/ (ignored build artifacts). The
+  committed tests, schema and fixture permit rerunning the checks. Milestone 2 stops here.
+
+### Milestone 2 files changed (relative to audited a8df0e5)
+- `V4_PLAN.md`
+- `app/build.gradle.kts`
+- `app/schemas/com.fieldconsole.data.local.database.AppDatabase/2.json`
+- `app/src/androidTest/java/com/fieldconsole/DatabaseMigrationDeviceTest.kt`
+- `app/src/main/AndroidManifest.xml`
+- `app/src/main/java/com/fieldconsole/MainActivity.kt`
+- `app/src/main/java/com/fieldconsole/data/local/dao/EmergencyServiceDao.kt`
+- `app/src/main/java/com/fieldconsole/data/local/database/AppDatabase.kt`
+- `app/src/main/java/com/fieldconsole/data/remote/emergency/OverpassApi.kt`
+- `app/src/main/java/com/fieldconsole/data/remote/emergency/OverpassFailure.kt`
+- `app/src/main/java/com/fieldconsole/data/remote/emergency/OverpassHttpClient.kt`
+- `app/src/main/java/com/fieldconsole/data/repository/EmergencyRepository.kt`
+- `app/src/main/java/com/fieldconsole/di/AppModule.kt`
+- `app/src/main/java/com/fieldconsole/intent/EmergencyDialer.kt`
+- `app/src/main/java/com/fieldconsole/location/GeoContext.kt`
+- `app/src/main/java/com/fieldconsole/location/ReverseGeocoder.kt`
+- `app/src/main/java/com/fieldconsole/ui/components/ObservationDialog.kt`
+- `app/src/main/java/com/fieldconsole/ui/emergency/EmergencyScreen.kt`
+- `app/src/main/java/com/fieldconsole/ui/main/MainScreen.kt`
+- `app/src/main/java/com/fieldconsole/ui/search/SearchEntryAction.kt`
+- `app/src/main/java/com/fieldconsole/ui/search/SmartSearchScreen.kt`
+- `app/src/main/java/com/fieldconsole/viewmodel/EmergencyViewModel.kt`
+- `app/src/test/java/com/fieldconsole/DatabaseSafetyTest.kt`
+- `app/src/test/java/com/fieldconsole/EmergencyCacheTest.kt`
+- `app/src/test/java/com/fieldconsole/EmergencyDialerTest.kt`
+- `app/src/test/java/com/fieldconsole/EmergencyFailureStateTest.kt`
+- `app/src/test/java/com/fieldconsole/EmergencyGeometryTest.kt`
+- `app/src/test/java/com/fieldconsole/ExistingIntentContractTest.kt`
+- `app/src/test/java/com/fieldconsole/FakeEmergencyServiceDao.kt`
+- `app/src/test/java/com/fieldconsole/OverpassContractTest.kt`
+- `app/src/test/java/com/fieldconsole/ReverseGeocoderTest.kt`
+- `app/src/test/java/com/fieldconsole/SearchEntryActionTest.kt`
+- `app/src/test/resources/database/reconstructed-v1.sql`
+- `gradle/libs.versions.toml`

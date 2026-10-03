@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -11,6 +13,8 @@ import com.fieldconsole.intent.IntentDispatcher
 import com.fieldconsole.ui.history.HistoryScreen
 import com.fieldconsole.ui.main.MainScreen
 import com.fieldconsole.ui.search.SmartSearchScreen
+import com.fieldconsole.ui.search.openSearchEntry
+import com.fieldconsole.viewmodel.MainViewModel
 import com.fieldconsole.ui.settings.EngineSettingsScreen
 import com.fieldconsole.ui.theme.FieldIntelligenceTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,8 +59,13 @@ class MainActivity : ComponentActivity() {
                         HistoryScreen(onBack = { nav.popBackStack() })
                     }
 
-                    composable("search") {
-                        SmartSearchScreen(onBack = { nav.popBackStack() })
+                    composable("search") { searchEntry ->
+                        val mainEntry = remember(searchEntry) { nav.getBackStackEntry("main") }
+                        val mainVm: MainViewModel = hiltViewModel(mainEntry)
+                        SmartSearchScreen(
+                            onBack = { nav.popBackStack() },
+                            onEntrySelect = { entry -> openSearchEntry(nav, mainVm, entry) }
+                        )
                     }
                 }
             }

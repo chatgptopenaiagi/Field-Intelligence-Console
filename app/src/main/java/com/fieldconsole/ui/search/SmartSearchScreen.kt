@@ -26,7 +26,7 @@ import java.util.Locale
 @Composable
 fun SmartSearchScreen(
     onBack:        () -> Unit,
-    onEntrySelect: (FieldEntry) -> Unit = {},
+    onEntrySelect: (FieldEntry) -> Unit,
     vm:            HistoryViewModel = hiltViewModel()
 ) {
     var query by remember { mutableStateOf("") }
