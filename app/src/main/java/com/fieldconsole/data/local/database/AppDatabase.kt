@@ -16,7 +16,7 @@ import com.fieldconsole.data.local.entity.WeatherData
 @Database(
     entities  = [FieldEntry::class, WeatherData::class, EmergencyService::class],
     version   = 2,
-    exportSchema = false
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -100,15 +100,18 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): AppDatabase =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Room.databaseBuilder(
+                INSTANCE ?: create(context).also { INSTANCE = it }
+            }
+
+        /** Same builder for production and isolated persistence integration tests. */
+        internal fun create(context: Context, name: String = DB_NAME): AppDatabase =
+                Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    DB_NAME
+                    name
                 )
                     .addMigrations(MIGRATION_1_2)
-                    .fallbackToDestructiveMigration()
+                    // Missing or invalid migrations must fail closed; observations are irreplaceable.
                     .build()
-                    .also { INSTANCE = it }
-            }
     }
 }

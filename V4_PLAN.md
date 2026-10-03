@@ -319,3 +319,40 @@ explicitly authorized by the user. The protected tag remains unchanged.
   are recorded in `build/milestone2/01-checkpoint-gate.log` (local ignored evidence).
   Gate passed: 14 tests per variant (2 original + 12 new), both APKs assembled,
   lint 0 errors / 4 pre-existing warnings per variant. No new warning suppressions.
+
+### Checkpoint 2: database safety
+
+- History inspection found only the recovered database v2 and its additive 1->2
+  migration. No authentic v1 schema export or historical APK exists here. The v1 SQL
+  fixture is explicitly reconstructed from those recovered columns/migration statements.
+  Supported evidence: that reconstructed v1 path and the actual current v2 schema;
+  this is not proof about every historical installation.
+- Before removing fallback, migration/reopen tests passed; expanded checks then passed
+  for all original fields, UTF-8 note bytes, next generated ID, both added tables,
+  all current FieldEntry metadata across reopen, and malformed migration rollback.
+  An unsupported v3 test failed against the destructive fallback, demonstrating its
+  unsafe behavior. After removing fallback, all four DatabaseSafetyTest cases pass.
+- `fallbackToDestructiveMigration` is removed. Missing paths and malformed schemas
+  throw explicit open/migration errors; no invented migration or automatic data reset
+  is provided. Supporting an unknown installed schema requires its actual evidence.
+- Schema version remains **2**, identity hash remains
+  `86a44fb821267550e82ce2703802e359`. The generated v2 schema is now tracked in
+  `app/schemas/` for future migration review. No columns or table layouts changed.
+- All tests create UUID-named `migration-test-*` / `migration-device-test-*` databases.
+  They never call the default production singleton, and enforce that cleanup cannot
+  target `field_console.db`. **REAL DATABASE TOUCHED: NO.**
+- Robolectric API 34 tests are JVM integration evidence, not physical-device validation.
+  Two Android instrumentation tests are added for v1 migration and unsupported-version
+  preservation, using the same explicitly reconstructed fixture. Device execution is a
+  later gate (`connectedDebugAndroidTest` on an isolated test device); compilation alone
+  must not be reported as device-test success.
+- Evidence: `build/milestone2/02-supported-before-removal.log`,
+  `02-destructive-reproduction.log` (expected failure), `02-focused-final.log`, and
+  `02-gate.log`. The first full gate hit a Robolectric legacy SQLite WAL-file open
+  error in debug (release passed). Test filenames were shortened and a Windows path
+  length guard added; production journaling was not changed. The full debug recheck
+  and final forced rerun of both suites passed. This host failure remains recorded;
+  device execution is still required for stronger validation.
+- Final gate (`02-gate-final.log`): 18 tests executed per variant, 0 failures/errors;
+  debug/release and instrumentation APKs built; both lint variants passed with the
+  same 4 existing warnings. Instrumentation test count: 2 added, **not executed**.

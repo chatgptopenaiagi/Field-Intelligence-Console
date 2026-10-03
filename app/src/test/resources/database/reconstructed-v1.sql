@@ -1,0 +1,9 @@
+CREATE TABLE field_entries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  latitude REAL NOT NULL,
+  longitude REAL NOT NULL,
+  accuracy REAL NOT NULL,
+  note TEXT NOT NULL,
+  tag TEXT NOT NULL,
+  timestamp INTEGER NOT NULL
+);
