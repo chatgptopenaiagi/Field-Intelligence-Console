@@ -1,0 +1,80 @@
+param(
+    [string]$Python = 'python',
+    [string]$Wheel,
+    [string]$OutputRoot = "$PSScriptRoot/../.local/evidence/windows-gate",
+    [switch]$AllowDirtyDevelopment
+)
+$ErrorActionPreference = 'Stop'
+$projectRoot = (Resolve-Path "$PSScriptRoot/..").Path
+Set-Location -LiteralPath $projectRoot
+$sourceSha = git rev-parse HEAD
+$sourceDirty = [bool](git status --porcelain)
+if ($sourceDirty -and -not $AllowDirtyDevelopment) { throw 'Release/CI gate requires a clean source candidate. Use -AllowDirtyDevelopment only for explicitly preliminary builds.' }
+New-Item -ItemType Directory -Force $OutputRoot | Out-Null
+$OutputRoot = (Resolve-Path -LiteralPath $OutputRoot).Path
+$environment = Join-Path $projectRoot '.venv-windows'
+$runtime = Join-Path $environment 'Scripts/python.exe'
+if (-not (Test-Path -LiteralPath $runtime)) {
+    & $Python -m venv $environment
+    if ($LASTEXITCODE -ne 0) { throw 'Windows virtual environment creation failed.' }
+}
+& $runtime -m pip install --disable-pip-version-check -r windows/requirements-build.txt
+if ($LASTEXITCODE -ne 0) { throw 'Windows build dependencies failed.' }
+if (-not $Wheel) {
+    & "$PSScriptRoot/python_gate.ps1" -Python $Python -OutputRoot "$OutputRoot/python"
+    $Wheel = "$OutputRoot/python/packages/field_intelligence_console-4.0.0b1-py3-none-any.whl"
+}
+$Wheel = (Resolve-Path -LiteralPath $Wheel).Path
+& $runtime -m pip install --disable-pip-version-check --force-reinstall --constraint windows/constraints.txt $Wheel
+if ($LASTEXITCODE -ne 0) { throw 'Windows core wheel installation failed.' }
+& $runtime windows/run_focused.py --receipt "$OutputRoot/focused-tests.json" *> "$OutputRoot/focused-tests.log"
+if ($LASTEXITCODE -ne 0) { throw 'Windows focused UI tests failed; inspect local log.' }
+$focusedReceipt = Get-Content -Raw "$OutputRoot/focused-tests.json" | ConvertFrom-Json
+if ($focusedReceipt.tests -lt 5 -or $focusedReceipt.skipped -ne 0 -or $focusedReceipt.status -ne 'PASS') { throw 'Focused test evidence is incomplete.' }
+& "$projectRoot/windows/build.ps1" -Wheel $Wheel -Python $runtime -Output "$OutputRoot/artifacts" *> "$OutputRoot/package.log"
+$exe = Join-Path $OutputRoot 'artifacts/FieldIntelligenceConsole-4.0.0-beta.1-windows-x64.exe'
+if (-not (Test-Path -LiteralPath $exe)) { throw 'Windows EXE missing.' }
+$profile = Join-Path ([IO.Path]::GetTempPath()) ('FIC-synthetic-gate-' + [guid]::NewGuid().ToString('N'))
+$receipt = Join-Path $OutputRoot 'packaged-ui.json'
+$network = Join-Path $projectRoot 'shared/fixtures/network-v1.json'
+$report = Join-Path $projectRoot 'shared/fixtures/field-report-v1.json'
+$arguments = @('--ui-test', '--profile', ('"' + $profile + '"'), '--evidence', ('"' + $receipt + '"'),
+    '--interop-input', ('"' + $network + '"'), '--interop-output', ('"' + "$OutputRoot/network-return.json" + '"'),
+    '--interop-report-input', ('"' + $report + '"'), '--interop-report-output', ('"' + "$OutputRoot/report-return.json" + '"'))
+$process = Start-Process -FilePath $exe -ArgumentList $arguments -WindowStyle Hidden -PassThru
+if (-not $process.WaitForExit(120000)) {
+    $process.Kill($true)
+    throw 'Owned Windows package test exceeded two minutes.'
+}
+if ($process.ExitCode -ne 0) { throw 'Packaged Windows UI checks failed.' }
+$uiReceipt = Get-Content -Raw -LiteralPath $receipt | ConvertFrom-Json
+if ($uiReceipt.status -ne 'PASS' -or $uiReceipt.check_count -lt 28 -or -not $uiReceipt.frozen) {
+    throw 'Packaged Windows UI evidence is incomplete.'
+}
+& $runtime windows/native_ui_check.py $exe --evidence "$OutputRoot/native" *> "$OutputRoot/native-driver.log"
+if ($LASTEXITCODE -ne 0) { throw 'Native Windows mouse/keyboard gate failed; it was not skipped.' }
+$nativeReceipt = Get-Content -Raw "$OutputRoot/native/native-ui.json" | ConvertFrom-Json
+if ($nativeReceipt.status -ne 'PASS' -or $nativeReceipt.check_count -lt 7) { throw 'Native Windows evidence is incomplete.' }
+$metadataScript = @'
+import hashlib,json,pathlib,pefile,sys
+p=pathlib.Path(sys.argv[1]);pe=pefile.PE(str(p))
+assert pe.FILE_HEADER.Machine==0x8664 and pe.OPTIONAL_HEADER.Subsystem==2
+print(json.dumps({"machine":"AMD64","subsystem":"Windows GUI","bytes":p.stat().st_size,"sha256":hashlib.sha256(p.read_bytes()).hexdigest()}))
+'@
+$metadata = $metadataScript | & $runtime - $exe
+if ($LASTEXITCODE -ne 0) { throw 'PE architecture validation failed.' }
+$metadata | Set-Content -Encoding utf8 "$OutputRoot/pe-metadata.json"
+$signature = (Get-AuthenticodeSignature -LiteralPath $exe).Status.ToString()
+$summary = @{
+    status = 'PASS'
+    focused_tests = $focusedReceipt.tests
+    packaged_widget_checks = $uiReceipt.check_count
+    native_checks = $nativeReceipt.check_count
+    signing = $signature
+    source_sha = $sourceSha
+    worktree_dirty = $sourceDirty
+    artifact = (Split-Path -Leaf $exe)
+    limitations = @('Synthetic profiles only', 'No live provider key used', 'Unsigned experimental Windows application')
+}
+$summary | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 "$OutputRoot/gate-summary.json"
+Write-Output 'Windows gate PASS: focused tests, packaged GUI workflow, native interaction, restart and PE checks executed.'

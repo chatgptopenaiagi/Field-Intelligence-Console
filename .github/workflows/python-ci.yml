@@ -1,0 +1,74 @@
+name: Python core
+
+on:
+  push:
+    branches: [v4-development]
+    paths:
+      - 'python/**'
+      - 'shared/**'
+      - 'tooling/python_gate.ps1'
+      - '.github/workflows/python-ci.yml'
+  pull_request:
+    paths:
+      - 'python/**'
+      - 'shared/**'
+      - 'tooling/python_gate.ps1'
+      - '.github/workflows/python-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: python-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core:
+    name: Core / ${{ matrix.os }} / Python 3.14
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      # Official upstream tag -> commit and action.yml reviewed 2026-10-03.
+      # All three use Node 24; immutable SHA pins, no floating third-party tags.
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.14'
+          architecture: x64
+      - name: Run the same local and CI acceptance gate
+        run: ./tooling/python_gate.ps1 -Python python -OutputRoot "$env:RUNNER_TEMP/fic-python-gate"
+      - name: Preserve exact allowlisted packages
+        if: success()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: fic-python-${{ matrix.os }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/fic-python-gate/packages/field_intelligence_console-*-py3-none-any.whl
+            ${{ runner.temp }}/fic-python-gate/packages/field_intelligence_console-*.tar.gz
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 7
+      - name: Preserve test evidence, including failed-gate diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: fic-python-evidence-${{ matrix.os }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/fic-python-gate/gate-receipt.json
+            ${{ runner.temp }}/fic-python-gate/unit-tests.log
+            ${{ runner.temp }}/fic-python-gate/clean-wheel.log
+          if-no-files-found: warn
+          include-hidden-files: false
+          retention-days: 7
