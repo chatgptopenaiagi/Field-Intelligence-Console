@@ -1,0 +1,243 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "fic.field-report"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "app_version": {
+      "type": "string",
+      "maxLength": 16384
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time",
+      "maxLength": 64
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "latitude": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "longitude": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "accuracy_m": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "enum": [
+            "device",
+            "manual",
+            "report",
+            "unknown"
+          ]
+        },
+        "address": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 16384
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "address_source": {
+          "enum": [
+            "device_geocoder",
+            "user",
+            "external_provider",
+            "unknown"
+          ]
+        },
+        "resolved_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "latitude",
+        "longitude",
+        "accuracy_m",
+        "source",
+        "address",
+        "address_source",
+        "resolved_at"
+      ],
+      "additionalProperties": true
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "note": {
+          "type": "string",
+          "maxLength": 16384
+        },
+        "tag": {
+          "type": "string",
+          "maxLength": 16384
+        }
+      },
+      "required": [
+        "note",
+        "tag"
+      ],
+      "additionalProperties": true
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "maxLength": 16384
+          },
+          "state": {
+            "enum": [
+              "success",
+              "empty",
+              "offline",
+              "failure",
+              "unavailable"
+            ]
+          },
+          "freshness": {
+            "enum": [
+              "fresh",
+              "stale",
+              "unknown"
+            ]
+          },
+          "fetched_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "data": {},
+          "error": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 16384
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "provider",
+          "state",
+          "freshness",
+          "fetched_at",
+          "data",
+          "error"
+        ],
+        "additionalProperties": true
+      },
+      "maxItems": 1000
+    },
+    "ai_advisory": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "maxLength": 16384
+            },
+            "generated_at": {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 64
+            },
+            "text": {
+              "type": "string",
+              "maxLength": 16384
+            }
+          },
+          "required": [
+            "provider",
+            "generated_at",
+            "text"
+          ],
+          "additionalProperties": true
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "extensions": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema",
+    "schema_version",
+    "app_version",
+    "id",
+    "observed_at",
+    "location",
+    "observation",
+    "providers",
+    "ai_advisory",
+    "extensions"
+  ],
+  "additionalProperties": true,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fieldconsole.example/schemas/field-report-v1"
+}

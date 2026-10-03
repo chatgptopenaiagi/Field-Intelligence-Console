@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools==82.0.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "field-intelligence-console"
+version = "4.0.0b1"
+description = "Local field reports and saved geographic contact associations"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["jsonschema>=4.26,<5"]
+classifiers = ["Programming Language :: Python :: 3", "Operating System :: OS Independent"]
+
+[project.scripts]
+fic = "field_intelligence_console.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+field_intelligence_console = ["schemas/*.json", "fixtures/*"]

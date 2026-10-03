@@ -1,0 +1,22 @@
+BEGIN:VCARD
+VERSION:4.0
+UID:synthetic-alex-001
+FN:Alex Éxample
+N:Éxample;Alex;;;
+ORG:Synthetic Research Cooperative
+TEL;TYPE=work:tel:+1-202-555-0100
+TEL;TYPE=home:020 7946 0000
+EMAIL;TYPE=work:alex@example.org
+ADR;TYPE=work:;;1 Example Street;Example City;Example Region;00000;Example Country
+ADR;TYPE=home:;;2 Other Street;Other City;;00001;Example Country
+NOTE:Synthetic record\nSaved association only
+X-SYNTHETIC:retained unknown value
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+UID:synthetic-org-002
+FN:Synthetic Organisation
+N:;;;;
+ORG:Synthetic Organisation
+EMAIL:office@example.org
+END:VCARD

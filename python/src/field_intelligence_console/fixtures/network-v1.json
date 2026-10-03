@@ -1,0 +1,93 @@
+{
+  "schema": "fic.network",
+  "schema_version": 1,
+  "app_version": "4.0.0-beta.1",
+  "exported_at": "2026-10-03T12:00:00Z",
+  "entities": [
+    {
+      "id": "synthetic-alex-001",
+      "kind": "person",
+      "display_name": "Alex Éxample",
+      "structured_name": {
+        "family": "Éxample",
+        "given": "Alex",
+        "additional": "",
+        "prefix": "",
+        "suffix": ""
+      },
+      "organization": "Synthetic Research Cooperative",
+      "role": "Synthetic coordinator",
+      "tags": [
+        "synthetic"
+      ],
+      "notes": "Synthetic test record. Saved address is not current presence.",
+      "phones": [
+        {
+          "value": "+1 202 555 0100",
+          "normalized": "+12025550100",
+          "label": "work"
+        },
+        {
+          "value": "020 7946 0000",
+          "normalized": "02079460000",
+          "label": "home"
+        }
+      ],
+      "emails": [
+        {
+          "value": "alex@example.org",
+          "normalized": "alex@example.org",
+          "label": "work"
+        }
+      ],
+      "addresses": [
+        {
+          "id": "synthetic-address-001",
+          "original": "1 Example Street, Example City, Example Country",
+          "label": "work",
+          "po_box": "",
+          "extended": "",
+          "street": "1 Example Street",
+          "neighborhood": "Example District",
+          "locality": "Example City",
+          "region": "Example Region",
+          "postal_code": "00000",
+          "country": "Example Country"
+        }
+      ],
+      "associations": [
+        {
+          "id": "synthetic-association-001",
+          "address_id": "synthetic-address-001",
+          "basis": "manual_location",
+          "source": "user_observation",
+          "temporal_status": "saved",
+          "point": {
+            "latitude": 0.0,
+            "longitude": 0.0,
+            "precision": "building"
+          },
+          "geocode_status": "resolved",
+          "provider": null,
+          "resolved_at": null,
+          "verified_at": "2026-10-03T12:00:00Z",
+          "normalized_address": null
+        }
+      ],
+      "ancestry": [
+        {
+          "source_id": "synthetic-fixture",
+          "record_id": "synthetic-alex-001",
+          "format": "manual",
+          "imported_at": "2026-10-03T12:00:00Z",
+          "updated_at": null
+        }
+      ],
+      "corrections": [],
+      "extensions": {
+        "synthetic": true,
+        "unknown_future_label": "preserve me"
+      }
+    }
+  ]
+}

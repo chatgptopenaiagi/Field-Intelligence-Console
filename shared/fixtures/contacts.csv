@@ -1,0 +1,2 @@
+display_name,kind,organization,phone,email,street,locality,country,notes
+"Synthetic, CSV",person,Synthetic Team,+12025550101,csv@example.org,3 Example Street,Example City,Example Country,"Unicode: café"

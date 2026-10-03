@@ -1,0 +1,458 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "fic.network"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "app_version": {
+      "type": "string",
+      "maxLength": 16384
+    },
+    "exported_at": {
+      "type": "string",
+      "format": "date-time",
+      "maxLength": 64
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "kind": {
+            "enum": [
+              "person",
+              "organization"
+            ]
+          },
+          "display_name": {
+            "type": "string",
+            "maxLength": 16384
+          },
+          "structured_name": {
+            "type": "object",
+            "properties": {
+              "family": {
+                "type": "string",
+                "maxLength": 16384
+              },
+              "given": {
+                "type": "string",
+                "maxLength": 16384
+              },
+              "additional": {
+                "type": "string",
+                "maxLength": 16384
+              },
+              "prefix": {
+                "type": "string",
+                "maxLength": 16384
+              },
+              "suffix": {
+                "type": "string",
+                "maxLength": 16384
+              }
+            },
+            "required": [
+              "family",
+              "given",
+              "additional",
+              "prefix",
+              "suffix"
+            ],
+            "additionalProperties": true
+          },
+          "organization": {
+            "type": "string",
+            "maxLength": 16384
+          },
+          "role": {
+            "type": "string",
+            "maxLength": 16384
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 16384
+            },
+            "maxItems": 1000
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 16384
+          },
+          "phones": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "normalized": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "label": {
+                  "type": "string",
+                  "maxLength": 16384
+                }
+              },
+              "required": [
+                "value",
+                "normalized",
+                "label"
+              ],
+              "additionalProperties": true
+            },
+            "maxItems": 1000
+          },
+          "emails": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "normalized": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "label": {
+                  "type": "string",
+                  "maxLength": 16384
+                }
+              },
+              "required": [
+                "value",
+                "normalized",
+                "label"
+              ],
+              "additionalProperties": true
+            },
+            "maxItems": 1000
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "original": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "label": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "po_box": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "extended": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "street": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "neighborhood": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "locality": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "region": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "postal_code": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "country": {
+                  "type": "string",
+                  "maxLength": 16384
+                }
+              },
+              "required": [
+                "id",
+                "original",
+                "label",
+                "po_box",
+                "extended",
+                "street",
+                "neighborhood",
+                "locality",
+                "region",
+                "postal_code",
+                "country"
+              ],
+              "additionalProperties": true
+            },
+            "maxItems": 1000
+          },
+          "associations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "address_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "basis": {
+                  "enum": [
+                    "saved_address",
+                    "manual_location",
+                    "historical_observation"
+                  ]
+                },
+                "source": {
+                  "enum": [
+                    "imported_contact",
+                    "user_observation",
+                    "external_provider"
+                  ]
+                },
+                "temporal_status": {
+                  "enum": [
+                    "saved",
+                    "historical",
+                    "unknown"
+                  ]
+                },
+                "point": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "latitude": {
+                          "type": "number",
+                          "minimum": -90,
+                          "maximum": 90
+                        },
+                        "longitude": {
+                          "type": "number",
+                          "minimum": -180,
+                          "maximum": 180
+                        },
+                        "precision": {
+                          "enum": [
+                            "building",
+                            "street",
+                            "locality",
+                            "region",
+                            "country",
+                            "approximate"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "latitude",
+                        "longitude",
+                        "precision"
+                      ],
+                      "additionalProperties": true
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "geocode_status": {
+                  "enum": [
+                    "unresolved",
+                    "resolved",
+                    "ambiguous",
+                    "failed"
+                  ]
+                },
+                "provider": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 16384
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "resolved_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time",
+                      "maxLength": 64
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "verified_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time",
+                      "maxLength": 64
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "normalized_address": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 16384
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "address_id",
+                "basis",
+                "source",
+                "temporal_status",
+                "point",
+                "geocode_status",
+                "provider",
+                "resolved_at",
+                "verified_at",
+                "normalized_address"
+              ],
+              "additionalProperties": true
+            },
+            "maxItems": 1000
+          },
+          "ancestry": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "source_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "record_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "format": {
+                  "type": "string",
+                  "maxLength": 16384
+                },
+                "imported_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "maxLength": 64
+                },
+                "updated_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time",
+                      "maxLength": 64
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "source_id",
+                "record_id",
+                "format",
+                "imported_at",
+                "updated_at"
+              ],
+              "additionalProperties": true
+            },
+            "maxItems": 1000
+          },
+          "corrections": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "maxItems": 1000
+          },
+          "extensions": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "display_name",
+          "structured_name",
+          "organization",
+          "role",
+          "tags",
+          "notes",
+          "phones",
+          "emails",
+          "addresses",
+          "associations",
+          "ancestry",
+          "corrections",
+          "extensions"
+        ],
+        "additionalProperties": true
+      },
+      "maxItems": 5000
+    }
+  },
+  "required": [
+    "schema",
+    "schema_version",
+    "app_version",
+    "exported_at",
+    "entities"
+  ],
+  "additionalProperties": true,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fieldconsole.example/schemas/network-v1"
+}
