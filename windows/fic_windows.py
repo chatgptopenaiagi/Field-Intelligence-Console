@@ -18,7 +18,7 @@ from field_intelligence_console import (
     parse_import, query_network, validate_report, now_iso,
 )
 
-VERSION = "4.0.0-beta.1"
+VERSION = "4.0.0-beta.2"
 MAX_BYTES = 5 * 1024 * 1024
 SCOPES = ("street", "radius", "neighborhood", "city", "region", "country", "building")
 ADDRESS_FIELDS = ("street", "neighborhood", "locality", "region", "postal_code", "country")

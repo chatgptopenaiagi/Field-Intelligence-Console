@@ -36,3 +36,8 @@
   API34 AOSP default expands to1,764,599,215 bytes versus Google APIs4,469,083,531.
   Install only the smaller AOSP image in fresh CI, retain all six tests and record
   available storage. This does not validate Google Play services or physical GPS.
+
+- Preserve annotated beta.1 and its unpublished draft after hosted inventory failure.
+  Use a new beta.2 candidate (Androidcode5/Python4.0.0b2/Windows4.0.0.2), with no
+  package/schema identity change. Historical fixture app versions stay beta.1.
+  Do not promote old binaries or claim the new candidate passed before rebuilding.

@@ -39,8 +39,8 @@ push, move a release tag, overwrite published assets or publish to PyPI.
    prerelease. Read back repository visibility, release/tag/source SHA, draft/prerelease
    flags, asset names/sizes and returned download URLs. No missing-platform release.
 
-Version mapping: FIC `4.0.0-beta.1`; Python `4.0.0b1`; Android code4; Windows numeric
-file version4.0.0.1. Shared data contracts v1 and Room v3 are independent. Android
+Version mapping: FIC `4.0.0-beta.2`; Python `4.0.0b2`; Android code5; Windows numeric
+file version4.0.0.2. Shared data contracts v1 and Room v3 are independent. Android
 debug/testing signing and Windows unsigned status must be explicit in every release.
 Never uninstall user data to bypass a signing mismatch or disable security warnings.
 

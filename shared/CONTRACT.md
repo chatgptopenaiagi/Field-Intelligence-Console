@@ -1,6 +1,8 @@
 # FIC exchange contracts v1
 
 Frozen for the experimental 4.0.0-beta.1 release; data version is independent of app version.
+The same v1 contracts apply to beta.2. Synthetic beta.1 fixture application versions
+are intentionally retained as backward-exchange test vectors.
 All JSON is UTF-8, finite JSON numbers only. Dates are ISO 8601 with explicit timezone.
 Network JSON uses `schema: "fic.network"`, `schema_version: 1`, `app_version`,
 `exported_at`, `entities`. Unknown entity/nested properties survive canonical JSON round trips;

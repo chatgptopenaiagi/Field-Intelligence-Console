@@ -24,7 +24,7 @@ def _write(path, data):
 
 def parser():
     result = argparse.ArgumentParser(prog="fic", description="Offline FIC validation, conversion and saved-association search")
-    result.add_argument("--version", action="version", version="4.0.0b1")
+    result.add_argument("--version", action="version", version="4.0.0b2")
     commands = result.add_subparsers(dest="command", required=True)
     validate = commands.add_parser("validate", help="Validate an explicit FIC JSON file")
     validate.add_argument("input")

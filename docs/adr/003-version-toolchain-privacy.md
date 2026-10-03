@@ -30,3 +30,9 @@ Android backups are disabled/excluded; databases are not encrypted. Existing API
 key storage uses Android Keystore AES-GCM; unreadable credentials remain for explicit
 re-entry/removal. Desktop uses the OS user's private application-data directory,
 not a claim of at-rest database encryption. Exports leave this protection boundary.
+
+2026-10-03 follow-up: beta.1 tag remains at its original tested commit; its draft
+is unpublished after a hosted inventory failure. The next candidate is beta.2:
+Android code5/name4.0.0-beta.2, Python4.0.0b2, Windowsnumeric4.0.0.2. Package IDs,
+shared schema1 and Room3 stay unchanged. Keep synthetic beta.1 fixture versions
+as backward-exchange evidence. A new full candidate gate is required.

@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.0-beta.2 — candidate in validation
+
+The beta.1 tag and unpublished draft are preserved. Its three target CI workflows
+passed, but the combined release workflow failed during dependency inventory.
+This candidate adds bounded inventory diagnostics and uses a new coordinated
+version: Android code 5, Python 4.0.0b2 and Windows 4.0.0.2. Release validation
+and publication are pending; data contracts remain v1 and Room remains v3.
+
 ## 4.0.0-beta.1 — experimental candidate
 
 This entry describes implementation, not a published release.
