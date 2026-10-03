@@ -1,4 +1,19 @@
-# Resume
+# RESUME NEXT SESSION — OWNER PAUSED THE MISSION
+
+Usage/credit preservation on2026-10-03 supersedes autonomous continuation below.
+BETA2 INCOMPLETE. No further development/publication this session. Goal PAUSED.
+Read AGENTS.md, MISSION.md, STATUS.md and
+[PAUSE_CHECKPOINT_2026-10-03.md](PAUSE_CHECKPOINT_2026-10-03.md) first.
+Frozen source296730438928717404c99bab8d0ba080659abd49; beta2 tag already exists.
+Documentation-only checkpoint follows; resolve its SHA through git log on checkpoint.
+NEXT ACTION next session:
+`gh run view 37121395951 --repo chatgptopenaiagi/Field-Intelligence-Console --json status,conclusion,jobs,url`
+Last observed IN_PROGRESS. Standalone Android37121183456, Windows37121183451 and
+Python37121183461 PASS. Owned emulator5580/launcher33652 stopped and exit verified;
+AVDs/evidence preserved. No active local jobs/agents. No beta2 draft/publication.
+Follow ordered checkpoint path; do not repeat completed milestones or mutate tags.
+
+## Historical resume notes (superseded by pause checkpoint)
 
 Read MISSION.md and the current entries at the end of STATUS.md, TEST_MATRIX.md,
 DECISIONS.md and BLOCKERS.md. Earlier entries are historical, not current gates.
