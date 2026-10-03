@@ -9,6 +9,7 @@ import com.fieldconsole.data.repository.EmergencyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job
 import javax.inject.Inject
 
 data class EmergencyUiData(
@@ -31,20 +32,22 @@ class EmergencyViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(EmergencyUiData())
     val state: StateFlow<EmergencyUiData> = _state.asStateFlow()
+    private var loadJob: Job? = null
 
     fun load(lat: Double, lon: Double, countryCode: String = "AT") {
-        _state.update { it.copy(isLoading = true, error = null, countryCode = countryCode, lookupSucceeded = false) }
-        _state.update { it.copy(numbers = EmergencyNumbers.forCountry(countryCode)) }
+        loadJob?.cancel()
+        _state.value = EmergencyUiData(isLoading = true, countryCode = countryCode,
+            numbers = EmergencyNumbers.forCountry(countryCode))
 
         // Observe cached services immediately
-        viewModelScope.launch {
-            repository.observeNearby(lat, lon).collect { services ->
-                _state.update { it.copy(services = services) }
+        loadJob = viewModelScope.launch {
+            launch {
+                repository.observeNearby(lat, lon).collect { services ->
+                    _state.update { it.copy(services = services) }
+                }
             }
-        }
 
-        // Refresh from network
-        viewModelScope.launch {
+            // Refresh and observation share a lifetime; changing scan cancels both.
             repository.refreshNearby(lat, lon)
                 .onSuccess { services -> _state.update { it.copy(isLoading = false, services = services, lookupSucceeded = true) } }
                 .onFailure { e -> _state.update { it.copy(isLoading = false, error = e.message) } }

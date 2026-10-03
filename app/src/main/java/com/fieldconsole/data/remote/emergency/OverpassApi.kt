@@ -25,18 +25,15 @@ interface OverpassApi {
         fun emergencyQuery(lat: Double, lon: Double, radiusM: Int = 5000): String = """
             [out:json][timeout:25];
             (
-              node["amenity"="hospital"](around:$radiusM,$lat,$lon);
-              way["amenity"="hospital"](around:$radiusM,$lat,$lon);
-              node["amenity"="police"](around:$radiusM,$lat,$lon);
-              node["amenity"="fire_station"](around:$radiusM,$lat,$lon);
-              node["amenity"="pharmacy"](around:$radiusM,$lat,$lon);
-              node["emergency"="defibrillator"](around:$radiusM,$lat,$lon);
-              node["amenity"="shelter"](around:$radiusM,$lat,$lon);
-              node["emergency"="access_point"](around:$radiusM,$lat,$lon);
+              nwr["amenity"="hospital"](around:$radiusM,$lat,$lon);
+              nwr["amenity"="police"](around:$radiusM,$lat,$lon);
+              nwr["amenity"="fire_station"](around:$radiusM,$lat,$lon);
+              nwr["amenity"="pharmacy"](around:$radiusM,$lat,$lon);
+              nwr["emergency"="defibrillator"](around:$radiusM,$lat,$lon);
+              nwr["amenity"="shelter"](around:$radiusM,$lat,$lon);
+              nwr["emergency"="access_point"](around:$radiusM,$lat,$lon);
             );
-            out body;
-            >;
-            out skel qt;
+            out center;
         """.trimIndent()
 
         /**
@@ -77,7 +74,10 @@ data class OverpassResponse(
 data class OverpassElement(
     val type: String = "",
     val id:   Long   = 0L,
-    val lat:  Double = 0.0,
-    val lon:  Double = 0.0,
-    val tags: Map<String, String> = emptyMap()
+    val lat:  Double? = null,
+    val lon:  Double? = null,
+    val tags: Map<String, String> = emptyMap(),
+    val center: OverpassCenter? = null
 )
+
+data class OverpassCenter(val lat: Double? = null, val lon: Double? = null)

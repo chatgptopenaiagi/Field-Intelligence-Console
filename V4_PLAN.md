@@ -383,3 +383,27 @@ explicitly authorized by the user. The protected tag remains unchanged.
   cancellation, backend failure, empty result and successful address mapping.
 - `build/milestone2/04-focused.log` and `04-gate.log`: focused and full suites passed,
   28 tests per variant, both APK builds passed, lint 0 errors / 4 existing warnings.
+
+### Checkpoint 5: reproduced emergency geometry and cache defects
+
+- Separate from the 406 checkpoint, two failing reproduction tests demonstrated omitted
+  equator nodes, ways and relations. The emergency query now uses `nwr` with `out center`;
+  mapping accepts valid node coordinates and way/relation centers, including latitude zero,
+  and skips absent/out-of-range coordinates. MockWebServer tests cover the wire response.
+  Logistics queries are unchanged. Centers are bounding-box centers, not verified entrances;
+  the UI states this limitation. Reference: https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL
+- Four cache tests failed before repair: neighboring-origin reuse/deletion, loss on failed
+  insertion, mixed/future timestamps accepted as fresh, and repeated empty-success requests.
+  Origins now match exactly, all rows must be fresh, and replacement uses a Room transaction.
+  A SQLite abort trigger proves the old rows survive replacement failure. One bounded
+  session-only empty-result cache avoids repeat calls; it is intentionally not durable.
+- A state test reproduced uncancelled previous-location work. Refresh and observation now
+  share a cancellable lifetime, with serialized repository refreshes. Switching locations
+  cancels the old request/collector and prevents their rows from populating the new scan.
+  The earlier cached-data/stale-warning failure test still passes.
+- Evidence: `05-geometry-red.log`, `05-cache-red.log`, `05-state-red.log` (expected failures),
+  `05-focused.log`, `05-gate.log` under `build/milestone2/`. Seven additional tests pass;
+  full gate: 35 tests per variant, both APKs built, lint 0 errors / 4 existing warnings.
+- Database version stays 2 with unchanged identity hash. Tests use in-memory Room databases;
+  the production database is untouched. Full polygon/entrance/routing geometry is not solved.
+  Existing heuristic travel times and unverified open-status values remain separate risks.

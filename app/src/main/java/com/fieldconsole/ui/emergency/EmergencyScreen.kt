@@ -144,7 +144,7 @@ fun EmergencyScreen(
 
             // ── Data source ───────────────────────────────────────────────────
             Text(
-                text  = "Services: OpenStreetMap via Overpass API — No API key required",
+                text  = "Services: OpenStreetMap via Overpass API. Locations may be area centers, not entrances. Verify access before travel.",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
             )
