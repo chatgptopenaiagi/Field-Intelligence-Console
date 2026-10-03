@@ -10,3 +10,14 @@ local.properties
 *.iml
 .DS_Store
 Thumbs.db
+.local/
+.venv*/
+**/__pycache__/
+**/*.egg-info/
+**/.pytest_cache/
+dist/
+*.whl
+*.exe
+*.db
+*.db-wal
+*.db-shm
