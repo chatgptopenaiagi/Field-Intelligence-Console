@@ -76,6 +76,35 @@ class WorkstationTests(unittest.TestCase):
         saved = self.app.store.list_entities("Synthetic keyboard contact")
         self.assertEqual(1, len(saved))
         self.assertIsNone(self.app.editor_window)
+        self.assertEqual(self.root, self.root.focus_get())
+        self.root.focus_get().event_generate("<Control-n>")
+        self.root.update()
+        self.assertIsNotNone(self.app.editor_window)
+        self.app.editor_window.event_generate("<Escape>")
+        self.root.update()
+        self.assertIsNone(self.app.editor_window)
+        self.assertEqual(self.root, self.root.focus_get())
+
+    def test_editor_restores_visible_previous_focus_on_both_tabs(self):
+        for tab, entry in ((self.app.reports_tab, self.app.report_search_entry),
+                           (self.app.network_tab, self.app.network_search_entry)):
+            with self.subTest(tab=str(tab)):
+                self.app.tabs.select(tab)
+                self.root.update()
+                self.root.focus_force()
+                entry.focus_set()
+                self.root.update()
+                entry.event_generate("<Control-n>")
+                self.root.update()
+                self.assertIsNotNone(self.app.editor_window)
+                self.app.editor_window.event_generate("<Escape>")
+                self.root.update()
+                self.assertEqual(entry, self.root.focus_get())
+                entry.event_generate("<Control-n>")
+                self.root.update()
+                self.assertIsNotNone(self.app.editor_window)
+                self.app.editor_window.event_generate("<Escape>")
+                self.root.update()
 
     def test_geocoding_requires_consent_then_candidate_selection(self):
         class Fake:

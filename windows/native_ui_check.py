@@ -10,6 +10,7 @@ import subprocess
 import tempfile
 import time
 from pywinauto import Desktop
+from pywinauto.keyboard import send_keys
 from field_intelligence_console import Store
 
 
@@ -59,6 +60,46 @@ def main():
         raise AssertionError("Expected owned native window did not appear within five seconds")
     checks = []
     result = {"status": "FAIL", "checks": checks, "scope": "Unique copied portable EXE; synthetic isolated profile"}
+    user = ctypes.WinDLL("user32", use_last_error=True)
+    user.GetForegroundWindow.restype = wintypes.HWND
+    user.IsChild.argtypes = [wintypes.HWND, wintypes.HWND]
+
+    def owns_keyboard_focus(window):
+        focus = window.get_focus()
+        return (user.GetForegroundWindow() == window.handle and focus is not None
+                and (focus.handle == window.handle or user.IsChild(window.handle, focus.handle)))
+
+    def native_keys(window, keys, **kwargs):
+        if not owns_keyboard_focus(window):
+            raise AssertionError("Keyboard target is not a focused control of the owned native window")
+        # type_keys() attaches input queues and may reset focus/key state after
+        # activation. Send real Windows input without a second focus transition.
+        send_keys(keys, pause=kwargs.pop("pause", 0.1), **kwargs)
+    def wait_for_closed(title):
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            if not owned(title):
+                return
+            time.sleep(0.1)
+        raise AssertionError("Owned contact editor did not finish closing")
+
+    def activate(window):
+        # A database commit is observable before Tk has destroyed its dialog and
+        # Windows has completed activation. Verify the target before sending keys.
+        window.restore()
+        window.set_focus()
+        window.click_input(coords=(300, 14))
+        deadline = time.monotonic() + 5
+        stable_since = None
+        while time.monotonic() < deadline:
+            if owns_keyboard_focus(window) and window.is_enabled():
+                stable_since = stable_since or time.monotonic()
+                if time.monotonic() - stable_since >= 0.2:
+                    return
+            else:
+                stable_since = None
+            time.sleep(0.05)
+        raise AssertionError("Owned target window did not obtain stable native foreground focus")
     try:
         deadline = time.monotonic() + 40
         while time.monotonic() < deadline and not receipt.exists():
@@ -69,29 +110,26 @@ def main():
         if len(windows) != 1:
             raise AssertionError("Owned FIC window not uniquely identified")
         window = windows[0]
-        window.restore()
-        window.set_focus()
-        time.sleep(0.3)
+        activate(window)
         window.capture_as_image().save(args.evidence / "native-network.png")
         checks.append("Packaged EXE rendered native Known Network window")
         # Keyboard shortcut is dispatched by Windows to the owned Tk window.
-        window.type_keys("^n", pause=0.1)
+        native_keys(window, "^n")
         editor = wait_for_owned(r"^Contact details .*")
         # Deliberately exercise a compact owned window: fixed bottom-row coordinates
         # were invalid on the hosted runner. Never click outside this window.
         editor.move_window(x=0, y=0, width=900, height=600)
-        editor.set_focus()
-        time.sleep(0.2)
+        activate(editor)
         editor.capture_as_image().save(args.evidence / "native-contact-editor.png")
         checks.append("Native Ctrl+N opens real contact editor")
         # Native caption click establishes owned-window mouse interaction. The
         # documented accessibility shortcuts focus and save independently of scale.
         editor.click_input(coords=(300, 14))
-        editor.type_keys("%n", pause=0.1)
-        editor.type_keys("^aSynthetic Native UI Contact", with_spaces=True, pause=0.02)
+        native_keys(editor, "%n")
+        native_keys(editor, "^aSynthetic Native UI Contact", with_spaces=True, pause=0.02)
         time.sleep(0.5)
         editor.capture_as_image().save(args.evidence / "native-contact-input.png")
-        editor.type_keys("^{ENTER}")
+        native_keys(editor, "^{ENTER}")
         persisted = False
         deadline = time.monotonic() + 5
         while time.monotonic() < deadline:
@@ -103,24 +141,31 @@ def main():
             time.sleep(0.1)
         if not persisted:
             raise AssertionError("Native contact entry/save did not persist the typed value")
+        wait_for_closed(r"^Contact details .*")
         with Store(data / "fic-workstation.sqlite3") as store:
             # Remove only this synthetic test-created row so repeatable fixture checks stay unchanged.
             store.delete_entity(created[0]["id"])
         checks.append("Native mouse and keyboard create/save a persisted contact")
-        window.set_focus()
-        window.type_keys("^n")
+        activate(window)
+        focus = window.get_focus()
+        result["second_editor_focus"] = {
+            "native_class": focus.class_name() if focus else None,
+            "ctrl_down": bool(ctypes.windll.user32.GetAsyncKeyState(0x11) & 0x8000),
+            "alt_down": bool(ctypes.windll.user32.GetAsyncKeyState(0x12) & 0x8000),
+            "shift_down": bool(ctypes.windll.user32.GetAsyncKeyState(0x10) & 0x8000),
+        }
+        native_keys(window, "^n")
         editor = wait_for_owned(r"^Contact details .*")
-        editor.type_keys("{ESC}")
-        time.sleep(0.3)
-        if owned(r"^Contact details .*"):
-            raise AssertionError("Escape did not dismiss editor")
+        activate(editor)
+        native_keys(editor, "{ESC}")
+        wait_for_closed(r"^Contact details .*")
         checks.append("Native Escape cancels a second contact editor")
-        window.set_focus()
-        window.type_keys("^f")
-        window.type_keys("Synthetic", pause=0.05)
+        activate(window)
+        native_keys(window, "^f")
+        native_keys(window, "Synthetic", pause=0.05)
         window.capture_as_image().save(args.evidence / "native-search.png")
         checks.append("Native Ctrl+F and text search interaction")
-        window.type_keys("^a{BACKSPACE}")
+        native_keys(window, "^a{BACKSPACE}")
         window.close()
         process.wait(timeout=15)
         checks.append("Native window close exits portable application")
@@ -133,6 +178,11 @@ def main():
         checks.append("Second packaged process retains data and preferences")
         result["status"] = "PASS"
     except Exception as exc:
+        for failed_window in owned(r"^Field Intelligence Console .*"):
+            try:
+                failed_window.capture_as_image().save(args.evidence / "native-failure.png")
+            except Exception:
+                pass  # Optional synthetic-window evidence must not hide the failure receipt.
         result["failure_type"] = type(exc).__name__
         result["failure"] = str(exc)[:220] if isinstance(exc, AssertionError) else "Native UI operation failed; inspect local development evidence."
     finally:
