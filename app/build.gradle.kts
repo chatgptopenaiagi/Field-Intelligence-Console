@@ -13,8 +13,8 @@ android {
         applicationId   = "com.fieldconsole"
         minSdk          = 29
         targetSdk       = 34
-        versionCode     = 3
-        versionName     = "3.0.0"
+        versionCode     = 4
+        versionName     = "4.0.0-beta.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
@@ -56,6 +56,11 @@ android {
         unitTests.isIncludeAndroidResources = true
     }
     sourceSets.getByName("androidTest").assets.srcDir("src/test/resources")
+    sourceSets.getByName("androidTest").assets.srcDir("schemas")
+    sourceSets.getByName("androidTest").assets.srcDir(rootProject.file("shared"))
+    sourceSets.getByName("test").resources.srcDir("schemas")
+    sourceSets.getByName("test").resources.srcDir(rootProject.file("shared"))
+    sourceSets.getByName("main").resources.srcDir(rootProject.file("shared/schemas"))
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"

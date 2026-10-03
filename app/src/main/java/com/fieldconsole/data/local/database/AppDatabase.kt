@@ -12,10 +12,13 @@ import com.fieldconsole.data.local.dao.WeatherDao
 import com.fieldconsole.data.local.entity.EmergencyService
 import com.fieldconsole.data.local.entity.FieldEntry
 import com.fieldconsole.data.local.entity.WeatherData
+import com.fieldconsole.data.local.entity.NetworkEntity
+import com.fieldconsole.data.local.entity.ExchangeReport
+import com.fieldconsole.data.local.dao.NetworkDao
 
 @Database(
-    entities  = [FieldEntry::class, WeatherData::class, EmergencyService::class],
-    version   = 2,
+    entities  = [FieldEntry::class, WeatherData::class, EmergencyService::class, NetworkEntity::class, ExchangeReport::class],
+    version   = 3,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -23,9 +26,18 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun fieldEntryDao(): FieldEntryDao
     abstract fun weatherDao(): WeatherDao
     abstract fun emergencyServiceDao(): EmergencyServiceDao
+    abstract fun networkDao(): NetworkDao
 
     companion object {
         private const val DB_NAME = "field_console.db"
+
+        /** Additive v2 -> v3: original observations and caches remain untouched. */
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("CREATE TABLE IF NOT EXISTS network_entities (id TEXT NOT NULL PRIMARY KEY, displayName TEXT NOT NULL, searchText TEXT NOT NULL, json TEXT NOT NULL)")
+                db.execSQL("CREATE TABLE IF NOT EXISTS exchange_reports (id TEXT NOT NULL PRIMARY KEY, searchText TEXT NOT NULL, json TEXT NOT NULL)")
+            }
+        }
 
         /** Migration from v1 (original) to v2 (extended FieldEntry + new tables). */
         val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -110,7 +122,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     name
                 )
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     // Missing or invalid migrations must fail closed; observations are irreplaceable.
                     .build()
     }

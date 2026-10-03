@@ -50,7 +50,7 @@ class OverpassContractTest {
         server.enqueue(MockResponse().setBody("""{"elements":[]}"""))
         assertTrue(repository.refreshNearby(48.2, 16.3).isSuccess)
         val request = server.takeRequest(2, TimeUnit.SECONDS)!!
-        assertEquals("FieldIntelligenceConsole/3.0.0 (Android)", request.getHeader("User-Agent"))
+        assertEquals("FieldIntelligenceConsole/${BuildConfig.VERSION_NAME} (Android)", request.getHeader("User-Agent"))
         assertEquals("POST", request.method)
         assertEquals("/api/interpreter", request.path)
         assertTrue(request.getHeader("Content-Type")!!.startsWith("application/x-www-form-urlencoded"))

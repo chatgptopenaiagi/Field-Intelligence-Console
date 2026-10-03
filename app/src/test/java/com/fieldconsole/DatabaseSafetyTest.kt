@@ -65,14 +65,14 @@ class DatabaseSafetyTest {
         }
         val next = db.fieldEntryDao().insert(row.copy(id = 0, note = "new observation"))
         assertTrue(next > 41)
-        assertEquals(2, db.openHelper.writableDatabase.version)
+        assertEquals(3, db.openHelper.writableDatabase.version)
         db.weatherDao().upsert(WeatherData(cacheKey = "sample", tempC = 9f))
         assertEquals(9f, db.weatherDao().getByKey("sample")!!.tempC)
         db.emergencyServiceDao().insertAll(listOf(EmergencyService(name = "Hospital")))
         assertEquals("Hospital", db.emergencyServiceDao().getNearby(0.0, 0.0).single().name)
     }
 
-    @Test fun `fresh v2 database persists scan and extended metadata across reopen`() = runBlocking {
+    @Test fun `fresh v3 database persists scan and extended metadata across reopen`() = runBlocking {
         var db = open()
         val entry = FieldEntry(id = 50, latitude = 1.0, longitude = 2.0, accuracy = 3.5f,
             note = originalNote, tag = "survey", timestamp = 123456789L, placeName = "Known place",
@@ -85,11 +85,11 @@ class DatabaseSafetyTest {
     }
 
     @Test fun `unsupported database version fails closed and preserves history`() {
-        seedLegacy(version = 3)
+        seedLegacy(version = 4)
         assertThrows(IllegalStateException::class.java) { open() }
         database?.close()
         SQLiteDatabase.openDatabase(context.getDatabasePath(name).path, null, SQLiteDatabase.OPEN_READONLY).use { db ->
-            assertEquals(3, db.version)
+            assertEquals(4, db.version)
             db.rawQuery("SELECT note FROM field_entries WHERE id=41", null).use { cursor ->
                 assertTrue(cursor.moveToFirst())
                 assertEquals(originalNote, cursor.getString(0))

@@ -12,6 +12,10 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.UUID
+import com.google.gson.JsonParser
+import com.fieldconsole.network.NetworkRepository
+import com.fieldconsole.network.NetworkCodec
+import kotlinx.coroutines.flow.first
 
 /** Device gate: uses the reconstructed fixture, not an authenticated historical v1 export. */
 @RunWith(AndroidJUnit4::class)
@@ -44,20 +48,44 @@ class DatabaseMigrationDeviceTest {
             accuracy = 7.5f, note = "retain observation", tag = "landmark", timestamp = 123456789L)
         assertEquals(expected, db.fieldEntryDao().getById(41))
         assertTrue(db.fieldEntryDao().insert(expected.copy(id = 0)) > 41)
-        assertEquals(2, db.openHelper.writableDatabase.version)
+        assertEquals(3, db.openHelper.writableDatabase.version)
     }
 
     @Test fun unsupportedVersionFailsWithoutRecreation() {
-        seed(3)
+        seed(4)
         val db = AppDatabase.create(context, name).also { room = it }
         assertThrows(IllegalStateException::class.java) { db.openHelper.writableDatabase }
         db.close()
         SQLiteDatabase.openDatabase(context.getDatabasePath(name).path, null, SQLiteDatabase.OPEN_READONLY).use {
-            assertEquals(3, it.version)
+            assertEquals(4, it.version)
             it.rawQuery("SELECT note FROM field_entries WHERE id=41", null).use { cursor ->
                 assertTrue(cursor.moveToFirst())
                 assertEquals("retain observation", cursor.getString(0))
             }
         }
+    }
+
+    @Test fun migrateAuthenticExportedV2ToNetworkV3WithoutDataLoss() = runBlocking {
+        val schema = instrumentation.context.assets.open("com.fieldconsole.data.local.database.AppDatabase/2.json")
+            .bufferedReader().use { JsonParser.parseReader(it).asJsonObject.getAsJsonObject("database") }
+        context.openOrCreateDatabase(name,Context.MODE_PRIVATE,null).use { raw ->
+            schema.getAsJsonArray("entities").forEach { value ->
+                val entity=value.asJsonObject
+                raw.execSQL(entity["createSql"].asString.replace("\${TABLE_NAME}",entity["tableName"].asString))
+            }
+            schema.getAsJsonArray("setupQueries").forEach { raw.execSQL(it.asString) }
+            raw.execSQL("INSERT INTO field_entries VALUES (41,0,0,12.5,'Synthetic observation','test',12345,'Place','HIGH','synthetic','operator',1,'{}','photo','audio')")
+            raw.version=2
+        }
+        val database=AppDatabase.create(context,name).also { room=it }
+        assertEquals(3,database.openHelper.writableDatabase.version)
+        val row=database.fieldEntryDao().getById(41)!!
+        assertEquals("Synthetic observation",row.note)
+        assertEquals("Place",row.placeName)
+        assertTrue(row.isFavorite)
+        assertTrue(database.fieldEntryDao().insert(row.copy(id=0)) > 41)
+        val repository=NetworkRepository(database)
+        repository.saveEntity(NetworkCodec.newEntity("Synthetic device contact"))
+        assertEquals(1,repository.observeEntities().first().size)
     }
 }
