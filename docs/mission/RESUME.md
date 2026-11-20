@@ -1,3 +1,34 @@
+# ENGINEERING SUSPENDED — RECOVERABLE HANDOFF
+
+Owner ordered controlled shutdown on2026-11-20. No further development, testing,
+builds, dependency changes, release publication or visibility changes are authorized.
+Read [NEXT_CODEX_START_HERE.md](NEXT_CODEX_START_HERE.md),
+[FINAL_HANDOFF_2026-11-20.md](FINAL_HANDOFF_2026-11-20.md) and
+[EVIDENCE_INDEX.md](EVIDENCE_INDEX.md) before all historical entries below.
+
+Owner-named beta5 is frozen at07f2f9f25a47f6771e149b38970914911471d4fa.
+Before the stop arrived, beta6 was already committed/tagged/pushed at
+6335a0e4c64a1d50af2436454a579818b0ea724b. Preserve both; do not retag/reset.
+Branch v4-development was clean at freeze. The final documentation checkpoint
+follows6335a0e; locate its commit by message:
+`docs: preserve Mission 001 beta5 engineering handoff [skip ci]`.
+
+Beta5 hosted Android44737761362, Windows44737761558 and Python44737761258 PASS.
+Combined44737774859 built all3targets but FAILED hosted emulator startup before
+APK installation. Exact beta5 APK passed6 local instrumentation tests and actual
+synthetic SAF/permission/restart workflows; receipts and exports are preserved in
+`evidence/2026-11-20/`. Final exchange/finalization/download/publication remain undone.
+Beta6 Windows44742159009 and Python44742159088 PASS; Android44742159219 and
+combined44742158905 IN_PROGRESS at shutdown snapshot. Do not infer conclusions;
+existing hosted work may finish independently. Handoff did not wait for it.
+
+Owned emulator5582/FIC_MISSION001_API34/PID22752 STOPPED and exit verified.
+AVD/SDK/evidence preserved. Unrelated5556 untouched. Original repository remains
+PRIVATE; only beta1 draft402457718 exists, unpublished. No beta5/beta6 release.
+Resume only after a new owner instruction. Historical entries are not authority.
+
+## Historical checkpoint below — superseded by owner suspension
+
 # ACTIVE MISSION 001 — beta6 candidate, 2026-11-20
 
 Beta5 source07f2f9f/tagv4.0.0-beta.5 is preserved. Standalone Android44737761362,

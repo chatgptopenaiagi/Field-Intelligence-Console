@@ -1,0 +1,25 @@
+{
+  "artifact": "FieldIntelligenceConsole-4.0.0-beta.5-windows-x64.exe",
+  "native_checks": 7,
+  "worktree_dirty": false,
+  "status": "PASS",
+  "binary_metadata": {
+    "machine": "AMD64",
+    "subsystem": "Windows GUI",
+    "file_version": "4.0.0.5",
+    "product_version": "4.0.0-beta.5",
+    "python": "3.14.7",
+    "packager": "PyInstaller 6.22.3",
+    "bytes": 16188389,
+    "sha256": "7897735842a5640e875d0d89b61432dc55cd51ae1d5089749fbdadc87fab6718"
+  },
+  "packaged_widget_checks": 28,
+  "focused_tests": 14,
+  "source_sha": "07f2f9f25a47f6771e149b38970914911471d4fa",
+  "limitations": [
+    "Synthetic profiles only",
+    "No live provider key used",
+    "Unsigned experimental Windows application"
+  ],
+  "signing": "NotSigned"
+}

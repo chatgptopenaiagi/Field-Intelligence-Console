@@ -1,0 +1,105 @@
+{
+  "preserved_at_utc": "2026-11-20T13:18:43.969070+00:00",
+  "files": [
+    {
+      "file": "actions-artifact-snapshot.json",
+      "bytes": 6695,
+      "sha256": "e8e19271a6e0c3c3bd371be6fa0740231e4e0571fc9733754a8aa3b06edea3f1"
+    },
+    {
+      "file": "beta5-android-gate.json",
+      "bytes": 2518,
+      "sha256": "c94b737abb160d6b517f913065bf4fd6fbeff9533f18528f9f72002feb692852"
+    },
+    {
+      "file": "beta5-android-saf-observation.json",
+      "bytes": 2156,
+      "sha256": "5cbee59cb2c3451809e1fda97ba2696ae5fa388457ce83c1dd135a5bc22071ef"
+    },
+    {
+      "file": "beta5-artifact-scan.json",
+      "bytes": 2024,
+      "sha256": "b36725c00a6b2d45f37da16f0e192b8a7ac31b806d281b81ae1d84d34a24c8ec"
+    },
+    {
+      "file": "beta5-build-receipt.json",
+      "bytes": 1870,
+      "sha256": "7ef9173a6691099d1a3ddc87c7a9d4f733d2389aa1ab2c0068b392720fa13624"
+    },
+    {
+      "file": "beta5-local-android-runtime.json",
+      "bytes": 502,
+      "sha256": "4c56a6fba3bceef457395af201467271bcd2c1f448d975eb3c702f62c6d77e23"
+    },
+    {
+      "file": "beta5-local-clean-wheel.json",
+      "bytes": 932,
+      "sha256": "45be8e900807b35300c6539147459368da2c5f2ccf62ab6c3f48794b04ab7e77"
+    },
+    {
+      "file": "beta5-local-runtime-diagnostics.json",
+      "bytes": 380,
+      "sha256": "fe43b7c583deb7253840a1046d636bac23e7f9daa5fc36a981b878e850ed9c16"
+    },
+    {
+      "file": "beta5-native-ui.json",
+      "bytes": 667,
+      "sha256": "d9c44871bddbecce8530ec6382fcaa6d722532db77a409b5f74de4f60e8a8cc5"
+    },
+    {
+      "file": "beta5-packaged-ui.json",
+      "bytes": 1424,
+      "sha256": "647d0d5e34d9ef5d41550e6e00ae399b0134f635d9dfa33896bf8f93de4a4265"
+    },
+    {
+      "file": "beta5-pe-metadata.json",
+      "bytes": 263,
+      "sha256": "65dc8b83f66357a993d8115545c665494df894b67e537eba227fb826e466f471"
+    },
+    {
+      "file": "beta5-python-gate.json",
+      "bytes": 932,
+      "sha256": "448308d110366e8ce16d4d662c703786571135b292fbe2bab0fe7485ec781312"
+    },
+    {
+      "file": "beta5-windows-gate.json",
+      "bytes": 765,
+      "sha256": "2168109244af7bc8771b330d68f65da1e377be25a60e92bcf26344ca261f1829"
+    },
+    {
+      "file": "beta6-local-clean-wheel.json",
+      "bytes": 932,
+      "sha256": "c1bb7634b705b1428bbc3fb9754fd59acb576ddf52324608d307b129e13ce82a"
+    },
+    {
+      "file": "device-network-beta5.json",
+      "bytes": 4621,
+      "sha256": "1ae8516868dabd06acd27a766fbda22383d3c4bdeeeb7007b79e48257d6b3415"
+    },
+    {
+      "file": "device-report-beta5.json",
+      "bytes": 1258,
+      "sha256": "6c99b35450aaa77e47845f8e1d0f8c8ed78cf48ba456a8e1b96866b8f4d38bf7"
+    },
+    {
+      "file": "owned-emulator-stop.json",
+      "bytes": 270,
+      "sha256": "34ad890809ed11ade7650a264a99e24969f8724de65cb0cdf68507c79c04490a"
+    },
+    {
+      "file": "privacy-review-progress.json",
+      "bytes": 1018,
+      "sha256": "d7fd856d0c64e383b5f83573599ef10820984ba52d7fbc8987b032116dd16f73"
+    },
+    {
+      "file": "release-snapshot.json",
+      "bytes": 1923,
+      "sha256": "62a95482af9305eae7c041064420dafe26bc8bd0307e2f6b35ec94ea5cde2318"
+    },
+    {
+      "file": "workflow-snapshot.json",
+      "bytes": 3410,
+      "sha256": "77563fa44da7078b6d60a086d80268e9307923a5dce922ef471da96e91723637"
+    }
+  ]
+}

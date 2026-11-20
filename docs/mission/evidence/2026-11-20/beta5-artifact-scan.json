@@ -1,0 +1,52 @@
+{
+  "status": "REQUIRES_REVIEW",
+  "source_sha": "07f2f9f25a47f6771e149b38970914911471d4fa",
+  "artifacts": [
+    {
+      "name": "FieldIntelligenceConsole-BETA-Android.apk",
+      "sha256": "43c4e655aa09d813b0dc6fdac7d6d1d2c980d7142714b503727cc8acbdfe3641",
+      "bytes": 60654713,
+      "findings": 0
+    },
+    {
+      "name": "FieldIntelligenceConsole-BETA-Windows-x64.exe",
+      "sha256": "7897735842a5640e875d0d89b61432dc55cd51ae1d5089749fbdadc87fab6718",
+      "bytes": 16188389,
+      "findings": 0
+    },
+    {
+      "name": "field_intelligence_console-4.0.0b5-py3-none-any.whl",
+      "sha256": "cb97002ee7b0b6f99d2ba0189cb5b956e23a61ce382c8beba5dde9a8650de6b0",
+      "bytes": 30096,
+      "findings": 0
+    },
+    {
+      "name": "field_intelligence_console-4.0.0b5.tar.gz",
+      "sha256": "d8c07f9c6d179a5fc3a72be904eb744d83c2a2c8df3e123074f4fb9b164a7e9d",
+      "bytes": 32382,
+      "findings": 0
+    },
+    {
+      "name": "FieldIntelligenceConsole-4.0.0-beta.5-source.zip",
+      "sha256": "c043892d425e92d167e3d0becd1b08cf9c34068247bdf72f758c11af3341309c",
+      "bytes": 531897,
+      "findings": 0
+    }
+  ],
+  "findings": [],
+  "incomplete": [],
+  "entries_scanned": 1163,
+  "uncompressed_bytes_scanned": 100811822,
+  "code_objects_inspected": 14832,
+  "synthetic_fixture_entries": 27,
+  "upstream_notice_entries": 31,
+  "canonical_build_path_count": 0,
+  "manual_review_required": true,
+  "limitations": [
+    "Pattern matching is not complete proof of absence of secrets or personal data.",
+    "Source SHA is caller-supplied; matching clean-build provenance must be verified separately against these asset hashes.",
+    "Synthetic-fixture and upstream-notice path classifications require contextual review.",
+    "Binary strings and embedded Python code are inspected, not executed; arbitrary encrypted/unknown formats are not certified.",
+    "Candidate values and member paths are redacted; local review can correlate entry fingerprints."
+  ]
+}

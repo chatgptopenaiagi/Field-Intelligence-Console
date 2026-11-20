@@ -1,0 +1,58 @@
+{
+  "schema": "fic.field-report",
+  "schema_version": 1,
+  "app_version": "4.0.0-beta.1",
+  "id": "synthetic-report-001",
+  "observed_at": "2026-10-03T12:00:00Z",
+  "location": {
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "accuracy_m": 12.5,
+    "source": "manual",
+    "address": null,
+    "address_source": "unknown",
+    "resolved_at": null
+  },
+  "observation": {
+    "note": "Synthetic observation",
+    "tag": "test"
+  },
+  "providers": [
+    {
+      "provider": "synthetic-success",
+      "state": "success",
+      "freshness": "stale",
+      "fetched_at": "2026-10-03T12:00:00Z",
+      "data": null,
+      "error": null
+    },
+    {
+      "provider": "synthetic-empty",
+      "state": "empty",
+      "freshness": "fresh",
+      "fetched_at": "2026-10-03T12:00:00Z",
+      "data": [],
+      "error": null
+    },
+    {
+      "provider": "synthetic-offline",
+      "state": "offline",
+      "freshness": "unknown",
+      "fetched_at": null,
+      "data": null,
+      "error": null
+    },
+    {
+      "provider": "synthetic-failure",
+      "state": "failure",
+      "freshness": "unknown",
+      "fetched_at": null,
+      "data": null,
+      "error": "Synthetic failure"
+    }
+  ],
+  "ai_advisory": null,
+  "extensions": {
+    "synthetic": true
+  }
+}

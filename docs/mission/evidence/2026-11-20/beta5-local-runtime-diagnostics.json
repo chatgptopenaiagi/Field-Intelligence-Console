@@ -1,0 +1,21 @@
+[
+  {
+    "stage": "install",
+    "apk": "FieldIntelligenceConsole-BETA-Android.apk",
+    "attempt": 1,
+    "exit_code": 0,
+    "result": "PASS"
+  },
+  {
+    "stage": "install",
+    "apk": "app-debug-androidTest.apk",
+    "attempt": 1,
+    "exit_code": 0,
+    "result": "PASS"
+  },
+  {
+    "stage": "instrumentation",
+    "exit_code": 0,
+    "tests": 6
+  }
+]

@@ -1,0 +1,192 @@
+[
+  {
+    "run_id": 44737774859,
+    "status": "REMOTE_METADATA_VERIFIED",
+    "artifacts": [
+      {
+        "id": 14629164482,
+        "name": "fic-candidate-build",
+        "size_in_bytes": 33496733,
+        "expired": false,
+        "created_at": "2026-11-20T12:58:08Z",
+        "expires_at": "2026-11-27T12:58:04Z",
+        "digest": "sha256:0c7d56f3a4ddf992947872e03e1674acfc7717223ad03627ad01f744d2611cbc"
+      },
+      {
+        "id": 14629159640,
+        "name": "fic-inventory-diagnostics",
+        "size_in_bytes": 329,
+        "expired": false,
+        "created_at": "2026-11-20T12:58:09Z",
+        "expires_at": "2026-11-27T12:58:08Z",
+        "digest": "sha256:989f7126c359d1c7f95861767f03030d81505930263539d4667d0c5eb586b621"
+      }
+    ]
+  },
+  {
+    "run_id": 44737761558,
+    "status": "REMOTE_METADATA_VERIFIED",
+    "artifacts": [
+      {
+        "id": 14630051054,
+        "name": "windows-experimental",
+        "size_in_bytes": 15992478,
+        "expired": false,
+        "created_at": "2026-11-20T12:43:43Z",
+        "expires_at": "2026-11-27T12:43:40Z",
+        "digest": "sha256:58bd44f06de120658f6dce855eae9b3f26869264cb8c6b4c8f989cb8fb178b93"
+      },
+      {
+        "id": 14629806568,
+        "name": "windows-evidence",
+        "size_in_bytes": 3152,
+        "expired": false,
+        "created_at": "2026-11-20T12:43:45Z",
+        "expires_at": "2026-11-27T12:43:43Z",
+        "digest": "sha256:14ab25b3e25e290b8af5aa6c0587e60a7b29ec58047744a48d7aa6383e848534"
+      }
+    ]
+  },
+  {
+    "run_id": 44737761362,
+    "status": "REMOTE_METADATA_VERIFIED",
+    "artifacts": [
+      {
+        "id": 14629818272,
+        "name": "fic-android-apks-07f2f9f25a47f6771e149b38970914911471d4fa",
+        "size_in_bytes": 29102508,
+        "expired": false,
+        "created_at": "2026-11-20T12:53:17Z",
+        "expires_at": "2026-11-27T12:53:12Z",
+        "digest": "sha256:61ace04f75f72d0a991c3edd8b44e1ed6398b92fb340ecddf1fb781fcfd9201e"
+      },
+      {
+        "id": 14629264471,
+        "name": "fic-android-evidence-07f2f9f25a47f6771e149b38970914911471d4fa",
+        "size_in_bytes": 33319,
+        "expired": false,
+        "created_at": "2026-11-20T12:53:12Z",
+        "expires_at": "2026-11-27T12:53:11Z",
+        "digest": "sha256:ab837bd77641a1bc2878585c3e9f16129213482a05e3d4a7d8da338582e67282"
+      }
+    ]
+  },
+  {
+    "run_id": 44737761258,
+    "status": "REMOTE_METADATA_VERIFIED",
+    "artifacts": [
+      {
+        "id": 14629740955,
+        "name": "fic-python-ubuntu-latest-07f2f9f25a47f6771e149b38970914911471d4fa",
+        "size_in_bytes": 59856,
+        "expired": false,
+        "created_at": "2026-11-20T12:41:05Z",
+        "expires_at": "2026-11-27T12:41:04Z",
+        "digest": "sha256:7066d0d5558559446bb18875436f92d3937e091c5e865dfbe1bb7a1c5d47ecce"
+      },
+      {
+        "id": 14629601484,
+        "name": "fic-python-evidence-windows-latest-07f2f9f25a47f6771e149b38970914911471d4fa",
+        "size_in_bytes": 2458,
+        "expired": false,
+        "created_at": "2026-11-20T12:41:29Z",
+        "expires_at": "2026-11-27T12:41:28Z",
+        "digest": "sha256:48a8c8b2af15e371a87de508540c82951b7476e1ba78ebcf88410b544be56ede"
+      },
+      {
+        "id": 14629491526,
+        "name": "fic-python-evidence-ubuntu-latest-07f2f9f25a47f6771e149b38970914911471d4fa",
+        "size_in_bytes": 2445,
+        "expired": false,
+        "created_at": "2026-11-20T12:41:06Z",
+        "expires_at": "2026-11-27T12:41:05Z",
+        "digest": "sha256:262445c39770b1820cf7ae9d0c8acb214c53deacb7ca3f2d97c8222cc451c5be"
+      },
+      {
+        "id": 14629146966,
+        "name": "fic-python-windows-latest-07f2f9f25a47f6771e149b38970914911471d4fa",
+        "size_in_bytes": 60230,
+        "expired": false,
+        "created_at": "2026-11-20T12:41:28Z",
+        "expires_at": "2026-11-27T12:41:27Z",
+        "digest": "sha256:f917b4c9b6730bf82d4b0963cbeeac363ab6f8045123fd9a8c26b8003a75eff6"
+      }
+    ]
+  },
+  {
+    "run_id": 44742159009,
+    "status": "REMOTE_METADATA_VERIFIED",
+    "artifacts": [
+      {
+        "id": 14630808033,
+        "name": "windows-evidence",
+        "size_in_bytes": 3152,
+        "expired": false,
+        "created_at": "2026-11-20T13:14:41Z",
+        "expires_at": "2026-11-27T13:14:40Z",
+        "digest": "sha256:717221dd1275631fa486aee107628ca5aedd48af095964ce1ddec35d9cc6acdf"
+      },
+      {
+        "id": 14630329776,
+        "name": "windows-experimental",
+        "size_in_bytes": 15992748,
+        "expired": false,
+        "created_at": "2026-11-20T13:14:39Z",
+        "expires_at": "2026-11-27T13:14:37Z",
+        "digest": "sha256:c71b88728c935f41b0922d832bb3171464a926de87ea9bf44d4883c021df8ea0"
+      }
+    ]
+  },
+  {
+    "run_id": 44742159088,
+    "status": "REMOTE_METADATA_VERIFIED",
+    "artifacts": [
+      {
+        "id": 14631810742,
+        "name": "fic-python-evidence-ubuntu-latest-6335a0e4c64a1d50af2436454a579818b0ea724b",
+        "size_in_bytes": 2444,
+        "expired": false,
+        "created_at": "2026-11-20T13:12:14Z",
+        "expires_at": "2026-11-27T13:12:13Z",
+        "digest": "sha256:a17ca4705ea35623c1f33d7443ab41532b95fa7ec6e3da8dcbce80ac036ae710"
+      },
+      {
+        "id": 14631222795,
+        "name": "fic-python-evidence-windows-latest-6335a0e4c64a1d50af2436454a579818b0ea724b",
+        "size_in_bytes": 2455,
+        "expired": false,
+        "created_at": "2026-11-20T13:12:45Z",
+        "expires_at": "2026-11-27T13:12:45Z",
+        "digest": "sha256:4cb0b86b2ddeb805a8d68c18815ff10da4c4a0a4f46fb1d6aa2ca9577f41153a"
+      },
+      {
+        "id": 14630862400,
+        "name": "fic-python-ubuntu-latest-6335a0e4c64a1d50af2436454a579818b0ea724b",
+        "size_in_bytes": 59925,
+        "expired": false,
+        "created_at": "2026-11-20T13:12:12Z",
+        "expires_at": "2026-11-27T13:12:11Z",
+        "digest": "sha256:9fbb9d10da9ddb6247f2c46c1327acf2a8ddd1f267750e095f90adb927ebc204"
+      },
+      {
+        "id": 14630718598,
+        "name": "fic-python-windows-latest-6335a0e4c64a1d50af2436454a579818b0ea724b",
+        "size_in_bytes": 60293,
+        "expired": false,
+        "created_at": "2026-11-20T13:12:44Z",
+        "expires_at": "2026-11-27T13:12:44Z",
+        "digest": "sha256:83fbceefcd63b366b248cda7bef4a20fd1115f688c4c18014a0060df9c0f6c8d"
+      }
+    ]
+  },
+  {
+    "run_id": 44742158905,
+    "status": "REMOTE_METADATA_VERIFIED",
+    "artifacts": []
+  },
+  {
+    "run_id": 44742159219,
+    "status": "REMOTE_METADATA_VERIFIED",
+    "artifacts": []
+  }
+]

@@ -1,3 +1,12 @@
+# OWNER SUSPENSION — 2026-11-20
+
+ENGINEERING SUSPENDED — RECOVERABLE HANDOFF. The final owner shutdown instruction
+supersedes all autonomous implementation/publication authority below. Read
+NEXT_CODEX_START_HERE.md and FINAL_HANDOFF_2026-11-20.md. A new owner instruction
+is required to resume. No visibility change or release publication during handoff.
+
+## Retained historical mission
+
 # FIC AUTONOMOUS MASTER MISSION
 
 ## Current owner instruction — 2026-11-20

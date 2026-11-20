@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "synthetic_only": true,
+  "source_sha": "07f2f9f25a47f6771e149b38970914911471d4fa",
+  "version": "4.0.0-beta.5",
+  "package": "com.fieldconsole.debug",
+  "installed_apk_sha256": "43c4e655aa09d813b0dc6fdac7d6d1d2c980d7142714b503727cc8acbdfe3641",
+  "actual_saf_open_and_create_document": true,
+  "selected_export_count": 2,
+  "report_import_count": 1,
+  "observed_checks": [
+    "Visible startup BETA/version",
+    "Location permission denial recovered through OK",
+    "VCF preview valid2/invalid0; cancel left empty store",
+    "Import two selected records; repeated import left two",
+    "CSV mapping preview valid1; cancelled without import",
+    "Phone-contact read consent followed by denial; file import remained available",
+    "Selected two contacts and exported through Android CreateDocument",
+    "Imported synthetic report through OpenDocument and confirmation",
+    "Provider success/stale, empty/fresh, offline/unknown, failure/unknown preserved",
+    "Restart retained two contacts and the imported report",
+    "Completed report export through CreateDocument"
+  ],
+  "files": [
+    {
+      "name": "device-network.json",
+      "preserved_name": "device-network-beta5.json",
+      "bytes": 4621,
+      "sha256": "1ae8516868dabd06acd27a766fbda22383d3c4bdeeeb7007b79e48257d6b3415"
+    },
+    {
+      "name": "device-report.json",
+      "preserved_name": "device-report-beta5.json",
+      "bytes": 1258,
+      "sha256": "6c99b35450aaa77e47845f8e1d0f8c8ed78cf48ba456a8e1b96866b8f4d38bf7"
+    }
+  ],
+  "evidence_basis": "Coordinator attestation of executed local UI actions, XML captures, screenshots and pulled synthetic exports; recorded during controlled handoff. No new application execution at handoff.",
+  "limitations": [
+    "Local API34 AOSP x86_64 only; no physical device or live GPS/provider validation",
+    "An initial report export was interrupted by the UI driver force-stop, leaving an empty file. It was retried to completion; only the completed1258-byte export is preserved here.",
+    "This receipt is specific to beta5 bytes; it cannot attest beta6."
+  ]
+}

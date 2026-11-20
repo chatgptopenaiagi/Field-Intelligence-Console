@@ -1,0 +1,2 @@
+# Preserve exact receipt/export bytes and their recorded SHA-256 across platforms.
+*.json -text

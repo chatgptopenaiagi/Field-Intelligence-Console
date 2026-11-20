@@ -1,0 +1,21 @@
+{
+  "status": "INCOMPLETE_PUBLICATION_REVIEW",
+  "source_sha": "6335a0e4c64a1d50af2436454a579818b0ea724b",
+  "history_commits": 42,
+  "history_unique_blobs": 502,
+  "history_paths": 229,
+  "contextually_reviewed_flag_groups": 51,
+  "categories": "Synthetic fixtures, public city examples, historical generic tool paths, scanner strings, upstream license attribution; Codex noreply commit authors",
+  "binary": "Official Gradle wrapper only; protected baseline preserved",
+  "actions_completed_scanned": 56,
+  "actions_pattern_findings": 0,
+  "historical_beta1_assets": {
+    "remote_digest_match": 11,
+    "scanned_packages": 5,
+    "findings": 0,
+    "incomplete": 0
+  },
+  "remaining": "Current/new workflow logs and exact final candidate assets, exchange, downloads and publication review",
+  "authorization": "SUSPENDED: no visibility change or release publication authorized during handoff",
+  "limitations": "Pattern/context review does not prove absence of all possible encoded secrets."
+}

@@ -1,0 +1,84 @@
+{
+  "unit": [
+    {
+      "status": "PASS",
+      "skipped": 0,
+      "failures": 0,
+      "variant": "Debug",
+      "errors": 0,
+      "tests": 97
+    },
+    {
+      "status": "PASS",
+      "skipped": 0,
+      "failures": 0,
+      "variant": "Release",
+      "errors": 0,
+      "tests": 97
+    }
+  ],
+  "utc": "2026-11-20T12:56:24.4240886Z",
+  "runtime_validation": {
+    "reason": "No explicit isolated emulator serial supplied.",
+    "physical_device": "NOT_EXECUTED",
+    "status": "NOT_EXECUTED"
+  },
+  "lint": [
+    {
+      "warning_ids": [
+        "AndroidGradlePluginVersion",
+        "OldTargetApi"
+      ],
+      "errors": 0,
+      "status": "PASS",
+      "variant": "Debug",
+      "warnings": 4
+    },
+    {
+      "warning_ids": [
+        "AndroidGradlePluginVersion",
+        "OldTargetApi"
+      ],
+      "errors": 0,
+      "status": "PASS",
+      "variant": "Release",
+      "warnings": 3
+    }
+  ],
+  "source_dirty": false,
+  "build_tools": "34.0.0",
+  "limitations": "Static ABI/signature checks are not ARM64 physical-device proof. CI status requires actual workflow readback. Release artifact selection remains explicit.",
+  "status": "PASS",
+  "gradle": "8.7",
+  "artifacts": [
+    {
+      "version": "4.0.0-beta.5",
+      "version_code": 8,
+      "static_abis": "'arm64-v8a' 'armeabi-v7a' 'x86' 'x86_64'",
+      "sha256": "43c4e655aa09d813b0dc6fdac7d6d1d2c980d7142714b503727cc8acbdfe3641",
+      "package": "com.fieldconsole.debug",
+      "signing": "Android debug/testing identity; not production signing",
+      "name": "app-debug.apk",
+      "bytes": 60654713,
+      "variant": "debug",
+      "certificate_sha256": "3d19d2bf5995a48c262fa41184978195d68526810aa637eb8bab7527029e095f",
+      "signature_verified": true
+    },
+    {
+      "version": "4.0.0-beta.5",
+      "version_code": 8,
+      "static_abis": "'arm64-v8a' 'armeabi-v7a' 'x86' 'x86_64'",
+      "sha256": "32fd5e3685936e939bc0afc17ed672058882f4e9782bd64e65fc5ca75ef06aea",
+      "package": "com.fieldconsole",
+      "signing": "Android debug/testing identity; not production signing",
+      "name": "app-release.apk",
+      "bytes": 44508386,
+      "variant": "release",
+      "certificate_sha256": "3d19d2bf5995a48c262fa41184978195d68526810aa637eb8bab7527029e095f",
+      "signature_verified": true
+    }
+  ],
+  "source_sha": "07f2f9f25a47f6771e149b38970914911471d4fa",
+  "android_sdk": 34,
+  "runtime": "openjdk version \"17.0.21\" 2026-10-20"
+}

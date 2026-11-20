@@ -1,0 +1,25 @@
+{
+  "development_override": false,
+  "packaging": "wheel and sdist built",
+  "runtime": "Python 3.14.7",
+  "unit_skipped": 0,
+  "source_dirty": false,
+  "limitations": "This receipt describes local gate execution; it is not a GitHub CI or final release publication claim.",
+  "status": "PASS",
+  "unit_tests": 47,
+  "isolated_wheel": "six checks passed outside checkout, including offline diagnostics and shared invalid-contract vectors",
+  "source_sha": "07f2f9f25a47f6771e149b38970914911471d4fa",
+  "unit_failures": 0,
+  "artifacts": [
+    {
+      "bytes": 30096,
+      "name": "field_intelligence_console-4.0.0b5-py3-none-any.whl",
+      "sha256": "cb97002ee7b0b6f99d2ba0189cb5b956e23a61ce382c8beba5dde9a8650de6b0"
+    },
+    {
+      "bytes": 32382,
+      "name": "field_intelligence_console-4.0.0b5.tar.gz",
+      "sha256": "d8c07f9c6d179a5fc3a72be904eb744d83c2a2c8df3e123074f4fb9b164a7e9d"
+    }
+  ]
+}
