@@ -1,4 +1,20 @@
-# ACTIVE MISSION 001 — 2026-11-20
+# ACTIVE MISSION 001 — beta4 candidate, 2026-11-20
+
+Latest: beta3 source8c6e7e5/tagv4.0.0-beta.3 is preserved, not published.
+Windows44736037415 passed14focused/28packaged/7native, then failed a stale numeric
+PE assertion still expecting beta2. Python44736037318 PASS; local clean wheel47tests
+and six installation checks PASS. Android44736037528 still running at this update.
+Cancelled owned combined44736098439 because its Windows gate had the same known
+assertion defect. Do not rerun unchanged. New beta4/code7/Pythonb4/Windows4.0.0.4
+fixes numeric validation and adds source version consistency preflight.
+NEXT: commit/audit/push/tag beta4, run complete hosted release gates, local SAF and
+hosted exact-artifact exchange. Public audit scanned44completed Actions runs with
+zero findings; new runs still require review. Repo remains PRIVATE until final review.
+Project SDK installation session43171 completing; no owned emulator started yet.
+Existing5556 is unrelated. New local helper android_ui.py restricts to owned5582
+and expected AVD FIC_MISSION001_API34. Create it only in new .local AVd directory.
+
+## Earlier beta3 checkpoint (superseded)
 
 The owner resumed autonomous implementation and explicitly requested PUBLIC BETA
 delivery. This supersedes the older October pause/private-only boundary below.

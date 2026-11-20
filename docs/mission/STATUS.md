@@ -1,4 +1,14 @@
-# MISSION 001 — IN PROGRESS, 2026-11-20
+# MISSION 001 — IN PROGRESS, beta4 candidate
+
+Beta3 source8c6e7e5 is committed/pushed/tagged and remains unpublished. Python
+local clean wheel and hosted CI PASS. Windows14focused/28packaged/7native PASS,
+then final metadata FAIL due to stale numeric beta2 assertion in the gate.
+Corrected that assertion and added early cross-platform source version validation.
+New beta4/code7 candidate required; beta3 tag remains immutable. Its combined run
+was cancelled once the shared Windows defect was proven. Runtime/publication
+remain pending. See RESUME.md for active work and original discovery below.
+
+## Earlier beta3 checkpoint
 
 Owner resumed the mission and authorized public BETA in the existing repository.
 Starting commit0c0775d; recovered baseline and both beta tags preserved.

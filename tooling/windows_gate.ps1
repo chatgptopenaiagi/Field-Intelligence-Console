@@ -7,6 +7,8 @@ param(
 $ErrorActionPreference = 'Stop'
 $projectRoot = (Resolve-Path "$PSScriptRoot/..").Path
 Set-Location -LiteralPath $projectRoot
+& $Python tooling/check_versions.py
+if ($LASTEXITCODE -ne 0) { throw 'Release version consistency check failed.' }
 New-Item -ItemType Directory -Force $OutputRoot | Out-Null
 $OutputRoot = (Resolve-Path -LiteralPath $OutputRoot).Path
 foreach ($receiptName in @('gate-summary.json','pe-metadata.json','focused-tests.json','packaged-ui.json','native/native-ui.json','native/native-restart.json')) {
@@ -30,7 +32,7 @@ if (-not (Test-Path -LiteralPath $runtime)) {
 if ($LASTEXITCODE -ne 0) { throw 'Windows build dependencies failed.' }
 if (-not $Wheel) {
     & "$PSScriptRoot/python_gate.ps1" -Python $Python -OutputRoot "$OutputRoot/python" -AllowDirtyDevelopment:$AllowDirtyDevelopment
-    $Wheel = "$OutputRoot/python/packages/field_intelligence_console-4.0.0b3-py3-none-any.whl"
+    $Wheel = "$OutputRoot/python/packages/field_intelligence_console-4.0.0b4-py3-none-any.whl"
 }
 $Wheel = (Resolve-Path -LiteralPath $Wheel).Path
 & $runtime -m pip install --disable-pip-version-check --force-reinstall --constraint windows/constraints.txt $Wheel
@@ -40,7 +42,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Windows focused UI tests failed; inspect local
 $focusedReceipt = Get-Content -Raw "$OutputRoot/focused-tests.json" | ConvertFrom-Json
 if ($focusedReceipt.tests -lt 14 -or $focusedReceipt.skipped -ne 0 -or $focusedReceipt.status -ne 'PASS') { throw 'Focused test evidence is incomplete.' }
 & "$projectRoot/windows/build.ps1" -Wheel $Wheel -Python $runtime -Output "$OutputRoot/artifacts" *> "$OutputRoot/package.log"
-$exe = Join-Path $OutputRoot 'artifacts/FieldIntelligenceConsole-4.0.0-beta.3-windows-x64.exe'
+$exe = Join-Path $OutputRoot 'artifacts/FieldIntelligenceConsole-4.0.0-beta.4-windows-x64.exe'
 if (-not (Test-Path -LiteralPath $exe)) { throw 'Windows EXE missing.' }
 $profile = Join-Path ([IO.Path]::GetTempPath()) ('FIC-synthetic-gate-' + [guid]::NewGuid().ToString('N'))
 $receipt = Join-Path $OutputRoot 'packaged-ui.json'
@@ -68,9 +70,10 @@ import hashlib,importlib.metadata,json,pathlib,pefile,sys
 p=pathlib.Path(sys.argv[1]);pe=pefile.PE(str(p))
 assert pe.FILE_HEADER.Machine==0x8664 and pe.OPTIONAL_HEADER.Subsystem==2
 strings={k.decode():v.decode() for group in pe.FileInfo for block in group if block.Key==b'StringFileInfo' for table in block.StringTable for k,v in table.entries.items()}
-assert strings['FileVersion']=='4.0.0.3' and strings['ProductVersion']=='4.0.0-beta.3'
+assert strings['FileVersion']=='4.0.0.4' and strings['ProductVersion']=='4.0.0-beta.4'
 fixed=pe.VS_FIXEDFILEINFO[0]
-assert (fixed.FileVersionMS,fixed.FileVersionLS)==(4<<16,2)
+major,minor,patch,build=map(int,strings['FileVersion'].split('.'))
+assert (fixed.FileVersionMS,fixed.FileVersionLS)==((major<<16)|minor,(patch<<16)|build)
 print(json.dumps({"machine":"AMD64","subsystem":"Windows GUI","file_version":strings['FileVersion'],"product_version":strings['ProductVersion'],"python":sys.version.split()[0],"packager":"PyInstaller "+importlib.metadata.version('pyinstaller'),"bytes":p.stat().st_size,"sha256":hashlib.sha256(p.read_bytes()).hexdigest()}))
 '@
 $metadata = $metadataScript | & $runtime - $exe

@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.0-beta.4 — public beta candidate
+
+Beta3's Windows GUI/native workflows passed, but its final PE check retained a
+beta2 numeric assertion. Derive the fixed PE fields from the already-verified
+version string and check Android/Python/Windows versions before packaging.
+Preserve beta3's tag and failed evidence. Android code7, Python4.0.0b4 and Windows
+4.0.0.4 identify the new candidate; all final gates must run again.
+
 ## 4.0.0-beta.3 — public beta candidate
 
 - Preserve both earlier beta tags and the recovered v3 baseline; Android code 6,

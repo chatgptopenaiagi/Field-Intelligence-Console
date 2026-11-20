@@ -12,6 +12,8 @@ param(
 $ErrorActionPreference = 'Stop'
 $projectRoot = (Resolve-Path -LiteralPath "$PSScriptRoot/..").Path
 Set-Location -LiteralPath $projectRoot
+& $Python tooling/check_versions.py
+if ($LASTEXITCODE -ne 0) { throw 'Release version consistency check failed.' }
 if (@(git status --porcelain).Count -ne 0) { throw 'Release candidate requires a clean source tree; no dirty bypass exists.' }
 $sourceSha = (git rev-parse HEAD).Trim()
 if ($LASTEXITCODE -ne 0) { throw 'Cannot resolve source commit.' }
