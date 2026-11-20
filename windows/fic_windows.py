@@ -18,7 +18,7 @@ from field_intelligence_console import (
     parse_import, query_network, validate_report, now_iso,
 )
 
-VERSION = "4.0.0-beta.4"
+VERSION = "4.0.0-beta.5"
 MAX_BYTES = 5 * 1024 * 1024
 SCOPES = ("street", "radius", "neighborhood", "city", "region", "country", "building")
 ADDRESS_FIELDS = ("street", "neighborhood", "locality", "region", "postal_code", "country")
@@ -88,8 +88,8 @@ class Workstation:
         root.geometry("1120x780")
         root.minsize(800, 560)
         root.protocol("WM_DELETE_WINDOW", self.close)
-        ttk.Label(root, text="FIELD INTELLIGENCE CONSOLE", font=("Segoe UI", 18, "bold")).pack(anchor="w", padx=16, pady=(12, 0))
-        ttk.Label(root, text="ONE TAP. INSTANT AWARENESS.").pack(anchor="w", padx=16, pady=6)
+        ttk.Label(root, text="FIELD INTELLIGENCE CONSOLE · BETA", font=("Segoe UI", 18, "bold")).pack(anchor="w", padx=16, pady=(12, 0))
+        ttk.Label(root, text=f"ONE TAP. INSTANT AWARENESS.  |  {VERSION}").pack(anchor="w", padx=16, pady=6)
         self.tabs = ttk.Notebook(root)
         self.tabs.pack(fill="both", expand=True, padx=12)
         self.reports_tab, self.network_tab, self.place_tab, self.settings_tab = [ttk.Frame(self.tabs, padding=10) for _ in range(4)]

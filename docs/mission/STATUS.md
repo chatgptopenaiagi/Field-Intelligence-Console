@@ -1,4 +1,13 @@
-# MISSION 001 — IN PROGRESS, beta4 candidate
+# MISSION 001 — IN PROGRESS, beta5 candidate
+
+Beta4 hosted Windows gate PASS (including PE metadata), Python CI PASS. Its tag
+and source0f24518 remain preserved. UI acceptance review found missing prominent
+Android BETA label; add main-screen BETA/version and matching desktop header.
+Beta5/code8 candidate now requires all final gates. No release published, repository
+still private pending public exposure audit. Owned isolated emulator5582 booted;
+no other emulator/device or personal database was used. See RESUME.md.
+
+## Earlier beta4 checkpoint
 
 Beta3 source8c6e7e5 is committed/pushed/tagged and remains unpublished. Python
 local clean wheel and hosted CI PASS. Windows14focused/28packaged/7native PASS,

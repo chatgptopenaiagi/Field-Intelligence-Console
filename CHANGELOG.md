@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.0-beta.5 — public beta candidate
+
+Make BETA and the application version visible on Android's startup screen, retain
+the BETA label in its top bar, and show the desktop BETA header/version. Beta4's
+Windows gate passed completely; its tag remains preserved. Android code8,
+Python4.0.0b5 and Windows4.0.0.5 identify this candidate. Full runtime verification
+and public delivery remain required before publication.
+
 ## 4.0.0-beta.4 — public beta candidate
 
 Beta3's Windows GUI/native workflows passed, but its final PE check retained a

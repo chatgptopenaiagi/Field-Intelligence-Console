@@ -56,8 +56,8 @@ The exchange workflow accepts only explicitly reviewed synthetic SAF exports,
 binds them to the actual distributed APK hash, and tests the exact released wheel
 and EXE on an isolated runner. Publication still requires asset/download review.
 
-Version mapping: FIC `4.0.0-beta.4`; Python `4.0.0b4`; Android code7; Windows numeric
-file version4.0.0.4. Shared data contracts v1 and Room v3 are independent. Android
+Version mapping: FIC `4.0.0-beta.5`; Python `4.0.0b5`; Android code8; Windows numeric
+file version4.0.0.5. Shared data contracts v1 and Room v3 are independent. Android
 debug/testing signing and Windows unsigned status must be explicit in every release.
 Never uninstall user data to bypass a signing mismatch or disable security warnings.
 

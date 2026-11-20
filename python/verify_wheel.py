@@ -40,7 +40,7 @@ with fic.Store('synthetic.sqlite') as store:
     store.save_report(report)
     assert store.get_report(report['id']) == report
     assert 'network' not in fic.ai_packet(report)
-assert metadata.version('field-intelligence-console') == '4.0.0b4'
+assert metadata.version('field-intelligence-console') == '4.0.0b5'
 for case in json.loads(resource.joinpath('fixtures','invalid-contracts.json').read_text('utf-8'))['cases']:
     document=json.loads(resource.joinpath('fixtures',case['fixture']).read_text('utf-8'))
     target=document

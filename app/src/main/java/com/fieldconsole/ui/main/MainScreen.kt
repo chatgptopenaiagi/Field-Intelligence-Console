@@ -19,9 +19,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.fieldconsole.BuildConfig
 import com.fieldconsole.data.local.entity.FieldEntry
 import com.fieldconsole.intent.IntentDispatcher
 import com.fieldconsole.location.GeoContext
@@ -168,10 +170,11 @@ private fun FicTopBar(
         title = {
             Column {
                 Text("FIELD INTELLIGENCE",
-                     style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                Text("CONSOLE",
+                     style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold,
+                     maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text("CONSOLE · BETA",
                      style = MaterialTheme.typography.labelLarge,
-                     color = MaterialTheme.colorScheme.primary, letterSpacing = 4.sp)
+                     color = MaterialTheme.colorScheme.primary, letterSpacing = 1.sp)
             }
         },
         actions = {
@@ -219,6 +222,10 @@ private fun IdleContent(onScan: () -> Unit) {
                 textAlign = TextAlign.Center,
                 color     = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
             )
+            Spacer(Modifier.height(12.dp))
+            Text("BETA · ${BuildConfig.VERSION_NAME}",
+                 style = MaterialTheme.typography.labelLarge,
+                 color = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.height(48.dp))
             Button(
                 onClick  = onScan,

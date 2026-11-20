@@ -11,7 +11,7 @@
 | `windows/` | Native Tk/ttk workstation using the installed wheel. PyInstaller bundles the runtime and resources into a portable Windows x64 GUI for reports, history and contact workflows. |
 | `shared/` | Versioned schemas, contract rules and synthetic fixtures consumed by Kotlin and Python. Separate executable implementations require real interoperability tests. |
 
-Application versions map to Android/Windows `4.0.0-beta.4`, Android code 7, Python `4.0.0b4` and Windows numeric version `4.0.0.4`. Exchange schemas are version 1; Room is version 3. These domains are independent.
+Application versions map to Android/Windows `4.0.0-beta.5`, Android code 8, Python `4.0.0b5` and Windows numeric version `4.0.0.5`. Exchange schemas are version 1; Room is version 3. These domains are independent.
 
 ## Persistence and state
 

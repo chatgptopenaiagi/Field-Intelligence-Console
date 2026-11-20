@@ -82,7 +82,7 @@ class AndroidRuntimeTests(unittest.TestCase):
             apk.write_bytes(b"synthetic-not-an-apk")
             tests.write_bytes(b"synthetic-not-a-test-apk")
             build = dict(status="BUILD_PASS", source_dirty=False, source_sha="a" * 40,
-                         tag="v4.0.0-beta.4", version="4.0.0-beta.4",
+                         tag="v4.0.0-beta.5", version="4.0.0-beta.5",
                          artifacts=[dict(name=apk.name, sha256=runtime.digest(apk))],
                          instrumentation_apk_sha256=runtime.digest(tests))
             (root / "build-receipt.json").write_text(json.dumps(build))

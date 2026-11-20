@@ -1,4 +1,22 @@
-# ACTIVE MISSION 001 — beta4 candidate, 2026-11-20
+# ACTIVE MISSION 001 — beta5 candidate, 2026-11-20
+
+Latest: beta4 source0f24518/tagv4.0.0-beta.4 is preserved. Hosted Windows44737100285
+PASS including14/28/7 and PE metadata; Python44737100291 PASS. Acceptance review
+found Android main UI lacked visible BETA despite package version. Add Android
+top-bar/startup BETA/version and desktop header/version. Beta5/code8/Pythonb5/
+Windows4.0.0.5 is the new candidate. Combined beta4 run44737108366 was cancelled
+before publication because a rebuild is required for the actual visible labels.
+Freeze/tag beta5 only after review; do not retarget older candidates.
+
+Owned local AVD FIC_MISSION001_API34 on emulator-5582 is now booted with WHPX.
+Launcher PID22752, receipt .local/evidence/mission001-20261120/emulator-owner.json.
+Default10GiB partition failed for space; this new empty AVD uses6GiB. No old data
+was deleted. Existing emulator5556 remains unrelated. Project-local SDK34 and
+Temurin17 fully installed; .local/android-sdk/cmdline-tools copied from installed
+tooling so avdmanager resolves this SDK instead of the unrelated global SDK37.
+Use local android_ui.py only after installing the final exact distributed APK.
+
+## Earlier beta4 checkpoint (superseded)
 
 Latest: beta3 source8c6e7e5/tagv4.0.0-beta.3 is preserved, not published.
 Windows44736037415 passed14focused/28packaged/7native, then failed a stale numeric
