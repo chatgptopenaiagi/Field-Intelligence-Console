@@ -1,4 +1,11 @@
-# Field Intelligence Console
+# 🚀 FIELD INTELLIGENCE CONSOLE
+## PUBLIC BETA
+
+[Beta releases](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases)
+
+**4.0.0-beta.3 is undergoing release verification.** Download only a published
+prerelease with all three platform assets and SHA-256 checksums. Earlier beta tags
+are preserved candidates; a tag alone does not establish a working release.
 
 **ONE TAP. INSTANT AWARENESS.**
 
@@ -9,24 +16,26 @@ an independently installable Python core. This is experimental software.
 
 ## Get and run FIC
 
-Artifacts are delivered through the authorized
-[private repository releases](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases).
-Access requires repository permission. See the release's actual assets/status;
+Artifacts are delivered through the original
+[repository releases](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases).
+Public publication follows the complete runtime and privacy review. See the release's actual assets/status;
 a source checkout or an unfinished draft is not a completed binary release.
 
-- **Android:** install the explicitly labeled debug/testing APK on Android 10/API29
+- **Android:** install `FieldIntelligenceConsole-BETA-Android.apk`, a debug/testing APK, on Android 10/API29
   or newer. It uses `com.fieldconsole.debug`; the release application identity remains
   `com.fieldconsole`. Check signing compatibility before upgrading an existing app.
   Never uninstall a working installation to bypass a certificate mismatch. SCAN
   records coordinates, measurement time and reported accuracy; resolution is not
   guaranteed. Tools opens Known Network, field reports, appearance and settings.
-- **Windows x64:** extract/download the portable EXE and run it. Python/Java/Gradle
+- **Windows x64:** download `FieldIntelligenceConsole-BETA-Windows-x64.exe` and run it. Python/Java/Gradle
   are not required by the packaged user application. It is unsigned; verify the
   published SHA-256 and provenance without disabling Windows security. Use reports,
   Known Network and manually/report-selected places in one native window. Desktop
   location is not presented as GPS. Data persists in the current user's local app data.
 - **Python/developers:** install the wheel in a virtual environment with
-  `python -m pip install <wheel-file>`, then `fic --help`. The core has no GUI/server/
+  `python -m pip install field_intelligence_console-4.0.0b3-py3-none-any.whl`, then
+  `fic --help` or `fic diagnostics`. Diagnostics checks packaged schemas offline
+  without accessing a user database. The core has no GUI/server/
   credential requirement for local workflows. Python 3.14 is locally tested;
   the package declares 3.11+, with other interpreter coverage documented by CI.
 

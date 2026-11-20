@@ -83,7 +83,7 @@ try {
         status='PASS'; source_sha=$sourceSha; source_dirty=$sourceDirty;
         development_override=[bool]$AllowDirtyDevelopment;
         runtime=$runtime; unit_tests=$executedTests; unit_failures=0; unit_skipped=0; packaging='wheel and sdist built';
-        isolated_wheel='five checks passed outside checkout, including shared invalid-contract vectors';
+        isolated_wheel='six checks passed outside checkout, including offline diagnostics and shared invalid-contract vectors';
         artifacts=$artifacts;
         limitations='This receipt describes local gate execution; it is not a GitHub CI or final release publication claim.'
     } | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $receiptPath -Encoding utf8

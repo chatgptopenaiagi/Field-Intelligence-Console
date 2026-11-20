@@ -23,11 +23,14 @@ if ($Mode -eq 'Cleanup') {
     exit 0
 }
 if ($env:CANDIDATE_TAG -notmatch '^v\d+\.\d+\.\d+-beta\.\d+$') { throw 'Trusted experimental tag required.' }
+if ($env:GITHUB_EVENT_NAME -notin @('push','workflow_dispatch') -or $env:GITHUB_REF -ne "refs/tags/$env:CANDIDATE_TAG") {
+    throw 'Signing requires a trusted tag push or dispatch on the exact candidate tag; pull requests cannot restore it.'
+}
 $head = (git rev-parse HEAD).Trim()
 if ($LASTEXITCODE -ne 0 -or (git cat-file -t "refs/tags/$env:CANDIDATE_TAG") -ne 'tag' -or
     (git rev-parse "refs/tags/$($env:CANDIDATE_TAG)^{commit}").Trim() -ne $head) { throw 'Checked-out source is not the annotated candidate.' }
 $repository = gh repo view $env:GITHUB_REPOSITORY --json nameWithOwner,visibility | ConvertFrom-Json
-if ($LASTEXITCODE -ne 0 -or $repository.nameWithOwner -ne $env:GITHUB_REPOSITORY -or $repository.visibility -ne 'PRIVATE') { throw 'Expected private repository not verified.' }
+if ($LASTEXITCODE -ne 0 -or $repository.nameWithOwner -ne $env:GITHUB_REPOSITORY -or $repository.visibility -notin @('PRIVATE','PUBLIC')) { throw 'Expected original repository not verified.' }
 if (Test-Path -LiteralPath $keyPath) { throw 'Unexpected existing runner debug key; refusing to replace it.' }
 if (-not $env:FIC_DEBUG_KEYSTORE_B64 -or $env:FIC_DEBUG_KEYSTORE_B64.Length -gt 45000) { throw 'Retained testing key is unavailable or oversized; no replacement will be generated.' }
 $bytes = $null

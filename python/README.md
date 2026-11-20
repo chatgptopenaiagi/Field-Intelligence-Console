@@ -5,7 +5,7 @@ geographic queries and a CLI. Saved addresses are **not current physical presenc
 No implicit network, contacts, telemetry or AI calls. Requires Python 3.11 or newer;
 the mission's local compatibility evidence is recorded in docs/mission/M2_CORE.md.
 
-Install the wheel: `python -m pip install field_intelligence_console-4.0.0b2-py3-none-any.whl`.
+Install the wheel: `python -m pip install field_intelligence_console-4.0.0b3-py3-none-any.whl`.
 Remove it: `python -m pip uninstall field-intelligence-console`. The caller owns its
 explicit local database/export files; uninstall does not delete those files.
 
@@ -39,3 +39,5 @@ VCF/CSV do not preserve FIC geography/provenance; review warnings before saving.
 The store uses unencrypted SQLite in a caller-selected OS-protected directory. No
 destructive fallback. Deletion does not guarantee forensic erasure or removal from
 independent backups/exports. Tests use disposable synthetic stores only.
+
+Run `fic diagnostics` to check version and bundled schemas offline without opening user data.

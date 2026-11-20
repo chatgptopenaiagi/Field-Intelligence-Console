@@ -1,3 +1,32 @@
+# ACTIVE MISSION 001 — 2026-11-20
+
+The owner resumed autonomous implementation and explicitly requested PUBLIC BETA
+delivery. This supersedes the older October pause/private-only boundary below.
+Canonical root C:/xampp/FieldIntelligenceConsole; branch v4-development.
+Starting SHA0c0775d. Preserve baseline and beta1/beta2 tags; use NEW beta3/code6.
+Read DISCOVERY_2026-11-20.md and current top entries before historical records.
+
+Beta2 combined37121395951 actually FAILED installation (package-service Broken pipe)
+and its artifacts expired. No beta2 release. New helper waits for package service,
+uses no-streaming install-r, bounded transient retries, checks exact APK hashes and
+retains sanitized diagnostics. CLI now has offline diagnostics. Public release
+uses requested BETA filenames; exact original repository/tag/signing gates remain.
+
+NEXT: commit/audit/push candidate, run target CI, freeze new annotated beta3 tag,
+run release workflow, inspect every result. Download actual built APK and run
+synthetic SAF exchange on an OWNED isolated emulator; existing5556 is unrelated.
+Run exact hosted wheel/EXE exchange, complete public source/Actions-log/release-asset
+review, change original repo visibility, draft/upload/download-verify/publish.
+Do not call COMPLETE until every mandatory target and public release is verified.
+
+Local logs under .local/evidence/mission001-20261120. Core venv rebound to3.14.6;
+project-local verified JDK17 under .local/tools/jdk17 and SDK34 under
+.local/android-sdk. Old environments/AVDs/evidence preserved. No real contact data.
+The owner's1 PROMT.txt remains untouched and excluded locally via Git info/exclude.
+No delegated agents. Coordinator owns all source/Git/SDK/final builds.
+
+## Historical checkpoint below (superseded)
+
 # RESUME NEXT SESSION — OWNER PAUSED THE MISSION
 
 Usage/credit preservation on2026-10-03 supersedes autonomous continuation below.

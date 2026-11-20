@@ -1,5 +1,14 @@
 # FIC AUTONOMOUS MASTER MISSION
 
+## Current owner instruction — 2026-11-20
+
+MISSION 001 resumed this work at `C:\xampp\FieldIntelligenceConsole` and explicitly
+requests a PUBLIC BETA in the original repository. This supersedes the older
+private-only delivery restriction, old workspace path and October pause below.
+Preserve all protected tags, history, package identities, privacy and test gates.
+Do not create another repository. Verify all three real artifacts before publishing.
+Read RESUME.md for the active checkpoint; the remainder is the retained earlier mission.
+
 MULTI-PLATFORM PRODUCTIZATION + KNOWN NETWORK + GITHUB DELIVERY
 Revision: 2026-10-03.1
 

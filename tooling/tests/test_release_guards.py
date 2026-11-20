@@ -19,7 +19,7 @@ class ReleaseGuards(unittest.TestCase):
         self.windows = dict(status="PASS", source_sha=self.sha, worktree_dirty=False,
                             focused_tests=14, packaged_widget_checks=28, native_checks=7)
         self.python = dict(status="PASS", source_sha=self.sha, source_dirty=False,
-                           unit_tests=45, unit_failures=0, unit_skipped=0, isolated_wheel="Executed")
+                           unit_tests=47, unit_failures=0, unit_skipped=0, isolated_wheel="Executed")
 
     def check(self):
         release.validate_receipts(self.android, self.windows, self.python, self.sha)

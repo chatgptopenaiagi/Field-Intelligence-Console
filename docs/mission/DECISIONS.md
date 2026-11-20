@@ -1,3 +1,20 @@
+# MISSION 001 decisions — 2026-11-20
+
+- Current explicit public-release instruction supersedes old private-only mission;
+  preserve original repository and complete contextual review before visibility change.
+- Beta1/beta2 tags remain immutable. New beta3 maps to Python4.0.0b3, Androidcode6,
+  Windows4.0.0.3. Existing schemas and application IDs remain unchanged.
+- Keep Kotlin/Compose and Python/Tk/PyInstaller; retain cumulative recovered features.
+- Beta2 install failure is concrete package-service transport evidence. Use package
+  readiness and official ADB no-streaming, with bounded transient-only retry.
+  https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/client/commandline.cpp
+- Public visibility also exposes Actions history/logs; include them in review:
+  https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility
+- All runtime tests use explicit isolated emulators and synthetic profiles/data.
+  Existing emulator5556 is unrelated. No desktop focus takeover for native tests.
+- Requested APK/EXE filenames carry BETA; versions/hashes/source remain in metadata,
+  tag, wheel name, manifest, checksums and source archive.
+
 # Decisions ledger
 
 - Preserve Android root and package IDs. Add shared/, python/, windows/, tooling/.

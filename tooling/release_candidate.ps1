@@ -99,11 +99,11 @@ if ($Stage -in @('Build','All')) {
     if ($wheel.Count -ne 1 -or $sdist.Count -ne 1) { throw 'Expected one tested wheel and one sdist.' }
     $windowsOutput = Join-Path $OutputRoot 'windows-gate'
     Invoke-Bounded -Program $pwsh -Arguments @('-NoProfile','-File',"$PSScriptRoot/windows_gate.ps1",'-Python',$Python,'-Wheel',$wheel[0].FullName,'-OutputRoot',$windowsOutput) -Name 'windows' -Seconds 1800
-    $apkName = "FieldIntelligenceConsole-$version-android-debug.apk"
-    $exeName = "FieldIntelligenceConsole-$version-windows-x64.exe"
+    $apkName = 'FieldIntelligenceConsole-BETA-Android.apk'
+    $exeName = 'FieldIntelligenceConsole-BETA-Windows-x64.exe'
     Copy-Item -LiteralPath app/build/outputs/apk/debug/app-debug.apk -Destination (Join-Path $assets $apkName)
     Copy-Item -LiteralPath app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk -Destination "$testAssets/app-debug-androidTest.apk"
-    Copy-Item -LiteralPath "$windowsOutput/artifacts/$exeName" -Destination (Join-Path $assets $exeName)
+    Copy-Item -LiteralPath "$windowsOutput/artifacts/FieldIntelligenceConsole-$version-windows-x64.exe" -Destination (Join-Path $assets $exeName)
     Copy-Item -LiteralPath $wheel[0].FullName -Destination $assets
     Copy-Item -LiteralPath $sdist[0].FullName -Destination $assets
     $sourceZip = Join-Path $assets "FieldIntelligenceConsole-$version-source.zip"

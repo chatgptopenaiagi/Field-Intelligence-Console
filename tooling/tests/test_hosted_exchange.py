@@ -29,18 +29,18 @@ class HostedExchangeTest(unittest.TestCase):
         v=self.values();v['android_receipt'][1]['files'][0]['sha256']='f'*64
         with self.assertRaises(h.Rejected):h.validate_inputs(v,'a'*64)
     def test_dispatch_is_data(self):
-        event={'inputs':{'release_tag':'v4.0.0-beta.2; echo bad','candidate_run_id':'123'}}
+        event={'inputs':{'release_tag':'v4.0.0-beta.3; echo bad','candidate_run_id':'123'}}
         with self.assertRaises(h.Rejected):h.inputs(event)
     def asset_fixture(self,root):
-        source='b'*40;version='4.0.0-beta.2';prefix='FieldIntelligenceConsole-'+version
-        names=[prefix+'-android-debug.apk',prefix+'-windows-x64.exe','field_intelligence_console-4.0.0b2-py3-none-any.whl','field_intelligence_console-4.0.0b2.tar.gz',prefix+'-source.zip','SBOM.cdx.json','THIRD_PARTY_NOTICES.txt','artifact-inventory.json','RELEASE_NOTES.md']
+        source='b'*40;version='4.0.0-beta.3';prefix='FieldIntelligenceConsole-'+version
+        names=['FieldIntelligenceConsole-BETA-Android.apk','FieldIntelligenceConsole-BETA-Windows-x64.exe','field_intelligence_console-4.0.0b3-py3-none-any.whl','field_intelligence_console-4.0.0b3.tar.gz',prefix+'-source.zip','SBOM.cdx.json','THIRD_PARTY_NOTICES.txt','artifact-inventory.json','RELEASE_NOTES.md']
         for name in names:(root/name).write_bytes(b'synthetic-not-executable')
         with zipfile.ZipFile(root/names[4],'w') as z:z.comment=source.encode();z.writestr('README.md','synthetic')
         records=[{'name':n,'bytes':(root/n).stat().st_size,'sha256':h.sha((root/n).read_bytes())} for n in names]
         pin=json.loads((ROOT/'shared/release-signing.json').read_text(encoding='utf-8'))['android_testing_certificate_sha256']
         android={'status':'PASS','source_sha':source,'source_dirty':False,'unit':[{'variant':v,'status':'PASS','tests':97,'failures':0,'errors':0,'skipped':0} for v in ('Debug','Release')],'lint':[{'status':'PASS','errors':0}]*2,'runtime_validation':{'status':'PASS','tests':6},'artifacts':[{**records[0],'variant':v,'certificate_sha256':pin,'signature_verified':True,'package':'com.fieldconsole.debug' if v=='debug' else 'com.fieldconsole','version':version} for v in ('debug','release')]}
         windows={'status':'PASS','source_sha':source,'worktree_dirty':False,'focused_tests':14,'packaged_widget_checks':28,'native_checks':7,'binary_metadata':{**records[1],'machine':'AMD64','subsystem':'Windows GUI','product_version':version}}
-        python={'status':'PASS','source_sha':source,'source_dirty':False,'unit_tests':45,'unit_failures':0,'unit_skipped':0,'isolated_wheel':'passed','artifacts':copy.deepcopy(records[2:4])}
+        python={'status':'PASS','source_sha':source,'source_dirty':False,'unit_tests':47,'unit_failures':0,'unit_skipped':0,'isolated_wheel':'passed','artifacts':copy.deepcopy(records[2:4])}
         m={'source_sha':source,'tag':'v'+version,'version':version,'artifacts':records,'android':android,'windows':windows,'python':python}
         self.write_manifest(root,m);return m
     def write_manifest(self,root,m):
@@ -68,10 +68,10 @@ class HostedExchangeTest(unittest.TestCase):
             next(x for x in m['artifacts'] if x['name']==archive.name).update(sha256=h.sha(archive.read_bytes()),bytes=archive.stat().st_size);self.write_manifest(root,m)
             with self.assertRaises(h.Rejected):h.checked_assets(root,m['source_sha'],m['tag'])
     def test_remote_source_and_workflow(self):
-        source='b'*40;repo={'private':True,'full_name':h.REPOSITORY};run={'status':'completed','conclusion':'success','head_sha':source,'path':'.github/workflows/release.yml','repository':repo,'head_branch':'v4.0.0-beta.2'}
+        source='b'*40;repo={'private':True,'full_name':h.REPOSITORY};run={'status':'completed','conclusion':'success','head_sha':source,'path':'.github/workflows/release.yml','repository':repo,'head_branch':'v4.0.0-beta.3'}
         response=[repo,run,{'object':{'type':'tag','sha':'c'*40}},{'object':{'type':'commit','sha':source}}]
-        with patch.object(h,'api',side_effect=response):h.verify_remote('v4.0.0-beta.2','123',source)
+        with patch.object(h,'api',side_effect=response):h.verify_remote('v4.0.0-beta.3','123',source)
         for key,value in [('head_sha','d'*40),('path','untrusted.yml'),('conclusion','failure')]:
             bad={**run,key:value}
-            with patch.object(h,'api',side_effect=[repo,bad]),self.assertRaises(h.Rejected):h.verify_remote('v4.0.0-beta.2','123',source)
+            with patch.object(h,'api',side_effect=[repo,bad]),self.assertRaises(h.Rejected):h.verify_remote('v4.0.0-beta.3','123',source)
 if __name__=='__main__':unittest.main()

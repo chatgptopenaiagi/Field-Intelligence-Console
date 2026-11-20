@@ -1,5 +1,18 @@
 # Changelog
 
+## 4.0.0-beta.3 — public beta candidate
+
+- Preserve both earlier beta tags and the recovered v3 baseline; Android code 6,
+  Python 4.0.0b3 and Windows file version 4.0.0.3 identify this candidate.
+- Wait for a usable Android package service, use non-streaming installation,
+  retry only bounded transient failures, and retain sanitized failure diagnostics.
+  Beta2's combined release failed with a package-service broken pipe before tests.
+- Add `fic diagnostics` to verify packaged schemas and versions offline without
+  opening user data. Exercise it after clean wheel installation.
+- Prepare the requested Windows/APK filenames, public beta release metadata,
+  installation instructions and trusted-tag signing restrictions.
+- Public release remains pending all exact-artifact gates and the publication audit.
+
 ## 4.0.0-beta.2 — candidate in validation
 
 The beta.1 tag and unpublished draft are preserved. Its three target CI workflows

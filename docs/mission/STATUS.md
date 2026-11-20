@@ -1,3 +1,16 @@
+# MISSION 001 — IN PROGRESS, 2026-11-20
+
+Owner resumed the mission and authorized public BETA in the existing repository.
+Starting commit0c0775d; recovered baseline and both beta tags preserved.
+Discovery complete: original Kotlin/Compose/Room Android app plus Python/Tk
+workstation; no distinct Manus provenance recovered. See DISCOVERY_2026-11-20.md.
+Beta2 combined run failed before Android instrumentation; artifacts expired.
+Beta3 candidate fixes that install gate, adds offline CLI diagnostics, retains
+failure context, and prepares requested filenames/public release metadata.
+Fresh full packaged/runtime/build/publication gates are pending.
+
+## Historical status below (superseded)
+
 # Mission status — PAUSED by owner on 2026-10-03
 
 Current status: usage/credit preservation; beta2 INCOMPLETE and unpublished.

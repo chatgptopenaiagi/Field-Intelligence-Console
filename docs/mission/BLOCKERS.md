@@ -1,3 +1,15 @@
+# MISSION 001 current constraints — 2026-11-20
+
+GitHub owner/admin access verified. No authentication blocker.
+Beta2 combined run failed with package-service Broken pipe before instrumentation;
+seven-day artifacts expired. Beta3 repair awaits real hosted execution.
+Local workspace migration left missing JDK17/SDK34 and stale Python paths; repairing
+within the project. Existing emulator5556 is unrelated and must not be used.
+Public visibility remains private pending source/history/Actions-log/asset review.
+All final candidate/runtime/publication gates remain required; no waiver.
+
+## Historical limitations below
+
 # Blockers and limitations
 
 No authentication blocker: existing gh authenticates as intended owner.

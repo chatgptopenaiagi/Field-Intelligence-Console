@@ -50,7 +50,7 @@ def api(path):
     token=os.environ['GH_TOKEN'];request=urllib.request.Request('https://api.github.com/'+path,headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','User-Agent':'FIC-hosted-exchange'})
     with urllib.request.urlopen(request,timeout=30) as response:return json.load(response)
 def verify_remote(tag,run,source):
-    repo=api('repos/'+REPOSITORY);require(repo['private'] and repo['full_name']==REPOSITORY,'intended private repository required')
+    repo=api('repos/'+REPOSITORY);require(repo['full_name']==REPOSITORY,'intended original repository required')
     r=api('repos/'+REPOSITORY+'/actions/runs/'+run)
     require(r['status']=='completed' and r['conclusion']=='success' and r['head_sha']==source,'candidate run must succeed on exact source')
     require(r['path']=='.github/workflows/release.yml' and r['repository']['full_name']==REPOSITORY,'candidate workflow identity')
@@ -63,7 +63,7 @@ def checked_assets(root,source,tag):
     version=m['version'];match=re.fullmatch(r'([0-9]+\.[0-9]+\.[0-9]+)-beta\.([0-9]+)',version)
     require(match is not None,'unsupported experimental version')
     python_version=match[1]+'b'+match[2];prefix='FieldIntelligenceConsole-'+version
-    apk_name=prefix+'-android-debug.apk';exe_name=prefix+'-windows-x64.exe';wheel_name='field_intelligence_console-'+python_version+'-py3-none-any.whl'
+    apk_name='FieldIntelligenceConsole-BETA-Android.apk';exe_name='FieldIntelligenceConsole-BETA-Windows-x64.exe';wheel_name='field_intelligence_console-'+python_version+'-py3-none-any.whl'
     sdist_name='field_intelligence_console-'+python_version+'.tar.gz';source_name=prefix+'-source.zip'
     allowed={apk_name,exe_name,wheel_name,sdist_name,source_name,'SBOM.cdx.json','THIRD_PARTY_NOTICES.txt','artifact-inventory.json','release-manifest.json','SHA256SUMS.txt','RELEASE_NOTES.md'}
     entries=list(root.iterdir());require(all(f.is_file() and not f.is_symlink() for f in entries),'unexpected asset directory or link')

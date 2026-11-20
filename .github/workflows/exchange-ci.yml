@@ -39,7 +39,7 @@ jobs:
         with:
           python-version: '3.14.7'
           architecture: x64
-      - name: Verify private repository, annotated tag and exact successful candidate run
+      - name: Verify original repository, annotated tag and exact successful candidate run
         id: candidate
         env:
           GH_TOKEN: ${{ github.token }}

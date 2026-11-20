@@ -8,8 +8,8 @@ import re
 import shutil
 import zipfile
 
-VERSION = "4.0.0-beta.2"
-PYTHON_VERSION = "4.0.0b2"
+VERSION = "4.0.0-beta.3"
+PYTHON_VERSION = "4.0.0b3"
 PREFIX = f"FieldIntelligenceConsole-{VERSION}"
 
 
@@ -54,7 +54,7 @@ def validate_receipts(android, windows, python, sha):
             "Actual Android emulator runtime gate required")
     require(windows.get("focused_tests", 0) >= 14 and windows.get("packaged_widget_checks", 0) >= 28
             and windows.get("native_checks", 0) >= 7, "Packaged Windows GUI evidence incomplete")
-    require(python.get("unit_tests", 0) >= 45 and python.get("unit_failures") == 0
+    require(python.get("unit_tests", 0) >= 47 and python.get("unit_failures") == 0
             and python.get("unit_skipped") == 0
             and python.get("isolated_wheel"), "Installed-wheel evidence incomplete")
 
@@ -69,7 +69,7 @@ def main():
     android, windows, python = (read(p) for p in (args.android_receipt, args.windows_receipt, args.python_receipt))
     validate_receipts(android, windows, python, args.source_sha)
     candidate = Path(args.candidate_dir).resolve(strict=True)
-    names = [PREFIX + "-android-debug.apk", PREFIX + "-windows-x64.exe",
+    names = ["FieldIntelligenceConsole-BETA-Android.apk", "FieldIntelligenceConsole-BETA-Windows-x64.exe",
              f"field_intelligence_console-{PYTHON_VERSION}-py3-none-any.whl",
              f"field_intelligence_console-{PYTHON_VERSION}.tar.gz", PREFIX + "-source.zip"]
     paths = {name: candidate / name for name in names}
@@ -83,12 +83,12 @@ def main():
     debug = next((x for x in android["artifacts"] if x["variant"] == "debug"), {})
     validate_signing(android["artifacts"])
     require(debug.get("package") == "com.fieldconsole.debug" and debug.get("version") == VERSION
-            and debug.get("version_code") == 5 and debug.get("signature_verified") is True,
+            and debug.get("version_code") == 6 and debug.get("signature_verified") is True,
             "Android identity/version/signature mismatch")
     require(digest(paths[names[0]]) == debug.get("sha256"), "APK differs from tested artifact")
     pe = read(Path(args.windows_receipt).parent / "pe-metadata.json")
     require(pe.get("machine") == "AMD64" and pe.get("subsystem") == "Windows GUI"
-            and pe.get("file_version") == "4.0.0.2" and pe.get("product_version") == VERSION
+            and pe.get("file_version") == "4.0.0.3" and pe.get("product_version") == VERSION
             and digest(paths[names[1]]) == pe.get("sha256"), "EXE differs from tested AMD64 GUI artifact")
     py_assets = {x["name"]: x for x in python["artifacts"]}
     for name in names[2:4]:
@@ -124,7 +124,9 @@ def main():
         if source.resolve() != target.resolve():
             shutil.copyfile(source, target)
         paths[name] = target
-    notes = f"""# FIC {VERSION} — private experimental prerelease
+    notes = f"""# FIELD INTELLIGENCE CONSOLE | NEW BETA RELEASE
+
+Public BETA {VERSION}.
 
 ONE TAP. INSTANT AWARENESS.
 
@@ -138,10 +140,22 @@ current physical presence. NETWORK details/counts are excluded from ordinary rep
 Assets: Android testing APK (debug signing), portable Windows x64 GUI (unsigned),
 Python wheel/sdist, exact-source archive, SBOM, notices, manifest and checksums.
 No developer toolchain is needed to run the EXE. Verify SHA256SUMS before use.
-Private repository access is required; these are not public downloads.
+Install Android with `FieldIntelligenceConsole-BETA-Android.apk` (Android 10+).
+Run `FieldIntelligenceConsole-BETA-Windows-x64.exe` on Windows x64; no installation
+or developer tools are required. Install the wheel in a Python 3.11+ environment
+with `python -m pip install field_intelligence_console-{PYTHON_VERSION}-py3-none-any.whl`,
+then run `fic --help` and `fic diagnostics`. See the included source README for
+workflows, data location, export and uninstall instructions.
+
+Changes from the recovered v3 application: bounded external requests and geocoding,
+non-destructive Room migrations, honest provider/cache status, deliberate emergency
+dialer actions, local Known Network management and shared report exchange, plus
+the standalone Windows workstation and Python core. Beta3 repairs emulator package
+service readiness and installation transport, preserves failure diagnostics, and
+coordinates public release metadata without moving either earlier beta tag.
 
 Verified candidate: 97 or more Android tests per variant, both assemblies/lint,
-six or more isolated-emulator instrumentation tests, 45 or more Python tests and
+six or more isolated-emulator instrumentation tests, 47 or more Python tests and
 clean-wheel workflows, fourteen Windows focused tests, 28 packaged GUI checks and seven
 native mouse/keyboard/restart checks. Exact counts and toolchains are in the manifest.
 
@@ -154,14 +168,14 @@ the documented bounded UTF-8 v3/v4 subset, not every historical variant. No live
 provider key was used in testing. Optional providers require explicit configuration
 and consent; disconnected AI/weather/CAD hooks are not claimed operational. No
 production signing/certification, live tracking, enterprise connector, graph database,
-public launch or PyPI publication is included. Repeatable scripts do not establish
+or PyPI publication is included. Repeatable scripts do not establish
 byte-for-byte reproducibility.
 """
     (candidate / "RELEASE_NOTES.md").write_text(notes, "utf-8")
     paths["RELEASE_NOTES.md"] = candidate / "RELEASE_NOTES.md"
     inventory = [{"name": name, "bytes": path.stat().st_size, "sha256": digest(path)} for name, path in sorted(paths.items())]
     manifest = {"schema_version": 1, "product": "Field Intelligence Console", "version": VERSION,
-                "tag": args.tag, "source_sha": args.source_sha, "visibility": "private", "release_kind": "experimental prerelease",
+                "tag": args.tag, "source_sha": args.source_sha, "visibility": "public", "release_kind": "BETA prerelease",
                 "artifacts": inventory, "android": android, "windows": windows, "python": python,
                 "signing": {"android": "debug/testing", "windows": windows.get("signing", "NotSigned")},
                 "artifact_scan": {"findings": 0, "incomplete": 0,

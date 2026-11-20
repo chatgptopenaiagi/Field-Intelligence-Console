@@ -1,3 +1,12 @@
+# MISSION 001 beta3 — current verification
+
+Preliminary changed-source checks on2026-11-20: Python47 tests PASS; tooling31
+tests PASS (including10 Android runtime regression checks); actionlint PASS with
+ShellCheck unavailable; PowerShell AST PASS. These are not frozen release gates.
+New full Android, Windows packaged/native, clean-wheel, exact-APK runtime,
+SAF/exchange, checksum/download and public-access checks remain NOT_EXECUTED.
+Historical PASS counts below retain their original source/platform scope.
+
 # Acceptance evidence
 
 These are executed development gates, not a frozen release or GitHub CI claim.

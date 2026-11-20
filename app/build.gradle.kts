@@ -13,8 +13,8 @@ android {
         applicationId   = "com.fieldconsole"
         minSdk          = 29
         targetSdk       = 34
-        versionCode     = 5
-        versionName     = "4.0.0-beta.2"
+        versionCode     = 6
+        versionName     = "4.0.0-beta.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }

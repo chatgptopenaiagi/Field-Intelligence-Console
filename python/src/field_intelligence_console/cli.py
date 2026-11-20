@@ -1,11 +1,13 @@
 """Explicit-input/output CLI. Diagnostics contain counts, never contact values."""
 import argparse
+from importlib import resources
 import json
 from pathlib import Path
 import sys
 from . import (ValidationError, parse_import, export_preview, Store, query_network,
                validate_network, validate_report)
 from .models import json_loads, MAX_BYTES
+from . import __version__
 
 
 def _read(path):
@@ -24,8 +26,9 @@ def _write(path, data):
 
 def parser():
     result = argparse.ArgumentParser(prog="fic", description="Offline FIC validation, conversion and saved-association search")
-    result.add_argument("--version", action="version", version="4.0.0b2")
+    result.add_argument("--version", action="version", version="4.0.0b3")
     commands = result.add_subparsers(dest="command", required=True)
+    commands.add_parser("diagnostics", help="Check version and bundled schemas offline; never open user data")
     validate = commands.add_parser("validate", help="Validate an explicit FIC JSON file")
     validate.add_argument("input")
     preview = commands.add_parser("preview", help="Parse only; print sanitized counts and diagnostics")
@@ -56,7 +59,16 @@ def parser():
 def main(argv=None):
     args = parser().parse_args(argv)
     try:
-        if args.command == "validate":
+        if args.command == "diagnostics":
+            from jsonschema import Draft202012Validator
+            schemas = resources.files("field_intelligence_console").joinpath("schemas")
+            for name in ("network-v1.schema.json", "field-report-v1.schema.json"):
+                Draft202012Validator.check_schema(json.loads(schemas.joinpath(name).read_text("utf-8")))
+            print(json.dumps({"status": "PASS", "version": __version__, "beta": True,
+                              "python": ".".join(map(str, sys.version_info[:3])),
+                              "bundled_schemas": "PASS", "network": "not accessed",
+                              "user_data": "not accessed"}))
+        elif args.command == "validate":
             document = json_loads(_read(args.input))
             if document.get("schema") == "fic.network":
                 validate_network(document)

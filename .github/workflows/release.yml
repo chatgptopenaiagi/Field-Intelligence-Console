@@ -7,7 +7,7 @@ on:
         required: true
         type: string
       publish_draft:
-        description: Create PRIVATE draft after every gate; never publish automatically
+        description: Create public-beta draft after every gate; never publish automatically
         required: true
         type: boolean
         default: false
@@ -49,9 +49,15 @@ jobs:
           if (-not (Test-Path -LiteralPath $sdkManager)) { throw 'Official SDK manager unavailable.' }
           # Installed SDK help has been reviewed; some valid --help invocations exit 1.
           # Only the actual install operation below is an installation gate.
-          & $sdkManager --install 'platform-tools' 'platforms;android-34' 'build-tools;34.0.0'
-          if ($LASTEXITCODE -ne 0) { throw 'SDK installation failed.' }
-      - name: Restore retained testing identity only for this trusted private release
+          # The Windows compatibility shim may consume only one package per call.
+          foreach ($component in @('platform-tools','platforms;android-34','build-tools;34.0.0')) {
+            & $sdkManager --install $component
+            if ($LASTEXITCODE -ne 0) { throw 'SDK installation failed.' }
+          }
+          foreach ($required in @('platforms/android-34/android.jar','build-tools/34.0.0/aapt2.exe','build-tools/34.0.0/lib/apksigner.jar')) {
+            if (-not (Test-Path -LiteralPath (Join-Path $env:ANDROID_HOME $required))) { throw 'Required SDK component was not installed.' }
+          }
+      - name: Restore retained testing identity only for this trusted tagged release
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -68,8 +74,8 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           path: |
-            .local/ci-release/assets/FieldIntelligenceConsole-*-android-debug.apk
-            .local/ci-release/assets/FieldIntelligenceConsole-*-windows-x64.exe
+            .local/ci-release/assets/FieldIntelligenceConsole-BETA-Android.apk
+            .local/ci-release/assets/FieldIntelligenceConsole-BETA-Windows-x64.exe
             .local/ci-release/assets/FieldIntelligenceConsole-*-source.zip
             .local/ci-release/assets/field_intelligence_console-*-py3-none-any.whl
             .local/ci-release/assets/field_intelligence_console-*.tar.gz
@@ -158,37 +164,21 @@ jobs:
           done
           "$ready" || { echo 'BLOCKED_RUNTIME: emulator boot timed out'; emulator_diagnostic; exit 1; }
       - name: Test the exact built APK and bind runtime evidence to both APK hashes
-        shell: pwsh
+        shell: bash
         run: |
-          $ErrorActionPreference = 'Stop'
-          $build = Get-Content -Raw .local/ci-release/build-receipt.json | ConvertFrom-Json
-          $sha = (git rev-parse HEAD).Trim()
-          if ($build.source_sha -ne $sha -or $build.tag -ne $env:CANDIDATE_TAG) { throw 'Candidate provenance mismatch.' }
-          $apk = ".local/ci-release/assets/FieldIntelligenceConsole-$($build.version)-android-debug.apk"
-          $tests = '.local/ci-release/android-test/app-debug-androidTest.apk'
-          $apkHash = (Get-FileHash $apk -Algorithm SHA256).Hash.ToLowerInvariant()
-          $testHash = (Get-FileHash $tests -Algorithm SHA256).Hash.ToLowerInvariant()
-          $expected = @($build.artifacts | Where-Object name -eq ([IO.Path]::GetFileName($apk)))[0]
-          if ($apkHash -ne $expected.sha256 -or $testHash -ne $build.instrumentation_apk_sha256) { throw 'Downloaded APK hash mismatch.' }
-          $adb = "$env:ANDROID_HOME/platform-tools/adb"
-          foreach ($package in @($apk,$tests)) {
-            $installed = & $adb -s emulator-5580 install -r $package
-            if ($LASTEXITCODE -ne 0 -or "$installed" -notmatch 'Success') { throw 'Non-destructive emulator installation failed.' }
-          }
-          $uiWaitMillis = 10000
-          $emulatorArguments = @()
-          if ($env:FIC_EMULATOR_ACCELERATION -eq 'off') {
-            $uiWaitMillis = 60000
-            $emulatorArguments = @('-e','ficEmulatorMode','software','-e','ficUiWaitMillis','60000')
-          }
-          $result = & timeout 600 $adb -s emulator-5580 shell am instrument -w @emulatorArguments -e class 'com.fieldconsole.DatabaseMigrationDeviceTest,com.fieldconsole.NetworkUiDeviceTest' com.fieldconsole.debug.test/androidx.test.runner.AndroidJUnitRunner
-          $matched = [regex]::Match("$result",'OK \((\d+) tests?\)')
-          if ($LASTEXITCODE -ne 0 -or -not $matched.Success -or "$result" -match 'FAILURES|INSTRUMENTATION_FAILED|Process crashed') { throw 'Actual APK instrumentation did not pass.' }
-          $count = [int]$matched.Groups[1].Value
-          if ($count -lt 6) { throw 'Incomplete runtime test count.' }
-          @{status='PASS';source_sha=$sha;tag=$env:CANDIDATE_TAG;tests=$count;apk_sha256=$apkHash;
-            instrumentation_apk_sha256=$testHash;runtime='Isolated API34 AOSP x86_64 emulator';acceleration=$env:FIC_EMULATOR_ACCELERATION;ui_wait_millis=$uiWaitMillis;instrumentation_timeout_seconds=600;physical_device='NOT_EXECUTED'} |
-            ConvertTo-Json | Set-Content .local/ci-release/android-runtime.json -Encoding utf8
+          set -euo pipefail
+          mode=()
+          if [[ "$FIC_EMULATOR_ACCELERATION" == off ]]; then mode=(--software); fi
+          python3 tooling/android_runtime.py --candidate .local/ci-release --adb "$ANDROID_HOME/platform-tools/adb" --serial emulator-5580 --tag "$CANDIDATE_TAG" "${mode[@]}"
+      - name: Preserve bounded runtime diagnostics even when installation fails
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: fic-runtime-diagnostics
+          path: .local/ci-release/android-runtime-diagnostics.json
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: ignore
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: fic-candidate-runtime
@@ -237,8 +227,8 @@ jobs:
           retention-days: 7
           if-no-files-found: error
           path: |
-            .local/ci-release/assets/FieldIntelligenceConsole-*-android-debug.apk
-            .local/ci-release/assets/FieldIntelligenceConsole-*-windows-x64.exe
+            .local/ci-release/assets/FieldIntelligenceConsole-BETA-Android.apk
+            .local/ci-release/assets/FieldIntelligenceConsole-BETA-Windows-x64.exe
             .local/ci-release/assets/FieldIntelligenceConsole-*-source.zip
             .local/ci-release/assets/field_intelligence_console-*-py3-none-any.whl
             .local/ci-release/assets/field_intelligence_console-*.tar.gz
@@ -262,7 +252,7 @@ jobs:
           name: fic-verified-experimental-assets
           path: candidate
           digest-mismatch: error
-      - name: Create only a PRIVATE draft prerelease with explicit verified assets
+      - name: Create only a public BETA draft prerelease with explicit verified assets
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -270,7 +260,7 @@ jobs:
         run: |
           set -euo pipefail
           [[ "$GITHUB_REPOSITORY" == "$EXPECTED_REPOSITORY" ]] || { echo 'Wrong repository'; exit 1; }
-          [[ "$(gh repo view "$EXPECTED_REPOSITORY" --json visibility --jq .visibility)" == PRIVATE ]] || { echo 'Repository is not private'; exit 1; }
+          [[ "$(gh repo view "$EXPECTED_REPOSITORY" --json visibility --jq .visibility)" == PUBLIC ]] || { echo 'Public launch audit and repository visibility change required'; exit 1; }
           cd candidate
           sha256sum --check SHA256SUMS.txt
           python - <<'PY'
@@ -278,7 +268,7 @@ jobs:
           manifest=json.loads(pathlib.Path("release-manifest.json").read_text())
           tag=os.environ["CANDIDATE_TAG"]
           if not re.fullmatch(r"v\d+\.\d+\.\d+-[A-Za-z0-9.]+",tag): raise SystemExit("Invalid tag")
-          if manifest.get("tag") != tag or manifest.get("visibility") != "private": raise SystemExit("Manifest tag/visibility mismatch")
+          if manifest.get("tag") != tag or manifest.get("visibility") != "public": raise SystemExit("Manifest tag/visibility mismatch")
           if not re.fullmatch(r"[0-9a-f]{40}",manifest.get("source_sha","")): raise SystemExit("Invalid manifest source")
           for name in ("release-manifest.json","SBOM.cdx.json","artifact-inventory.json","THIRD_PARTY_NOTICES.txt","RELEASE_NOTES.md","SHA256SUMS.txt"):
               if not pathlib.Path(name).is_file(): raise SystemExit("Missing verification asset")
@@ -290,13 +280,13 @@ jobs:
           manifest_commit="$(python -c 'import json;print(json.load(open("release-manifest.json"))["source_sha"])')"
           [[ "$tag_commit" == "$manifest_commit" ]] || { echo 'Remote tag does not point to tested source'; exit 1; }
           version="$(printf '%s' "$CANDIDATE_TAG" | cut -c2-)"
-          assets=("FieldIntelligenceConsole-$version-android-debug.apk"
-                  "FieldIntelligenceConsole-$version-windows-x64.exe"
+          assets=("FieldIntelligenceConsole-BETA-Android.apk"
+                  "FieldIntelligenceConsole-BETA-Windows-x64.exe"
                   "FieldIntelligenceConsole-$version-source.zip"
                   field_intelligence_console-*-py3-none-any.whl
                   field_intelligence_console-*.tar.gz
                   SBOM.cdx.json THIRD_PARTY_NOTICES.txt artifact-inventory.json release-manifest.json SHA256SUMS.txt RELEASE_NOTES.md)
           for asset in "${assets[@]}"; do test -f "$asset"; done
-          gh release create "$CANDIDATE_TAG" "${assets[@]}" --repo "$EXPECTED_REPOSITORY" --verify-tag --draft --prerelease --latest=false --title "FIC $version experimental" --notes-file RELEASE_NOTES.md
+          gh release create "$CANDIDATE_TAG" "${assets[@]}" --repo "$EXPECTED_REPOSITORY" --verify-tag --draft --prerelease --latest=false --title "FIELD INTELLIGENCE CONSOLE | NEW BETA RELEASE" --notes-file RELEASE_NOTES.md
           gh release view "$CANDIDATE_TAG" --repo "$EXPECTED_REPOSITORY" --json url,isDraft,isPrerelease,tagName,assets
           # Coordinator downloads and byte-verifies draft assets before publication.

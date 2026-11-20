@@ -40,7 +40,7 @@ with fic.Store('synthetic.sqlite') as store:
     store.save_report(report)
     assert store.get_report(report['id']) == report
     assert 'network' not in fic.ai_packet(report)
-assert metadata.version('field-intelligence-console') == '4.0.0b2'
+assert metadata.version('field-intelligence-console') == '4.0.0b3'
 for case in json.loads(resource.joinpath('fixtures','invalid-contracts.json').read_text('utf-8'))['cases']:
     document=json.loads(resource.joinpath('fixtures',case['fixture']).read_text('utf-8'))
     target=document
@@ -70,6 +70,7 @@ def main():
         checks = [
             ("clean-install", [str(python), "-m", "pip", "install", "--disable-pip-version-check", str(wheel)]),
             ("installed-workflows", [str(python), "-c", SMOKE]),
+            ("cli-diagnostics", [str(python), "-m", "field_intelligence_console", "diagnostics"]),
             ("cli-validate", [str(python), "-m", "field_intelligence_console", "validate", "network.json"]),
             ("cli-convert", [str(python), "-m", "field_intelligence_console", "convert", "synthetic.vcf", "--from", "vcf", "--to", "json", "--select", "ALL_VALID", "--output", "cli-network.json"]),
             ("cli-search", [str(python), "-m", "field_intelligence_console", "search", "--database", "synthetic.sqlite", "--text", "Example", "--output", "cli-search.json"]),
