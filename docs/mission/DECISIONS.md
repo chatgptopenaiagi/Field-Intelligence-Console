@@ -1,3 +1,15 @@
+# Beta6 emulator compatibility decision — 2026-11-20
+
+Combined beta5 run44737774859 failed before app installation: emulator37.3.10
+requires explicit TCG opt-in for software CPU fallback. Set
+ANDROID_I_WANT_MY_TCG=yes only in the emulator step when KVM is unavailable.
+No host-policy or permission changes. Bound boot/runtime waits remain unchanged.
+Set the newly created owned AVD data partition to6GiB, matching the tested local
+configuration and documented storage assumption. Preserve all older tags.
+Official reference: https://developer.android.com/studio/run/emulator-commandline
+
+## Earlier decisions
+
 # MISSION 001 decisions — 2026-11-20
 
 - Current explicit public-release instruction supersedes old private-only mission;

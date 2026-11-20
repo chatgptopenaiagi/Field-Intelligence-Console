@@ -1,3 +1,16 @@
+# Beta6 candidate — 2026-11-20
+
+Beta5: hosted Android97JVM per variant, Windows14focused/28packaged/7native and
+Python47unit/6clean-install checks PASS. Exact combined-build APK six instrumentation
+tests PASS locally on isolated API34/x86_64 with WHPX. Combined hosted runtime FAIL
+before installation: emulator37 requires ANDROID_I_WANT_MY_TCG=yes for -accel off.
+Local UI evidence covers BETA/version, permission-denial recovery, VCF preview,
+cancel unchanged, import2, duplicate unchanged2, CSV mapping/preview cancellation,
+phone-contact permission denial, selected network export and report import/statuses.
+These are beta5 observations; beta6 final artifacts need their own runtime evidence.
+
+## Earlier results (historical scope)
+
 # MISSION 001 beta3 — current verification
 
 Preliminary changed-source checks on2026-11-20: Python47 tests PASS; tooling31

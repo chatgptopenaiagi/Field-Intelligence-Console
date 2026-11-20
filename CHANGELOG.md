@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.0.0-beta.6 — public beta candidate
+
+Repair hosted emulator startup for emulator 37 with the documented process-local
+TCG opt-in when KVM is unavailable. Set the newly created test AVD's data partition
+to 6 GiB. Beta5's exact APK passed six local instrumentation tests and real
+synthetic document workflows; its hosted emulator exited before app installation.
+Preserve that tag. This candidate uses Android code9, Python4.0.0b6 and
+Windows4.0.0.6. All final artifact and public delivery gates must run again.
+
 ## 4.0.0-beta.5 — public beta candidate
 
 Make BETA and the application version visible on Android's startup screen, retain

@@ -74,7 +74,11 @@ jobs:
           set -euo pipefail
           # Official emulator software fallback; no host permissions/policy changes.
           accel=on
-          if ! { test -r /dev/kvm && test -w /dev/kvm; }; then accel=off; fi
+          if ! { test -r /dev/kvm && test -w /dev/kvm; }; then
+            accel=off
+            # Emulator 37 requires explicit process-local opt-in for TCG.
+            export ANDROID_I_WANT_MY_TCG=yes
+          fi
           echo "FIC_EMULATOR_ACCELERATION=$accel" >> "$GITHUB_ENV"
           echo "Emulator acceleration: $accel"
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
@@ -86,6 +90,8 @@ jobs:
           echo "ANDROID_AVD_HOME=$ANDROID_AVD_HOME" >> "$GITHUB_ENV"
           printf 'no\n' | "$AVDMANAGER" create avd -n FIC_CI_API34 -p "$ANDROID_AVD_HOME/FIC_CI_API34.avd" -k 'system-images;android-34;default;x86_64'
           test -f "$ANDROID_AVD_HOME/FIC_CI_API34.ini" || { echo 'BLOCKED_RUNTIME: owned AVD metadata not created'; exit 1; }
+          sed -i '/^disk.dataPartition.size=/d' "$ANDROID_AVD_HOME/FIC_CI_API34.avd/config.ini"
+          printf '\ndisk.dataPartition.size=6G\n' >> "$ANDROID_AVD_HOME/FIC_CI_API34.avd/config.ini"
           "$ANDROID_HOME/emulator/emulator" -help >/dev/null
           # Official AOSP image saves about 2.52 GiB versus the Google APIs image.
           # Emulator API>=24 still requires a 6 GiB data partition plus headroom.

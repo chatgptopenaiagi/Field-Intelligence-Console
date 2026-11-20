@@ -8,8 +8,8 @@ import re
 import shutil
 import zipfile
 
-VERSION = "4.0.0-beta.5"
-PYTHON_VERSION = "4.0.0b5"
+VERSION = "4.0.0-beta.6"
+PYTHON_VERSION = "4.0.0b6"
 PREFIX = f"FieldIntelligenceConsole-{VERSION}"
 
 
@@ -88,7 +88,7 @@ def main():
     require(digest(paths[names[0]]) == debug.get("sha256"), "APK differs from tested artifact")
     pe = read(Path(args.windows_receipt).parent / "pe-metadata.json")
     require(pe.get("machine") == "AMD64" and pe.get("subsystem") == "Windows GUI"
-            and pe.get("file_version") == "4.0.0.5" and pe.get("product_version") == VERSION
+            and pe.get("file_version") == "4.0.0.6" and pe.get("product_version") == VERSION
             and digest(paths[names[1]]) == pe.get("sha256"), "EXE differs from tested AMD64 GUI artifact")
     py_assets = {x["name"]: x for x in python["artifacts"]}
     for name in names[2:4]:

@@ -1,3 +1,19 @@
+# ACTIVE MISSION 001 — beta6 candidate, 2026-11-20
+
+Beta5 source07f2f9f/tagv4.0.0-beta.5 is preserved. Standalone Android44737761362,
+Windows44737761558 and Python44737761258 PASS. Combined44737774859 built all three
+artifacts but hosted emulator37 refused software CPU mode before installation.
+Exact beta5 APK passed six tests on owned local API34 emulator5582; real synthetic
+SAF preview/cancel/import/duplicate/CSV and permission-denial workflows exercised.
+Next beta6/code9/Pythonb6/Windows4.0.0.6 enables the documented process-local TCG
+opt-in and sets only newly created CI AVD data partitions to6GiB. Preserve older
+candidate tags. Final gates, new exact APK SAF exchange and public review remain.
+Owned local emulator5582/PID22752 remains available; emulator5556 is unrelated.
+Canonical C:/xampp/FieldIntelligenceConsole; original repo remains PRIVATE pending
+review. Local evidence is ignored .local/evidence/mission001-20261120/.
+
+## Earlier checkpoint (superseded)
+
 # ACTIVE MISSION 001 — beta5 candidate, 2026-11-20
 
 Latest: beta4 source0f24518/tagv4.0.0-beta.4 is preserved. Hosted Windows44737100285
