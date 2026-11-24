@@ -36,7 +36,7 @@ fun HistoryScreen(
         AlertDialog(
             onDismissRequest = { showDeleteAllDialog = false },
             title  = { Text(stringResource(R.string.delete_all_title)) },
-            text   = { Text("This will permanently delete all $count saved observations. This cannot be undone.") },
+            text   = { Text(stringResource(R.string.delete_count, count)) },
             confirmButton = {
                 TextButton(onClick = { vm.deleteAll(); showDeleteAllDialog = false }) {
                     Text(stringResource(R.string.delete_all), color = MaterialTheme.colorScheme.error)
@@ -55,7 +55,7 @@ fun HistoryScreen(
                     Column {
                         Text(stringResource(R.string.observations), style = MaterialTheme.typography.titleLarge,
                              fontWeight = FontWeight.Bold)
-                        Text("$count saved", style = MaterialTheme.typography.labelSmall,
+                        Text(stringResource(R.string.saved_count, count), style = MaterialTheme.typography.labelSmall,
                              color = MaterialTheme.colorScheme.primary)
                     }
                 },
@@ -156,7 +156,7 @@ private fun ObservationCard(entry: FieldEntry, vm: HistoryViewModel, onOpen: (Fi
                 ) {
                     Icon(
                         imageVector = if (entry.isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
-                        contentDescription = "Favorite",
+                        contentDescription = stringResource(R.string.favorite),
                         tint = if (entry.isFavorite) MaterialTheme.colorScheme.tertiary
                                else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(18.dp)

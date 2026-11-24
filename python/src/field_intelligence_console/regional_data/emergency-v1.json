@@ -47,7 +47,7 @@
       "scope": "national",
       "category": "MEDICAL_ADVICE",
       "number": "1450",
-      "source": "https://www.oesterreich.gv.at/en/themen/notfaelle_unfaelle_und_kriminalitaet/notrufnummern",
+      "source": "https://www.gesundheit.gv.at/service/notruf/hotline.html",
       "verified": "2026-11-24",
       "status": "verified"
     },
@@ -67,7 +67,7 @@
       "scope": "national",
       "category": "FIRE",
       "number": "112",
-      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "source": "https://www.bbk.bund.de/DE/Warnung-Vorsorge/Vorsorge/Gesundheit-und-Hygiene/Erste-Hilfe-und-Notruf/erste-hilfe-und-notruf.html",
       "verified": "2026-11-24",
       "status": "verified"
     },
@@ -77,7 +77,7 @@
       "scope": "national",
       "category": "AMBULANCE",
       "number": "112",
-      "source": "https://verwaltung.bund.de/leistungsverzeichnis/de/rechte-und-pflichten/102837939",
+      "source": "https://www.bbk.bund.de/DE/Warnung-Vorsorge/Vorsorge/Gesundheit-und-Hygiene/Erste-Hilfe-und-Notruf/erste-hilfe-und-notruf.html",
       "verified": "2026-11-24",
       "status": "verified"
     },

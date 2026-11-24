@@ -18,7 +18,7 @@ import com.fieldconsole.data.local.dao.NetworkDao
 
 @Database(
     entities  = [FieldEntry::class, WeatherData::class, EmergencyService::class, NetworkEntity::class, ExchangeReport::class],
-    version   = 3,
+    version   = 4,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -30,6 +30,12 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         private const val DB_NAME = "field_console.db"
+
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE field_entries ADD COLUMN locationProvider TEXT")
+            }
+        }
 
         /** Additive v2 -> v3: original observations and caches remain untouched. */
         val MIGRATION_2_3 = object : Migration(2, 3) {
@@ -122,7 +128,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     name
                 )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                     // Missing or invalid migrations must fail closed; observations are irreplaceable.
                     .build()
     }

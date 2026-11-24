@@ -34,5 +34,6 @@ data class FieldEntry(
     val isFavorite:  Boolean = false,
     val weatherSnap: String  = "",         // JSON string, empty if not captured
     val photoPath:   String  = "",
-    val audioPath:   String  = ""
+    val audioPath:   String  = "",
+    val locationProvider: String? = null
 )

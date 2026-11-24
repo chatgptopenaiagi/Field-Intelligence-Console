@@ -14,7 +14,7 @@ object EmergencyDialer {
         try {
             context.startActivity(intent(number))
         } catch (_: ActivityNotFoundException) {
-            Toast.makeText(context, "No phone app available. Dial $number using a phone.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(com.fieldconsole.R.string.dialer_unavailable, number), Toast.LENGTH_LONG).show()
         }
     }
 }

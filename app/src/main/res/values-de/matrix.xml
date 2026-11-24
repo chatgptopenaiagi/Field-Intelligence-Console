@@ -90,4 +90,23 @@
     <string name="location_off">Standortdienste sind deaktiviert.</string>
     <string name="location_timeout">Zeitüberschreitung bei der Standortmessung.</string>
     <string name="offline_web">Kein Internetzugang. Der ausgewählte Ort bleibt hier verfügbar.</string>
+    <string name="lookup_nearby">Umgebung mit OpenStreetMap durchsuchen</string>
+    <string name="lookup_failed">Umgebungssuche nicht verfügbar. Die Offline-Nummern stehen oben.</string>
+    <string name="cached_warning">Umgebungssuche fehlgeschlagen. Gespeicherte Ergebnisse können veraltet sein.</string>
+    <string name="osm_caveat">OpenStreetMap über Overpass. Prüfen Sie vor der Fahrt Eingang und Zugang.</string>
+    <string name="tag_24h">Als 24/7 gekennzeichnet</string>
+    <string name="distance_direct">%.0f m Luftlinie</string>
+    <string name="dialer_unavailable">Keine Telefon-App verfügbar. Wählen Sie %s auf einem Telefon.</string>
+    <string name="scan_motto">EIN TIPP.\nSOFORT ORIENTIERT.</string>
+    <string name="delete_count">Alle %d gespeicherten Beobachtungen endgültig löschen?</string>
+    <string name="saved_count">Gespeichert: %d</string>
+    <string name="favorite">Favorit</string>
+    <string name="no_results">Keine Ergebnisse für %s</string>
+    <string name="result_count">Ergebnisse: %1$d · %2$s</string>
+    <string name="address_unknown">Keine Adresse verfügbar. Die Koordinaten bleiben verfügbar.</string>
+    <string name="select_coordinates">Koordinaten eingeben</string>
+    <string name="manual_point">Manuell ausgewählter Ort</string>
+    <string name="latitude">Breitengrad</string>
+    <string name="longitude">Längengrad</string>
+    <string name="permission_location_rationale">Beim Scannen erfasst Field Intelligence Console mit Ihrer Erlaubnis die Gerätekoordinaten. Sie können den Ort auch manuell wählen.</string>
 </resources>

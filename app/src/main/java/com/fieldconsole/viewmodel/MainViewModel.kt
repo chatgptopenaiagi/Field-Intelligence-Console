@@ -71,6 +71,12 @@ class MainViewModel @Inject constructor(
 
     // ── Permission callbacks ──────────────────────────────────────────────────
 
+    fun selectCoordinates(latitude: Double, longitude: Double) {
+        val geo = GeoContext(latitude = latitude, longitude = longitude, timestamp = 0, provider = "manual")
+        require(geo.validCoordinates)
+        _uiState.value = MainUiState.AwaitingObservation(geo)
+    }
+
     fun onPermissionGranted() = startScan()
 
     fun onPermissionDenied() {
@@ -130,7 +136,8 @@ class MainViewModel @Inject constructor(
                 accuracy  = geo.accuracy,
                 note      = note.trim(),
                 tag       = tag.trim(),
-                timestamp = geo.timestamp
+                locationProvider = geo.provider,
+                timestamp = if (geo.manual) System.currentTimeMillis() else geo.timestamp
             )
             val id    = repository.save(entry)
             val saved = entry.copy(id = id)
@@ -153,10 +160,11 @@ class MainViewModel @Inject constructor(
 
     fun openEntry(entry: FieldEntry) {
         viewModelScope.launch {
-            val geo = geocoder.resolve(entry.latitude, entry.longitude,
-                                       entry.accuracy, entry.timestamp)
+            val geo = if (entry.locationProvider == "manual") {
+                GeoContext(latitude = entry.latitude, longitude = entry.longitude, timestamp = 0)
+            } else geocoder.resolve(entry.latitude, entry.longitude, entry.accuracy, entry.timestamp)
             savedState["activeEntry"] = entry.id
-            _uiState.value = MainUiState.ActionMatrix(entry, geo.copy(saved = true))
+            _uiState.value = MainUiState.ActionMatrix(entry, geo.copy(saved = true, provider = entry.locationProvider))
         }
     }
 

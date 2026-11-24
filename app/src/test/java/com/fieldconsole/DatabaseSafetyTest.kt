@@ -65,7 +65,7 @@ class DatabaseSafetyTest {
         }
         val next = db.fieldEntryDao().insert(row.copy(id = 0, note = "new observation"))
         assertTrue(next > 41)
-        assertEquals(3, db.openHelper.writableDatabase.version)
+        assertEquals(4, db.openHelper.writableDatabase.version)
         db.weatherDao().upsert(WeatherData(cacheKey = "sample", tempC = 9f))
         assertEquals(9f, db.weatherDao().getByKey("sample")!!.tempC)
         db.emergencyServiceDao().insertAll(listOf(EmergencyService(name = "Hospital")))
@@ -85,11 +85,11 @@ class DatabaseSafetyTest {
     }
 
     @Test fun `unsupported database version fails closed and preserves history`() {
-        seedLegacy(version = 4)
+        seedLegacy(version = 5)
         assertThrows(IllegalStateException::class.java) { open() }
         database?.close()
         SQLiteDatabase.openDatabase(context.getDatabasePath(name).path, null, SQLiteDatabase.OPEN_READONLY).use { db ->
-            assertEquals(4, db.version)
+            assertEquals(5, db.version)
             db.rawQuery("SELECT note FROM field_entries WHERE id=41", null).use { cursor ->
                 assertTrue(cursor.moveToFirst())
                 assertEquals(originalNote, cursor.getString(0))

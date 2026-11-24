@@ -80,7 +80,7 @@ fun SmartSearchScreen(
                          modifier = Modifier.size(48.dp),
                          tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f))
                     Spacer(Modifier.height(12.dp))
-                    Text("No results for \"$query\"",
+                    Text(stringResource(R.string.no_results, query),
                          style = MaterialTheme.typography.bodyMedium,
                          color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
                 }
@@ -101,7 +101,7 @@ fun SmartSearchScreen(
                     }
                 } else {
                     item {
-                        Text("${entries.size} result${if (entries.size == 1) "" else "s"} for \"$query\"",
+                        Text(stringResource(R.string.result_count, entries.size, query),
                              style = MaterialTheme.typography.labelMedium,
                              color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f))
                         Spacer(Modifier.height(8.dp))

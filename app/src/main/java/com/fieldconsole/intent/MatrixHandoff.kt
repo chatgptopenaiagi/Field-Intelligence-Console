@@ -13,7 +13,10 @@ object MatrixHandoff {
     const val MAX_BYTES = 64 * 1024
 
     fun completeText(text: String): Boolean =
-        text.endsWith("\n$END") && text.toByteArray(Charsets.UTF_8).size <= MAX_BYTES &&
+        text.startsWith("Function: ") && text.endsWith("\n$END") &&
+            listOf("  Latitude   :", "  Longitude  :", "  Accuracy   :", "  Timestamp  :",
+                "  Provider   :", "  Provenance :", "  Note       :").all { text.contains("\n$it") } &&
+            text.length <= MAX_BYTES && text.toByteArray(Charsets.UTF_8).size <= MAX_BYTES &&
             Charsets.UTF_8.newEncoder().canEncode(text)
 
     fun chatIntent(reviewed: String): Intent {
@@ -33,10 +36,7 @@ object MatrixHandoff {
 
     fun openEarth(context: Context, geo: GeoContext): Boolean {
         if (!geo.validCoordinates) return false
-        val search = "${geo.latitude},${geo.longitude}"
-        return listOf(earthUrl(geo), Uri.parse("geo:$search?q=$search")).any { uri ->
-            launch(context, Intent(Intent.ACTION_VIEW, uri).setPackage(EARTH))
-        }
+        return launch(context, Intent(Intent.ACTION_VIEW, earthUrl(geo)).setPackage(EARTH))
     }
 
     fun launch(context: Context, intent: Intent): Boolean = try {

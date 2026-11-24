@@ -63,6 +63,25 @@ class ExistingIntentContractTest {
         assertEquals(1, launched.size)
     }
 
+    @Test fun `external Matrix functions keep their distinct destinations`() {
+        dispatcher.infoScan(context, geo)
+        dispatcher.history(context, geo)
+        dispatcher.navigation(context, geo)
+        dispatcher.riskSafety(context, geo)
+        dispatcher.logistics(context, geo)
+        dispatcher.financial(context, geo)
+        assertEquals(6, launched.size)
+        assertTrue(launched.all { it.action == Intent.ACTION_VIEW })
+        val destinations = launched.map { it.data.toString() }
+        assertEquals(6, destinations.distinct().size)
+        assertTrue(destinations[0].contains("google.com/search"))
+        assertTrue(destinations[1].contains("wikidata.org"))
+        assertEquals("com.google.android.apps.maps", launched[2].`package`)
+        assertTrue(destinations[3].contains("hospital"))
+        assertTrue(destinations[4].contains("restaurants"))
+        assertTrue(destinations[5].contains("real%20estate"))
+    }
+
     @Test fun `existing report action shares inline text with observation and coordinates`() {
         dispatcher.shareFieldReport(context, geo, "test observation", "survey")
         val chooser = launched.single()

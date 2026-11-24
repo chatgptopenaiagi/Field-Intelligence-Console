@@ -39,7 +39,13 @@ fun EmergencyScreen(
     val state   = vm.state.collectAsState().value
     val context = LocalContext.current
 
-    LaunchedEffect(geo) { vm.load(geo.latitude, geo.longitude, com.fieldconsole.data.emergency.CountryBoundary.current(geo, System.currentTimeMillis()) ?: "UNKNOWN") }
+    var nearbyRequested by androidx.compose.runtime.saveable.rememberSaveable(geo.latitude, geo.longitude) {
+        mutableStateOf(false)
+    }
+    LaunchedEffect(geo, nearbyRequested) {
+        if (nearbyRequested) vm.load(geo.latitude, geo.longitude)
+    }
+    androidx.activity.compose.BackHandler(onBack = onDismiss)
 
     Scaffold(
         topBar = {
@@ -109,34 +115,39 @@ fun EmergencyScreen(
                  style = MaterialTheme.typography.titleSmall,
                  fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
 
-            if (state.isLoading && state.services.isEmpty()) {
+            if (!nearbyRequested) {
+                OutlinedButton(onClick = { nearbyRequested = true }, enabled = geo.validCoordinates) {
+                    Text(stringResource(R.string.lookup_nearby))
+                }
+            }
+            if (nearbyRequested && state.isLoading && state.services.isEmpty()) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                 Text(stringResource(R.string.searching_services),
                      style = MaterialTheme.typography.bodySmall,
                      color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
             }
 
-            state.error?.let { err ->
+            if (nearbyRequested) state.error?.let {
                 Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
-                    Text(listOfNotNull(err, state.staleWarning).joinToString("\n"), modifier = Modifier.padding(12.dp),
+                    Text(stringResource(if (state.services.isEmpty()) R.string.lookup_failed else R.string.cached_warning), modifier = Modifier.padding(12.dp),
                          style = MaterialTheme.typography.bodySmall,
                          color = MaterialTheme.colorScheme.onErrorContainer)
                 }
             }
 
-            if (state.showNoResults) {
+            if (nearbyRequested && state.showNoResults) {
                 Text(stringResource(R.string.no_services),
                      style = MaterialTheme.typography.bodySmall,
                      color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
             }
 
-            state.services.forEach { svc ->
+            if (nearbyRequested) state.services.forEach { svc ->
                 EmergencyServiceCard(svc)
             }
 
             // ── Data source ───────────────────────────────────────────────────
             Text(
-                text  = "Services: OpenStreetMap via Overpass API. Locations may be area centers, not entrances. Verify access before travel.",
+                text  = stringResource(R.string.osm_caveat),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
             )
@@ -178,7 +189,7 @@ private fun EmergencyServiceCard(svc: EmergencyService) {
                      modifier = Modifier.weight(1f))
                 if (svc.is24h) {
                     Surface(color = Color(0xFF2E7D32), shape = MaterialTheme.shapes.extraSmall) {
-                        Text("Tagged 24/7", color = Color.White, fontSize = 10.sp,
+                        Text(stringResource(R.string.tag_24h), color = Color.White, fontSize = 10.sp,
                              modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp))
                     }
                 }
@@ -190,7 +201,7 @@ private fun EmergencyServiceCard(svc: EmergencyService) {
             }
             Spacer(Modifier.height(4.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("%.0f m straight-line".format(svc.distanceM),
+                Text(stringResource(R.string.distance_direct, svc.distanceM),
                      style = MaterialTheme.typography.labelSmall,
                      color = MaterialTheme.colorScheme.primary)
                 Text(stringResource(R.string.open_status),

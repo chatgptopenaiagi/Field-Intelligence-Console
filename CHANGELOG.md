@@ -1,5 +1,9 @@
 # Changelog
 
+## In development · 4.0.0-beta.8.dev1
+
+Android adds a ninth Google Earth action, a reviewed ChatGPT text share, manual coordinate entry and foreground capture with measurement details. The emergency panel uses verified offline numbers and a manual country override. Regional controls and the Matrix support English, German and Romanian. Windows and Python include the same offline geographic data. [Engineering record](docs/mission/MISSION_003.md)
+
 ## 4.0.0-beta.7
 
 Beta6 installed both APKs on the hosted runner, then exceeded its ten-minute instrumentation deadline in software mode. Beta7 uses hardware acceleration when available to the runner and allows a bounded thirty-minute instrumentation run in software mode. Release validation checks the Android version code against the candidate number. Android code 10, Python 4.0.0b7 and Windows 4.0.0.7 identify this private-repository candidate.

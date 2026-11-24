@@ -58,7 +58,7 @@ class NetworkPersistenceTest {
     }
     @Test fun `authentic exported v2 schema migrates to v3 preserving all metadata caches and next id`() = runBlocking {
         seedV2(); val database = open()
-        assertEquals(3,database.openHelper.writableDatabase.version)
+        assertEquals(4,database.openHelper.writableDatabase.version)
         val original = FieldEntry(id=41,latitude=0.0,longitude=0.0,accuracy=12.5f,note="Synthetic preserved — café",tag="test",timestamp=12345,
             placeName="Place",priority="HIGH",missionId="synthetic",operator="operator",isFavorite=true,weatherSnap="{}",photoPath="photo",audioPath="audio")
         assertEquals(original,database.fieldEntryDao().getById(41))

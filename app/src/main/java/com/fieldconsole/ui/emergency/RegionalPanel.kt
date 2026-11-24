@@ -31,8 +31,9 @@ private fun currentTime(): Long {
 @Composable
 fun MeasurementDetails(geo: GeoContext) {
     val now = currentTime()
-    val age = if (geo.timestamp in 1..now) (now - geo.timestamp) / 1000 else null
+    val age = if (!geo.manual && geo.timestamp in 1..now) (now - geo.timestamp) / 1000 else null
     val status = when {
+        geo.manual -> R.string.manual_point
         geo.saved -> R.string.saved_measurement
         age == null -> R.string.unknown
         now - geo.timestamp <= 120_000 -> R.string.recent_measurement
@@ -63,7 +64,7 @@ fun RegionalPanel(geo: GeoContext?) {
     Text(stringResource(R.string.country_label) + " " + (code?.let { Locale("", it).displayCountry + " ($it)" } ?: unknown))
     Text(stringResource(if (manual != null) R.string.manual_country else if (detected != null) R.string.detected_country else R.string.confirm_country))
     if (manual == null && detected != null && detected == geo?.countryCode)
-        Text(stringResource(R.string.region_label) + " " + (geo?.region ?: unknown))
+        Text(stringResource(R.string.region_label) + " " + (geo.region ?: unknown))
     TextButton(onClick = { input = code.orEmpty(); editing = true }) { Text(stringResource(R.string.select_country)) }
     if (editing) {
         val valid = input in Locale.getISOCountries()

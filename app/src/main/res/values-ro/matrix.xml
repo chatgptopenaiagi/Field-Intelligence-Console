@@ -90,4 +90,23 @@
     <string name="location_off">Serviciile de localizare sunt dezactivate.</string>
     <string name="location_timeout">Timpul pentru localizare a expirat.</string>
     <string name="offline_web">Internet indisponibil. Locul selectat rămâne disponibil aici.</string>
+    <string name="lookup_nearby">Caută în apropiere cu OpenStreetMap</string>
+    <string name="lookup_failed">Căutarea în apropiere este indisponibilă. Numerele offline apar mai sus.</string>
+    <string name="cached_warning">Căutarea a eșuat. Rezultatele salvate pot fi depășite.</string>
+    <string name="osm_caveat">OpenStreetMap prin Overpass. Verificați intrarea și accesul înainte de deplasare.</string>
+    <string name="tag_24h">Marcat 24/7</string>
+    <string name="distance_direct">%.0f m în linie dreaptă</string>
+    <string name="dialer_unavailable">Aplicația de telefon nu este disponibilă. Formați %s de pe un telefon.</string>
+    <string name="scan_motto">O ATINGERE.\nORIENTARE IMEDIATĂ.</string>
+    <string name="delete_count">Ștergeți definitiv toate cele %d observații salvate?</string>
+    <string name="saved_count">Salvate: %d</string>
+    <string name="favorite">Favorit</string>
+    <string name="no_results">Niciun rezultat pentru %s</string>
+    <string name="result_count">Rezultate: %1$d · %2$s</string>
+    <string name="address_unknown">Adresa este indisponibilă. Coordonatele rămân disponibile.</string>
+    <string name="select_coordinates">Introdu coordonatele</string>
+    <string name="manual_point">Loc selectat manual</string>
+    <string name="latitude">Latitudine</string>
+    <string name="longitude">Longitudine</string>
+    <string name="permission_location_rationale">Cu permisiunea dumneavoastră, Field Intelligence Console obține coordonatele dispozitivului la scanare. Puteți alege și un loc manual.</string>
 </resources>

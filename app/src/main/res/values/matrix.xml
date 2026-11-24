@@ -90,4 +90,22 @@
     <string name="location_off">Location services are disabled.</string>
     <string name="location_timeout">Location measurement timed out.</string>
     <string name="offline_web">Internet unavailable. The selected location is still available here.</string>
+    <string name="lookup_nearby">Search nearby with OpenStreetMap</string>
+    <string name="lookup_failed">Nearby lookup unavailable. Offline numbers are shown above.</string>
+    <string name="cached_warning">Nearby lookup failed. Saved results may be out of date.</string>
+    <string name="osm_caveat">OpenStreetMap via Overpass. Check the entrance and access before travelling.</string>
+    <string name="tag_24h">Tagged 24/7</string>
+    <string name="distance_direct">%.0f m straight-line</string>
+    <string name="dialer_unavailable">No dialer available. Use a phone to dial %s.</string>
+    <string name="scan_motto">ONE TAP.\nINSTANT AWARENESS.</string>
+    <string name="delete_count">Permanently delete all %d saved observations?</string>
+    <string name="saved_count">Saved: %d</string>
+    <string name="favorite">Favorite</string>
+    <string name="no_results">No results for %s</string>
+    <string name="result_count">Results: %1$d · %2$s</string>
+    <string name="address_unknown">Address unavailable. Coordinates remain available.</string>
+    <string name="select_coordinates">Enter coordinates</string>
+    <string name="manual_point">Manually selected location</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
 </resources>

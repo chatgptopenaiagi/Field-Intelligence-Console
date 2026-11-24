@@ -18,7 +18,10 @@ def interior_country(latitude, longitude):
         return None
     row = math.floor((latitude + 90) * 5)
     col = math.floor((longitude + 180) * 5)
-    for start, stop, code in _data("country-grid-v1.json")[row]:
+    rows = _data("country-grid-v1.json")
+    if row >= len(rows):
+        return None
+    for start, stop, code in rows[row]:
         if start <= col < stop:
             return code
     return None

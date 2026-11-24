@@ -35,7 +35,7 @@ fun ObservationDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(stringResource(R.string.captured), style = MaterialTheme.typography.titleLarge,
+            Text(stringResource(if (geo.manual) R.string.manual_point else R.string.captured), style = MaterialTheme.typography.titleLarge,
                  fontWeight = FontWeight.Bold)
         },
         text = {
@@ -62,7 +62,7 @@ fun ObservationDialog(
                         Spacer(Modifier.width(6.dp))
                         Column {
                             Text(
-                                text       = listOfNotNull(geo.fullPlaceName, geo.geocodingNotice).joinToString("\n"),
+                                text       = listOfNotNull(geo.fullPlaceName, geo.geocodingNotice?.let { stringResource(R.string.address_unknown) }).joinToString("\n"),
                                 style      = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color      = MaterialTheme.colorScheme.onPrimaryContainer

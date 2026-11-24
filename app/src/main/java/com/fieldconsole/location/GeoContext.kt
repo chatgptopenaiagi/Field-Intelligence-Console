@@ -21,9 +21,10 @@ data class GeoContext(
     val provider: String? = null,
     val saved: Boolean = false
 ) {
+    val manual get() = provider == "manual"
     val validCoordinates get() = latitude in -90.0..90.0 && longitude in -180.0..180.0
     val accuracyText get() = if (accuracy.isFinite() && accuracy > 0) "±$accuracy m" else "UNKNOWN"
-    val measuredAt get() = if (timestamp > 0) java.time.Instant.ofEpochMilli(timestamp).toString() else "UNKNOWN"
+    val measuredAt get() = if (!manual && timestamp > 0) java.time.Instant.ofEpochMilli(timestamp).toString() else "UNKNOWN"
 
     /** Short display label: "Street, City" or fallback to coordinates. */
     val shortLabel: String get() {

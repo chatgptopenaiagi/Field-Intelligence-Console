@@ -54,6 +54,11 @@ fun MainScreen(
     val context  = LocalContext.current
 
     var regional by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(false) }
+    var manualPlace by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(false) }
+    if (manualPlace) CoordinateDialog({ manualPlace = false }) { latitude, longitude ->
+        manualPlace = false
+        mainViewModel.selectCoordinates(latitude, longitude)
+    }
     if (regional) com.fieldconsole.ui.emergency.RegionalSettings({ regional = false }, (uiState as? MainUiState.ActionMatrix)?.geo)
     // ── Runtime permission launcher ───────────────────────────────────────────
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -100,7 +105,7 @@ fun MainScreen(
                 onSearch   = onNavigateToSearch,
                 onNetwork = { onNavigateToNetwork(null) },
                 onReports = { onNavigateToReports(null) },
-                onRegional = { regional = true }, onAppearance = onAppearance
+                onManualPlace = { manualPlace = true }, onRegional = { regional = true }, onAppearance = onAppearance
             )
         },
         containerColor = MaterialTheme.colorScheme.background
@@ -161,6 +166,24 @@ fun MainScreen(
     }
 }
 
+@Composable
+private fun CoordinateDialog(onDismiss: () -> Unit, onSelect: (Double, Double) -> Unit) {
+    var latitude by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf("") }
+    var longitude by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf("") }
+    val lat = latitude.trim().replace(',', '.').toDoubleOrNull()
+    val lon = longitude.trim().replace(',', '.').toDoubleOrNull()
+    AlertDialog(onDismissRequest = onDismiss, title = { Text(stringResource(R.string.select_coordinates)) },
+        text = { Column {
+            OutlinedTextField(latitude, { latitude = it }, singleLine = true,
+                label = { Text(stringResource(R.string.latitude)) })
+            OutlinedTextField(longitude, { longitude = it }, singleLine = true,
+                label = { Text(stringResource(R.string.longitude)) })
+        } },
+        confirmButton = { TextButton(enabled = lat != null && lat in -90.0..90.0 && lon != null && lon in -180.0..180.0,
+            onClick = { if (lat != null && lon != null) onSelect(lat, lon) }) { Text(stringResource(android.R.string.ok)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(android.R.string.cancel)) } })
+}
+
 // ── Top bar ───────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -170,6 +193,7 @@ private fun FicTopBar(
     onSettings: () -> Unit,
     onNetwork: () -> Unit,
     onReports: () -> Unit,
+    onManualPlace: () -> Unit,
     onRegional: () -> Unit,
     onAppearance: () -> Unit,
     onHistory:  () -> Unit = {},
@@ -207,7 +231,7 @@ private fun FicTopBar(
             Box {
                 IconButton(onClick = { toolsExpanded = true }) { Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.tools)) }
                 DropdownMenu(toolsExpanded, { toolsExpanded = false }) {
-                    listOf(stringResource(R.string.regional_settings) to onRegional, stringResource(R.string.known_network) to onNetwork, stringResource(R.string.field_reports) to onReports,
+                    listOf(stringResource(R.string.regional_settings) to onRegional, stringResource(R.string.select_coordinates) to onManualPlace, stringResource(R.string.known_network) to onNetwork, stringResource(R.string.field_reports) to onReports,
                         stringResource(R.string.appearance) to onAppearance, stringResource(R.string.engines) to onSettings).forEach { (label, action) ->
                         DropdownMenuItem(text = { Text(label) }, onClick = { toolsExpanded = false; action() })
                     }
@@ -227,7 +251,7 @@ private fun IdleContent(onScan: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text      = "ONE TAP.\nINSTANT AWARENESS.",
+                text      = stringResource(R.string.scan_motto),
                 style     = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
                 color     = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
@@ -246,7 +270,7 @@ private fun IdleContent(onScan: () -> Unit) {
                 modifier = Modifier.size(180.dp)
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(Icons.Default.MyLocation, "SCAN",
+                    Icon(Icons.Default.MyLocation, null,
                          modifier = Modifier.size(56.dp),
                          tint     = MaterialTheme.colorScheme.onPrimary)
                     Spacer(Modifier.height(8.dp))
@@ -292,9 +316,9 @@ private fun ActionMatrixContent(
     onNetwork: () -> Unit,
     onReport: () -> Unit
 ) {
-    var review by remember(entry.id) { mutableStateOf<String?>(null) }
-    var options by remember(entry.id) { mutableStateOf<String?>(null) }
-    var earthFallback by remember { mutableStateOf(false) }
+    var review by androidx.compose.runtime.saveable.rememberSaveable(entry.id) { mutableStateOf<String?>(null) }
+    var options by androidx.compose.runtime.saveable.rememberSaveable(entry.id) { mutableStateOf<String?>(null) }
+    var earthFallback by androidx.compose.runtime.saveable.rememberSaveable(entry.id) { mutableStateOf(false) }
     val warn = stringResource(R.string.no_receiver)
     fun unavailable() = android.widget.Toast.makeText(context, warn, android.widget.Toast.LENGTH_LONG).show()
     val offline = stringResource(R.string.offline_web)
@@ -310,12 +334,13 @@ private fun ActionMatrixContent(
     options?.let { function ->
         AlertDialog(onDismissRequest = { options = null }, title = { Text(matrixLabel(function)) },
             confirmButton = { TextButton(onClick = { options = null; handleAction(function, entry, geo, dispatcher, context) }) { Text(stringResource(R.string.open_source)) } },
-            dismissButton = { TextButton(onClick = { options = null; review = dispatcher.reviewPrompt(function, entry, geo) }) { Text(stringResource(R.string.review_ai)) } })
+            dismissButton = { TextButton(onClick = { options = null; review = function }) { Text(stringResource(R.string.review_ai)) } })
     }
-    review?.let { prompt ->
+    review?.let { function ->
+        val prompt = remember(function, entry, geo) { dispatcher.reviewPrompt(function, entry, geo) }
         val valid = MatrixHandoff.completeText(prompt)
         val clipboard = context.getSystemService(android.content.ClipboardManager::class.java)
-        var fallback by remember(prompt) { mutableStateOf(false) }
+        var fallback by androidx.compose.runtime.saveable.rememberSaveable(function) { mutableStateOf(false) }
         AlertDialog(onDismissRequest = { review = null }, title = { Text(stringResource(R.string.review_ai)) },
             text = { Column(Modifier.verticalScroll(rememberScrollState())) {
                 Text(stringResource(if (valid) R.string.share_review else R.string.share_invalid))
@@ -358,7 +383,7 @@ private fun ActionMatrixContent(
                 Spacer(Modifier.width(8.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text       = listOfNotNull(geo.fullPlaceName, geo.geocodingNotice).joinToString("\n"),
+                        text       = listOfNotNull(geo.fullPlaceName, geo.geocodingNotice?.let { stringResource(R.string.address_unknown) }).joinToString("\n"),
                         style      = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold
                     )
@@ -410,7 +435,7 @@ private fun ActionMatrixContent(
                         onClick = {
                             when (label) {
                                 "GOOGLE EARTH" -> if (!geo.validCoordinates) unavailable() else earthFallback = !MatrixHandoff.openEarth(context, geo)
-                                "AI ANALYSIS" -> review = dispatcher.reviewPrompt(label, entry, geo)
+                                "AI ANALYSIS" -> review = label
                                 "INFO SCAN", "HISTORY", "RISK / SAFETY", "FINANCIAL" -> options = label
                                 "EMERGENCY EXIT" -> onEmergency()
                                 else -> handleAction(label, entry, geo, dispatcher, context)

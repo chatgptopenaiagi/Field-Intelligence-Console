@@ -48,16 +48,16 @@ class DatabaseMigrationDeviceTest {
             accuracy = 7.5f, note = "retain observation", tag = "landmark", timestamp = 123456789L)
         assertEquals(expected, db.fieldEntryDao().getById(41))
         assertTrue(db.fieldEntryDao().insert(expected.copy(id = 0)) > 41)
-        assertEquals(3, db.openHelper.writableDatabase.version)
+        assertEquals(4, db.openHelper.writableDatabase.version)
     }
 
     @Test fun unsupportedVersionFailsWithoutRecreation() {
-        seed(4)
+        seed(5)
         val db = AppDatabase.create(context, name).also { room = it }
         assertThrows(IllegalStateException::class.java) { db.openHelper.writableDatabase }
         db.close()
         SQLiteDatabase.openDatabase(context.getDatabasePath(name).path, null, SQLiteDatabase.OPEN_READONLY).use {
-            assertEquals(4, it.version)
+            assertEquals(5, it.version)
             it.rawQuery("SELECT note FROM field_entries WHERE id=41", null).use { cursor ->
                 assertTrue(cursor.moveToFirst())
                 assertEquals("retain observation", cursor.getString(0))
@@ -78,7 +78,7 @@ class DatabaseMigrationDeviceTest {
             raw.version=2
         }
         val database=AppDatabase.create(context,name).also { room=it }
-        assertEquals(3,database.openHelper.writableDatabase.version)
+        assertEquals(4,database.openHelper.writableDatabase.version)
         val row=database.fieldEntryDao().getById(41)!!
         assertEquals("Synthetic observation",row.note)
         assertEquals("Place",row.placeName)

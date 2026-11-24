@@ -27,7 +27,7 @@ class RegionalCountryTest {
     }
 
     @Test fun uncertaintyRequiresConfirmation() {
-        for (geo in listOf(null, vienna.copy(saved=true), vienna.copy(accuracy=0f), vienna.copy(accuracy=5000f),
+        for (geo in listOf(null, vienna.copy(saved=true), vienna.copy(provider="manual"), vienna.copy(accuracy=0f), vienna.copy(accuracy=5000f),
             vienna.copy(countryCode="DE"), vienna.copy(latitude=48.14,longitude=17.10),
             vienna.copy(timestamp=now-120001), vienna.copy(timestamp=now+1), vienna.copy(latitude=Double.NaN))) {
             assertNull(CountryBoundary.current(geo, now))

@@ -41,11 +41,11 @@ object CountryBoundary {
     fun interior(lat: Double, lon: Double): String? {
         if (!(lat >= -90 && lat < 90 && lon >= -180 && lon < 180)) return null
         val col = floor((lon + 180) * 5).toInt()
-        return rows[floor((lat + 90) * 5).toInt()].firstOrNull { col in it.start until it.stop }?.iso
+        return rows.getOrNull(floor((lat + 90) * 5).toInt())?.firstOrNull { col in it.start until it.stop }?.iso
     }
 
     fun current(geo: GeoContext?, now: Long): String? {
-        if (geo == null || geo.saved || geo.timestamp <= 0 || geo.timestamp > now ||
+        if (geo == null || geo.manual || geo.saved || geo.timestamp <= 0 || geo.timestamp > now ||
             now - geo.timestamp > 120_000 || !(geo.accuracy > 0 && geo.accuracy <= 1000)) return null
         val code = interior(geo.latitude, geo.longitude) ?: return null
         return code.takeIf { geo.countryCode.isNullOrBlank() || it.equals(geo.countryCode, true) }

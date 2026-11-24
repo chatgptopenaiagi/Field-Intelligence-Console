@@ -1,3 +1,7 @@
+# Mission 003 · development
+
+The owner resumed Mission 003 on 2026-11-24. Read [the current engineering and validation record](MISSION_003.md) first. The private beta7 release is the published baseline.
+
 # Mission 002 · 2026-11-24
 
 Mission 002 completed. The [beta7 prerelease](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.7) is published in the private repository. Start with [the recovery record](MISSION_002.md) and [exact release evidence](evidence/2026-11-24/).
