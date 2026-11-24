@@ -59,7 +59,7 @@ class AndroidRuntimeTests(unittest.TestCase):
         with patch.object(self.device, "command", return_value=(0, "OK (6 tests)")) as command:
             self.assertEqual(self.device.instrument(True), 6)
         self.assertIn("60000", command.call_args.args)
-        self.assertEqual(command.call_args.kwargs["timeout"], 600)
+        self.assertEqual(command.call_args.kwargs["timeout"], 1800)
 
     def test_command_timeout_is_a_failure(self):
         with patch.object(runtime.subprocess, "run", side_effect=subprocess.TimeoutExpired("adb", 30)):
@@ -82,7 +82,7 @@ class AndroidRuntimeTests(unittest.TestCase):
             apk.write_bytes(b"synthetic-not-an-apk")
             tests.write_bytes(b"synthetic-not-a-test-apk")
             build = dict(status="BUILD_PASS", source_dirty=False, source_sha="a" * 40,
-                         tag="v4.0.0-beta.6", version="4.0.0-beta.6",
+                         tag="v4.0.0-beta.7", version="4.0.0-beta.7",
                          artifacts=[dict(name=apk.name, sha256=runtime.digest(apk))],
                          instrumentation_apk_sha256=runtime.digest(tests))
             (root / "build-receipt.json").write_text(json.dumps(build))

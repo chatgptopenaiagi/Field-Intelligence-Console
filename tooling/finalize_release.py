@@ -8,8 +8,8 @@ import re
 import shutil
 import zipfile
 
-VERSION = "4.0.0-beta.6"
-PYTHON_VERSION = "4.0.0b6"
+VERSION = "4.0.0-beta.7"
+PYTHON_VERSION = "4.0.0b7"
 PREFIX = f"FieldIntelligenceConsole-{VERSION}"
 
 
@@ -83,12 +83,12 @@ def main():
     debug = next((x for x in android["artifacts"] if x["variant"] == "debug"), {})
     validate_signing(android["artifacts"])
     require(debug.get("package") == "com.fieldconsole.debug" and debug.get("version") == VERSION
-            and debug.get("version_code") == 8 and debug.get("signature_verified") is True,
+            and debug.get("version_code") == 3 + int(VERSION.split("-beta.")[1]) and debug.get("signature_verified") is True,
             "Android identity/version/signature mismatch")
     require(digest(paths[names[0]]) == debug.get("sha256"), "APK differs from tested artifact")
     pe = read(Path(args.windows_receipt).parent / "pe-metadata.json")
     require(pe.get("machine") == "AMD64" and pe.get("subsystem") == "Windows GUI"
-            and pe.get("file_version") == "4.0.0.6" and pe.get("product_version") == VERSION
+            and pe.get("file_version") == "4.0.0.7" and pe.get("product_version") == VERSION
             and digest(paths[names[1]]) == pe.get("sha256"), "EXE differs from tested AMD64 GUI artifact")
     py_assets = {x["name"]: x for x in python["artifacts"]}
     for name in names[2:4]:
@@ -126,7 +126,7 @@ def main():
         paths[name] = target
     notes = f"""# FIELD INTELLIGENCE CONSOLE | NEW BETA RELEASE
 
-Public BETA {VERSION}.
+BETA {VERSION} for the private repository.
 
 ONE TAP. INSTANT AWARENESS.
 
@@ -150,9 +150,8 @@ workflows, data location, export and uninstall instructions.
 Changes from the recovered v3 application: bounded external requests and geocoding,
 non-destructive Room migrations, honest provider/cache status, deliberate emergency
 dialer actions, local Known Network management and shared report exchange, plus
-the standalone Windows workstation and Python core. Beta5 repairs emulator package
-service readiness and installation transport, preserves failure diagnostics, and
-coordinates public release metadata without moving either earlier beta tag.
+the standalone Windows workstation and Python core. Beta7 validates the Android version code for this candidate and updates
+the hosted emulator runtime gate after beta6 timed out.
 
 Verified candidate: 97 or more Android tests per variant, both assemblies/lint,
 six or more isolated-emulator instrumentation tests, 47 or more Python tests and
@@ -175,7 +174,7 @@ byte-for-byte reproducibility.
     paths["RELEASE_NOTES.md"] = candidate / "RELEASE_NOTES.md"
     inventory = [{"name": name, "bytes": path.stat().st_size, "sha256": digest(path)} for name, path in sorted(paths.items())]
     manifest = {"schema_version": 1, "product": "Field Intelligence Console", "version": VERSION,
-                "tag": args.tag, "source_sha": args.source_sha, "visibility": "public", "release_kind": "BETA prerelease",
+                "tag": args.tag, "source_sha": args.source_sha, "visibility": "private", "release_kind": "BETA prerelease",
                 "artifacts": inventory, "android": android, "windows": windows, "python": python,
                 "signing": {"android": "debug/testing", "windows": windows.get("signing", "NotSigned")},
                 "artifact_scan": {"findings": 0, "incomplete": 0,

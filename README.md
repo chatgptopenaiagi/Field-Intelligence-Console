@@ -1,9 +1,9 @@
 # 🚀 FIELD INTELLIGENCE CONSOLE
-## PUBLIC BETA
+## BETA
 
 [Beta releases](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases)
 
-**4.0.0-beta.6 is undergoing release verification.** Download only a published
+**4.0.0-beta.7 is undergoing release verification.** Download only a published
 prerelease with all three platform assets and SHA-256 checksums. Earlier beta tags
 are preserved candidates; a tag alone does not establish a working release.
 
@@ -18,7 +18,7 @@ an independently installable Python core. This is experimental software.
 
 Artifacts are delivered through the original
 [repository releases](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases).
-Public publication follows the complete runtime and privacy review. See the release's actual assets/status;
+Prerelease publication follows the complete runtime and privacy review. See the release's actual assets/status;
 a source checkout or an unfinished draft is not a completed binary release.
 
 - **Android:** install `FieldIntelligenceConsole-BETA-Android.apk`, a debug/testing APK, on Android 10/API29
@@ -33,7 +33,7 @@ a source checkout or an unfinished draft is not a completed binary release.
   Known Network and manually/report-selected places in one native window. Desktop
   location is not presented as GPS. Data persists in the current user's local app data.
 - **Python/developers:** install the wheel in a virtual environment with
-  `python -m pip install field_intelligence_console-4.0.0b6-py3-none-any.whl`, then
+  `python -m pip install field_intelligence_console-4.0.0b7-py3-none-any.whl`, then
   `fic --help` or `fic diagnostics`. Diagnostics checks packaged schemas offline
   without accessing a user database. The core has no GUI/server/
   credential requirement for local workflows. Python 3.14 is locally tested;

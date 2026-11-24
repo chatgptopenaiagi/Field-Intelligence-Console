@@ -10,6 +10,10 @@ import subprocess
 import time
 
 
+HARDWARE_TIMEOUT = 600
+SOFTWARE_TIMEOUT = 1800
+
+
 class RuntimeFailure(RuntimeError):
     pass
 
@@ -69,7 +73,7 @@ class Emulator:
             args += ["-e", "ficEmulatorMode", "software", "-e", "ficUiWaitMillis", "60000"]
         args += ["-e", "class", "com.fieldconsole.DatabaseMigrationDeviceTest,com.fieldconsole.NetworkUiDeviceTest",
                  "com.fieldconsole.debug.test/androidx.test.runner.AndroidJUnitRunner"]
-        code, output = self.command(*args, timeout=600)
+        code, output = self.command(*args, timeout=SOFTWARE_TIMEOUT if software else HARDWARE_TIMEOUT)
         match = re.search(r"OK \((\d+) tests?\)", output)
         count = int(match[1]) if match else 0
         self.diagnostics.append({"stage": "instrumentation", "exit_code": code, "tests": count})
@@ -126,7 +130,7 @@ def main():
                       apk_sha256=digest(apk), instrumentation_apk_sha256=digest(tests),
                       runtime="Isolated API34 AOSP x86_64 emulator", acceleration="off" if args.software else "on",
                       ui_wait_millis=60000 if args.software else 10000,
-                      instrumentation_timeout_seconds=600, physical_device="NOT_EXECUTED")
+                      instrumentation_timeout_seconds=SOFTWARE_TIMEOUT if args.software else HARDWARE_TIMEOUT, physical_device="NOT_EXECUTED")
         receipt.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
         print("Exact APK runtime PASS: " + str(count) + " tests")
         return 0

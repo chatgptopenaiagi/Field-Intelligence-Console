@@ -5,7 +5,7 @@ geographic queries and a CLI. Saved addresses are **not current physical presenc
 No implicit network, contacts, telemetry or AI calls. Requires Python 3.11 or newer;
 the mission's local compatibility evidence is recorded in docs/mission/M2_CORE.md.
 
-Install the wheel: `python -m pip install field_intelligence_console-4.0.0b6-py3-none-any.whl`.
+Install the wheel: `python -m pip install field_intelligence_console-4.0.0b7-py3-none-any.whl`.
 Remove it: `python -m pip uninstall field-intelligence-console`. The caller owns its
 explicit local database/export files; uninstall does not delete those files.
 

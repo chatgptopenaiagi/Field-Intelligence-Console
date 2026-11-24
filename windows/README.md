@@ -59,8 +59,8 @@ Use the installed wheel, not an accidental source-tree import. Create a local
 windows/build.ps1 -Wheel followed by the verified wheel path.
 
 build.ps1 installs that wheel and creates a one-file GUI EXE with bundled
-schemas/fixtures/notices and numeric Windows version 4.0.0.6, product version
-4.0.0-beta.6. Build from the exact frozen release commit for delivery.
+schemas/fixtures/notices and numeric Windows version 4.0.0.7, product version
+4.0.0-beta.7. Build from the exact frozen release commit for delivery.
 
 Focused tests: .venv-windows/Scripts/python.exe -m unittest discover -s windows
 -p test_workstation.py -v

@@ -96,6 +96,7 @@ def execute(assets,values,source,tag,output):
     manifest,apk,exe,wheel=checked_assets(assets,source,tag)
     # The checked-out core validates the selected input before any candidate process starts.
     observed=validate_inputs(values,sha(apk.read_bytes()))
+    require(observed==source,'Android export receipt source mismatch')
     with tempfile.TemporaryDirectory(prefix='fic-synthetic-exchange-') as owned:
         t=Path(owned)
         for kind in ('network','report'):(t/('device-'+kind+'.json')).write_bytes(values[kind][0])

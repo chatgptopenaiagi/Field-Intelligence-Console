@@ -1,10 +1,9 @@
-# Public BETA release process
+# BETA release process
 
 Only the original `chatgptopenaiagi/Field-Intelligence-Console` is an authorized
-delivery target. The owner's 2026-11-20 Mission 001 authorizes public visibility
-after review of reachable source/history, existing release assets and Actions logs.
-Build and test while private; change visibility only after that review and verify
-anonymous access after publication. Preserve `v3-recovered-baseline`. Never force
+delivery target. Mission 002 authorizes a prerelease in the existing private repository after
+review of reachable source/history, existing release assets and Actions logs.
+Verify access using the repository account. Keep repository visibility private. Preserve `v3-recovered-baseline`. Never force
 push, move a release tag, overwrite published assets or publish to PyPI.
 
 1. Finish logical repairs, run focused gates and commit. Review complete reachable
@@ -38,7 +37,7 @@ push, move a release tag, overwrite published assets or publish to PyPI.
    --draft --prerelease`, an explicit asset allowlist and notes file. Do not publish
    on ordinary development commits or create a stable release.
 8. Download every uploaded asset into a separate verification directory, compare
-   bytes/SHA-256 to the local candidate, then publish the draft as a public BETA
+   bytes/SHA-256 to the local candidate, then publish the draft as a private-repository BETA
    prerelease. Read back repository visibility, release/tag/source SHA, draft/prerelease
    flags, asset names/sizes and returned download URLs. No missing-platform release.
 
@@ -56,8 +55,8 @@ The exchange workflow accepts only explicitly reviewed synthetic SAF exports,
 binds them to the actual distributed APK hash, and tests the exact released wheel
 and EXE on an isolated runner. Publication still requires asset/download review.
 
-Version mapping: FIC `4.0.0-beta.6`; Python `4.0.0b6`; Android code8; Windows numeric
-file version4.0.0.6. Shared data contracts v1 and Room v3 are independent. Android
+Version mapping: FIC `4.0.0-beta.7`; Python `4.0.0b7`; Android code10; Windows numeric
+file version4.0.0.7. Shared data contracts v1 and Room v3 are independent. Android
 debug/testing signing and Windows unsigned status must be explicit in every release.
 Never uninstall user data to bypass a signing mismatch or disable security warnings.
 

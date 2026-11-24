@@ -1,3 +1,7 @@
+# Mission 002 · 2026-11-24
+
+See [the active recovery record](MISSION_002.md) before using the historical checkpoint below.
+
 # NEXT CODEX — START HERE
 
 **ENGINEERING SUSPENDED — RECOVERABLE HANDOFF (2026-11-20)**

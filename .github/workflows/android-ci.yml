@@ -73,11 +73,17 @@ jobs:
         run: |
           set -euo pipefail
           # Official emulator software fallback; no host permissions/policy changes.
+          launcher=()
           accel=on
           if ! { test -r /dev/kvm && test -w /dev/kvm; }; then
-            accel=off
-            # Emulator 37 requires explicit process-local opt-in for TCG.
-            export ANDROID_I_WANT_MY_TCG=yes
+            # Use the existing device group only for the runner-owned emulator process.
+            group_runner=(sudo -n -u "$(id -un)" -g kvm)
+            if [[ -c /dev/kvm ]] && "${group_runner[@]}" test -w /dev/kvm; then
+              launcher=("${group_runner[@]}" --preserve-env=ANDROID_HOME,ANDROID_AVD_HOME)
+            else
+              accel=off
+              export ANDROID_I_WANT_MY_TCG=yes
+            fi
           fi
           echo "FIC_EMULATOR_ACCELERATION=$accel" >> "$GITHUB_ENV"
           echo "Emulator acceleration: $accel"
@@ -98,7 +104,7 @@ jobs:
           available_kib=$(df -Pk "$ANDROID_AVD_HOME" | awk 'NR==2 {print $4}')
           echo "Available AVD storage KiB: $available_kib"
           boot_deadline=$((SECONDS + 900))
-          "$ANDROID_HOME/emulator/emulator" -avd FIC_CI_API34 -port 5580 -accel "$accel" -no-window -no-metrics -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$RUNNER_TEMP/fic-emulator.log" 2>&1 &
+          "${launcher[@]}" "$ANDROID_HOME/emulator/emulator" -avd FIC_CI_API34 -port 5580 -accel "$accel" -no-window -no-metrics -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > "$RUNNER_TEMP/fic-emulator.log" 2>&1 &
           fic_emulator_pid=$!
           echo "$fic_emulator_pid" > "$RUNNER_TEMP/fic-emulator.pid"
           emulator_diagnostic() {

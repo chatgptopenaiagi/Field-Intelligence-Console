@@ -1,3 +1,7 @@
+# Mission 002 · 2026-11-24
+
+See [the active recovery record](MISSION_002.md) before using the historical checkpoint below.
+
 # OWNER SUSPENSION — 2026-11-20
 
 ENGINEERING SUSPENDED — RECOVERABLE HANDOFF. The final owner shutdown instruction

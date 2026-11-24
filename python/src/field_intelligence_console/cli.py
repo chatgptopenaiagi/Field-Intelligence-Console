@@ -26,7 +26,7 @@ def _write(path, data):
 
 def parser():
     result = argparse.ArgumentParser(prog="fic", description="Offline FIC validation, conversion and saved-association search")
-    result.add_argument("--version", action="version", version="4.0.0b6")
+    result.add_argument("--version", action="version", version="4.0.0b7")
     commands = result.add_subparsers(dest="command", required=True)
     commands.add_parser("diagnostics", help="Check version and bundled schemas offline; never open user data")
     validate = commands.add_parser("validate", help="Validate an explicit FIC JSON file")
