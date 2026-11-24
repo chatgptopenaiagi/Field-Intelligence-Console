@@ -1,12 +1,12 @@
 <resources>
-    <string name="info_scan">INFOSCAN</string>
-    <string name="history">GESCHICHTE</string>
-    <string name="navigation">NAVIGATION</string>
-    <string name="ai_analysis">KI-ANALYSE</string>
-    <string name="risk_safety">RISIKEN / SICHERHEIT</string>
-    <string name="logistics">LOGISTIK</string>
-    <string name="financial">FINANZEN</string>
-    <string name="emergency_exit">NOTFALL</string>
+    <string name="action_info_scan">INFOSCAN</string>
+    <string name="action_history">GESCHICHTE</string>
+    <string name="action_navigation">NAVIGATION</string>
+    <string name="action_ai_analysis">KI-ANALYSE</string>
+    <string name="action_risk_safety">RISIKEN / SICHERHEIT</string>
+    <string name="action_logistics">LOGISTIK</string>
+    <string name="action_financial">FINANZEN</string>
+    <string name="action_emergency">NOTFALL</string>
     <string name="google_earth">GOOGLE EARTH</string>
     <string name="open_source">Quelle im Browser öffnen</string>
     <string name="review_ai">KI-Anfrage prüfen</string>
@@ -45,7 +45,7 @@
     <string name="regional_settings">Sprache und Notrufnummern</string>
     <string name="language">App-Sprache</string>
     <string name="auto_language">Automatisch (Gerätesprachen und Land)</string>
-    <string name="scan">SCANNEN</string>
+    <string name="scan_button">SCANNEN</string>
     <string name="scan_fix">Standort wird ermittelt…</string>
     <string name="scan_resolve">Adresse wird ermittelt…</string>
     <string name="captured">Standort erfasst</string>
@@ -58,7 +58,7 @@
     <string name="known_network">Gespeicherte Kontakte</string>
     <string name="field_reports">Feldberichte</string>
     <string name="appearance">Darstellung</string>
-    <string name="engines">Dienste und APIs</string>
+    <string name="settings_engines_title">Dienste und APIs</string>
     <string name="copy_location">STANDORT KOPIEREN</string>
     <string name="share_report">FELDBERICHT TEILEN</string>
     <string name="new_scan">NEUER SCAN</string>

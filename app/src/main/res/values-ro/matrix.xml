@@ -1,12 +1,12 @@
 <resources>
-    <string name="info_scan">SCANARE INFO</string>
-    <string name="history">ISTORIC</string>
-    <string name="navigation">NAVIGAȚIE</string>
-    <string name="ai_analysis">ANALIZĂ IA</string>
-    <string name="risk_safety">RISC / SIGURANȚĂ</string>
-    <string name="logistics">LOGISTICĂ</string>
-    <string name="financial">FINANȚE</string>
-    <string name="emergency_exit">URGENȚĂ</string>
+    <string name="action_info_scan">SCANARE INFO</string>
+    <string name="action_history">ISTORIC</string>
+    <string name="action_navigation">NAVIGAȚIE</string>
+    <string name="action_ai_analysis">ANALIZĂ IA</string>
+    <string name="action_risk_safety">RISC / SIGURANȚĂ</string>
+    <string name="action_logistics">LOGISTICĂ</string>
+    <string name="action_financial">FINANȚE</string>
+    <string name="action_emergency">URGENȚĂ</string>
     <string name="google_earth">GOOGLE EARTH</string>
     <string name="open_source">Deschide sursa în browser</string>
     <string name="review_ai">Verifică solicitarea IA</string>
@@ -45,7 +45,7 @@
     <string name="regional_settings">Limbă și numere de urgență</string>
     <string name="language">Limba aplicației</string>
     <string name="auto_language">Automat (preferințele dispozitivului și țara)</string>
-    <string name="scan">SCANARE</string>
+    <string name="scan_button">SCANARE</string>
     <string name="scan_fix">Se obține poziția…</string>
     <string name="scan_resolve">Se determină adresa…</string>
     <string name="captured">Locație înregistrată</string>
@@ -58,7 +58,7 @@
     <string name="known_network">Contacte salvate</string>
     <string name="field_reports">Rapoarte de teren</string>
     <string name="appearance">Aspect</string>
-    <string name="engines">Servicii și API-uri</string>
+    <string name="settings_engines_title">Servicii și API-uri</string>
     <string name="copy_location">COPIAZĂ LOCAȚIA</string>
     <string name="share_report">PARTAJEAZĂ RAPORTUL</string>
     <string name="new_scan">SCANARE NOUĂ</string>

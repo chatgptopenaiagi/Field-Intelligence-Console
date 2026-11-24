@@ -222,17 +222,17 @@ private fun FicTopBar(
                             Text("$entryCount", color = MaterialTheme.colorScheme.onPrimary)
                         }
                     }) {
-                        Icon(Icons.Default.History, contentDescription = stringResource(R.string.history))
+                        Icon(Icons.Default.History, contentDescription = stringResource(R.string.action_history))
                     }
                 } else {
-                    Icon(Icons.Default.History, contentDescription = stringResource(R.string.history))
+                    Icon(Icons.Default.History, contentDescription = stringResource(R.string.action_history))
                 }
             }
             Box {
                 IconButton(onClick = { toolsExpanded = true }) { Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.tools)) }
                 DropdownMenu(toolsExpanded, { toolsExpanded = false }) {
                     listOf(stringResource(R.string.regional_settings) to onRegional, stringResource(R.string.select_coordinates) to onManualPlace, stringResource(R.string.known_network) to onNetwork, stringResource(R.string.field_reports) to onReports,
-                        stringResource(R.string.appearance) to onAppearance, stringResource(R.string.engines) to onSettings).forEach { (label, action) ->
+                        stringResource(R.string.appearance) to onAppearance, stringResource(R.string.settings_engines_title) to onSettings).forEach { (label, action) ->
                         DropdownMenuItem(text = { Text(label) }, onClick = { toolsExpanded = false; action() })
                     }
                 }
@@ -274,7 +274,7 @@ private fun IdleContent(onScan: () -> Unit) {
                          modifier = Modifier.size(56.dp),
                          tint     = MaterialTheme.colorScheme.onPrimary)
                     Spacer(Modifier.height(8.dp))
-                    Text(stringResource(R.string.scan), fontSize = 22.sp, fontWeight = FontWeight.Black,
+                    Text(stringResource(R.string.scan_button), fontSize = 22.sp, fontWeight = FontWeight.Black,
                          color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
@@ -533,14 +533,14 @@ private fun handleAction(
 
 @Composable
 private fun matrixLabel(key: String): String = when (key) {
-    "INFO SCAN" -> stringResource(R.string.info_scan)
-    "HISTORY" -> stringResource(R.string.history)
-    "NAVIGATION" -> stringResource(R.string.navigation)
-    "AI ANALYSIS" -> stringResource(R.string.ai_analysis)
-    "RISK / SAFETY" -> stringResource(R.string.risk_safety)
-    "LOGISTICS" -> stringResource(R.string.logistics)
-    "FINANCIAL" -> stringResource(R.string.financial)
-    "EMERGENCY EXIT" -> stringResource(R.string.emergency_exit)
+    "INFO SCAN" -> stringResource(R.string.action_info_scan)
+    "HISTORY" -> stringResource(R.string.action_history)
+    "NAVIGATION" -> stringResource(R.string.action_navigation)
+    "AI ANALYSIS" -> stringResource(R.string.action_ai_analysis)
+    "RISK / SAFETY" -> stringResource(R.string.action_risk_safety)
+    "LOGISTICS" -> stringResource(R.string.action_logistics)
+    "FINANCIAL" -> stringResource(R.string.action_financial)
+    "EMERGENCY EXIT" -> stringResource(R.string.action_emergency)
     "GOOGLE EARTH" -> stringResource(R.string.google_earth)
     else -> key
 }

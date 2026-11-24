@@ -1,12 +1,12 @@
 <resources>
-    <string name="info_scan">INFO SCAN</string>
-    <string name="history">HISTORY</string>
-    <string name="navigation">NAVIGATION</string>
-    <string name="ai_analysis">AI ANALYSIS</string>
-    <string name="risk_safety">RISK / SAFETY</string>
-    <string name="logistics">LOGISTICS</string>
-    <string name="financial">FINANCIAL</string>
-    <string name="emergency_exit">EMERGENCY EXIT</string>
+    <string name="action_info_scan">INFO SCAN</string>
+    <string name="action_history">HISTORY</string>
+    <string name="action_navigation">NAVIGATION</string>
+    <string name="action_ai_analysis">AI ANALYSIS</string>
+    <string name="action_risk_safety">RISK / SAFETY</string>
+    <string name="action_logistics">LOGISTICS</string>
+    <string name="action_financial">FINANCIAL</string>
+    <string name="action_emergency">EMERGENCY EXIT</string>
     <string name="google_earth">GOOGLE EARTH</string>
     <string name="open_source">Open source in browser</string>
     <string name="review_ai">Review AI request</string>
@@ -45,7 +45,7 @@
     <string name="regional_settings">Language and emergency numbers</string>
     <string name="language">Application language</string>
     <string name="auto_language">Automatic (device preferences and country)</string>
-    <string name="scan">SCAN</string>
+    <string name="scan_button">SCAN</string>
     <string name="scan_fix">Acquiring GPS fix…</string>
     <string name="scan_resolve">Resolving location…</string>
     <string name="captured">Location Captured</string>
@@ -58,7 +58,7 @@
     <string name="known_network">Known Network</string>
     <string name="field_reports">Field reports</string>
     <string name="appearance">Appearance</string>
-    <string name="engines">Engines &amp; APIs</string>
+    <string name="settings_engines_title">Engines &amp; APIs</string>
     <string name="copy_location">COPY LOCATION</string>
     <string name="share_report">SHARE FIELD REPORT</string>
     <string name="new_scan">NEW SCAN</string>

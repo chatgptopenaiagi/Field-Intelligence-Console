@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Field Intelligence Console</string>
-    <item type="string" name="scan_button">@string/scan</item>
-    <item type="string" name="action_info_scan">@string/info_scan</item>
-    <item type="string" name="action_history">@string/history</item>
-    <item type="string" name="action_navigation">@string/navigation</item>
-    <item type="string" name="action_ai_analysis">@string/ai_analysis</item>
-    <item type="string" name="action_risk_safety">@string/risk_safety</item>
-    <item type="string" name="action_logistics">@string/logistics</item>
-    <item type="string" name="action_financial">@string/financial</item>
-    <item type="string" name="action_emergency">@string/emergency_exit</item>
-    <item type="string" name="settings_engines_title">@string/engines</item>
     <string name="permission_location_rationale">
         Field Intelligence Console needs location access to capture your GPS coordinates
         when you press SCAN. This data is stored only on your device.
