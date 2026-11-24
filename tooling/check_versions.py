@@ -1,5 +1,6 @@
 """Reject inconsistent release identities before expensive packaging starts."""
 from pathlib import Path
+import argparse
 import ast
 import json
 import re
@@ -16,18 +17,24 @@ def constant(path, name):
     raise ValueError("Missing release constant: " + path + ":" + name)
 
 
-def check():
+def check(allow_development=False):
     app = constant("python/src/field_intelligence_console/models.py", "APP_VERSION")
-    match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)-beta\.(\d+)", app)
+    release, separator, iteration = app.partition(".dev")
+    if separator and (not allow_development or not re.fullmatch(r"[1-9][0-9]*", iteration)):
+        raise ValueError("Release checks require a version without a development suffix")
+    match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)-beta\.(\d+)", release)
     if not match:
         raise ValueError("Expected explicit BETA version")
     major, minor, patch, beta = map(int, match.groups())
     py = f"{major}.{minor}.{patch}b{beta}"
+    if separator:
+        py += ".dev" + iteration
     numeric = f"{major}.{minor}.{patch}.{beta}"
     expected = [("python/src/field_intelligence_console/__init__.py", "__version__", py),
-                ("windows/fic_windows.py", "VERSION", app),
-                ("tooling/finalize_release.py", "VERSION", app),
-                ("tooling/finalize_release.py", "PYTHON_VERSION", py)]
+                ("windows/fic_windows.py", "VERSION", app)]
+    if not separator:
+        expected += [("tooling/finalize_release.py", "VERSION", app),
+                     ("tooling/finalize_release.py", "PYTHON_VERSION", py)]
     for path, name, value in expected:
         if constant(path, name) != value:
             raise ValueError("Release version mismatch: " + path)
@@ -57,4 +64,6 @@ def check():
 
 
 if __name__ == "__main__":
-    check()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--allow-development", action="store_true")
+    check(parser.parse_args().allow_development)

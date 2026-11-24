@@ -7,7 +7,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $projectRoot = (Resolve-Path "$PSScriptRoot/..").Path
 Set-Location -LiteralPath $projectRoot
-& $Python tooling/check_versions.py
+& $Python tooling/check_versions.py --allow-development
 if ($LASTEXITCODE -ne 0) { throw 'Release version consistency check failed.' }
 New-Item -ItemType Directory -Force $OutputRoot | Out-Null
 $OutputRoot = (Resolve-Path -LiteralPath $OutputRoot).Path
