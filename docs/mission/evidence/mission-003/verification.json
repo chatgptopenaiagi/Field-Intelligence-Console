@@ -1,0 +1,138 @@
+{
+  "source_sha": "1bdad1607736306278bfb49f0d39014935d30bd6",
+  "version": "4.0.0-beta.8.dev1",
+  "published_baseline": "v4.0.0-beta.7",
+  "android": {
+    "ci_run": 45505868906,
+    "unit": [
+      {
+        "variant": "Debug",
+        "errors": 0,
+        "tests": 102,
+        "skipped": 0,
+        "status": "PASS",
+        "failures": 0
+      },
+      {
+        "variant": "Release",
+        "errors": 0,
+        "tests": 102,
+        "skipped": 0,
+        "status": "PASS",
+        "failures": 0
+      }
+    ],
+    "lint": [
+      {
+        "variant": "Debug",
+        "warning_ids": [
+          "AndroidGradlePluginVersion",
+          "AppBundleLocaleChanges",
+          "OldTargetApi",
+          "PluralsCandidate",
+          "UnusedAttribute"
+        ],
+        "errors": 0,
+        "warnings": 7,
+        "status": "PASS"
+      },
+      {
+        "variant": "Release",
+        "warning_ids": [
+          "AndroidGradlePluginVersion",
+          "AppBundleLocaleChanges",
+          "OldTargetApi",
+          "PluralsCandidate",
+          "UnusedAttribute"
+        ],
+        "errors": 0,
+        "warnings": 6,
+        "status": "PASS"
+      }
+    ],
+    "local_device": "AOSP API 34 x86_64 emulator",
+    "instrumentation_passed": 8,
+    "ui": {
+      "legacy": [
+        "migrated beta7 observation and coordinates shown",
+        "Earth unavailable offers explicit web and installation",
+        "Earth Web received exact selected coordinates",
+        "Earth Back returns to FIC Matrix"
+      ],
+      "sources": [
+        "INFO SCAN opens intended external source",
+        "HISTORY opens intended external source",
+        "NAVIGATION opens intended external source",
+        "RISK / SAFETY opens intended external source",
+        "LOGISTICS opens intended external source",
+        "FINANCIAL opens intended external source"
+      ],
+      "ai": [
+        "AI opens review",
+        "missing client offers explicit clipboard and web"
+      ],
+      "scan": [
+        "fresh foreground GPS fix entered Matrix",
+        "offline country detected Austria",
+        "verified Austrian police displayed",
+        "Android dialer received Austrian police number",
+        "emergency Back restores Matrix"
+      ],
+      "travel": [
+        "Synthetic-RO country classification",
+        "Synthetic-DE country classification",
+        "Synthetic-border country classification",
+        "offline border shows unverified services",
+        "Emergency Back restores border observation",
+        "offline Earth keeps selected observation",
+        "active observation restored after background process kill"
+      ],
+      "language": [
+        "manual Romania selects offline catalog",
+        "manual selection persisted",
+        "per-app Romanian applied",
+        "manual Romanian survives cold restart",
+        "per-app German applied",
+        "automatic language restores supported device preference",
+        "manual country can be cleared"
+      ],
+      "manual": [
+        "manual coordinates work without a GPS measurement",
+        "manual matrix provenance",
+        "review marks manual measurement time UNKNOWN"
+      ],
+      "denied": [
+        "denied location returns actionable error",
+        "offline country picker accessible after denial"
+      ],
+      "installation": [
+        "Install Google Earth opens the official Google Play listing in the available Android handler"
+      ]
+    },
+    "local_testing_certificate_sha256": "d8c8505ace1420fa6bb6e5022efbc37175a691c3d818d5d714a88ed2ca7c8731"
+  },
+  "windows": {
+    "ci_run": 45505921478,
+    "focused_tests": 14,
+    "packaged_widgets": 29,
+    "native_checks": 7,
+    "signing": "NotSigned"
+  },
+  "python": {
+    "ci_run": 45505931242,
+    "unit_tests_per_os": 49,
+    "skips": 0,
+    "isolated_wheel_workflows_per_os": 6,
+    "systems": [
+      "Windows",
+      "Linux"
+    ]
+  },
+  "tooling_tests": 31,
+  "remaining_release_gates": [
+    "physical Android handset compatibility",
+    "native Google Earth selected destination and return",
+    "official ChatGPT composer text readback",
+    "version promotion and exact retained-certificate candidate validation"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "source_sha": "1bdad1607736306278bfb49f0d39014935d30bd6",
+  "apk_sha256": "dfce9b1396e4954d85c1152da55b122dd43b9a1059a440b40610fd382761b8d3",
+  "exe_sha256": "81d5b623e63e6adbcd57426112a671a880d823a6f7a2520f09782569a9e5087d",
+  "wheel_sha256": "2e56d2a2feb3a902680f9c7122e8bb3a5f98575ad48ed756cf0b068b81263e3d",
+  "exact_entities": 2,
+  "exact_reports": 1,
+  "packaged_windows_widget_checks": 29,
+  "wheel_installs": 2
+}

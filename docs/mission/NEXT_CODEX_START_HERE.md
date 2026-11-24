@@ -1,6 +1,6 @@
 # Mission 003 · development
 
-The owner resumed Mission 003 on 2026-11-24. Read [the current engineering and validation record](MISSION_003.md) first. The private beta7 release is the published baseline.
+The owner resumed Mission 003 on 2026-11-24. Start from product source `1bdad1607736306278bfb49f0d39014935d30bd6` on `v4-development`. The local artifact directory is keyed by that full SHA. [Read the validation record](MISSION_003.md) and [check the development hashes](evidence/mission-003/SHA256SUMS.txt). Private beta7 is the latest published release. A physical Android device with Google Earth and ChatGPT is needed for the remaining receiver checks. Use the synthetic fixtures and retain original data.
 
 # Mission 002 · 2026-11-24
 

@@ -1,0 +1,4 @@
+dfce9b1396e4954d85c1152da55b122dd43b9a1059a440b40610fd382761b8d3  app-debug.apk
+39276dcace9f06a90cb14c988a2096f0550f77618f64c6a37a0ae54d6479304e  app-debug-androidTest.apk
+81d5b623e63e6adbcd57426112a671a880d823a6f7a2520f09782569a9e5087d  FieldIntelligenceConsole-4.0.0-beta.8.dev1-windows-x64.exe
+2e56d2a2feb3a902680f9c7122e8bb3a5f98575ad48ed756cf0b068b81263e3d  field_intelligence_console-4.0.0b8.dev1-py3-none-any.whl

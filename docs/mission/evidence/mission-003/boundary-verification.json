@@ -1,0 +1,7 @@
+{
+  "input_sha256": "3e458fc036ad0a66411f2c1e6cac49c5d7bfb81cb1123bc513b22511a2b7fdeb",
+  "checked_row_order_and_nonoverlap": 900,
+  "sampled_country_codes": 170,
+  "interior_cells_checked_against_pinned_polygons": 494,
+  "status": "PASS"
+}

@@ -1,0 +1,21 @@
+{
+  "source_sha": "1bdad1607736306278bfb49f0d39014935d30bd6",
+  "resources": {
+    "country-grid-v1.json": {
+      "sha256": "b573fa85d5219866c6e3590275e1daa34ed01122acf8d6cc7a686d931a73b4d2",
+      "byte_identical": [
+        "Windows",
+        "Android",
+        "Python"
+      ]
+    },
+    "emergency-v1.json": {
+      "sha256": "450eae0238e01843f6f0054c1107b9b7928c15bf5cd2d8997382118e06fa7c25",
+      "byte_identical": [
+        "Windows",
+        "Android",
+        "Python"
+      ]
+    }
+  }
+}

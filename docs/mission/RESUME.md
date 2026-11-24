@@ -1,6 +1,6 @@
 # Mission 003 · development
 
-The owner resumed Mission 003 on 2026-11-24. Read [the current engineering and validation record](MISSION_003.md) first. The private beta7 release is the published baseline.
+Use the [Mission 003 recovery procedure](MISSION_003.md#installation-and-recovery). Recover exact development source `1bdad1607736306278bfb49f0d39014935d30bd6`, and validate the [three packaged distributions](evidence/mission-003/development-artifacts.json) against their hashes. The Android emulator migration, document picker and packaged Windows/Python round trip have evidence. Continue with a physical handset, Google Earth destination readback, and the official ChatGPT composer. Once these pass, follow the retained-signature candidate gates before publishing beta8.
 
 # Mission 002 · 2026-11-24
 

@@ -1,3 +1,7 @@
+# Mission 003
+
+[Development validation and remaining release gates](MISSION_003.md) · [Development artifact inventory](evidence/mission-003/development-artifacts.json) · [Synthetic ChatGPT captures](evidence/mission-003/synthetic-payloads.json)
+
 # Mission 002 · 2026-11-24
 
 Mission 002 completed. The [beta7 prerelease](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.7) is published in the private repository. Start with [the recovery record](MISSION_002.md) and [exact release evidence](evidence/2026-11-24/).

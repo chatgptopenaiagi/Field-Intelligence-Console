@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "version": "4.0.0-beta.8.dev1",
+  "source_sha": "1bdad1607736306278bfb49f0d39014935d30bd6",
+  "synthetic_only": true,
+  "package": "com.fieldconsole.debug",
+  "installed_apk_sha256": "dfce9b1396e4954d85c1152da55b122dd43b9a1059a440b40610fd382761b8d3",
+  "actual_saf_open_and_create_document": true,
+  "selected_export_count": 2,
+  "report_import_count": 1,
+  "files": [
+    {
+      "name": "device-network.json",
+      "bytes": 4626,
+      "sha256": "1aa31d64f41c7b252f6e996160c153ad9d5f64ce546f496542179007f3e58060"
+    },
+    {
+      "name": "device-report.json",
+      "bytes": 1258,
+      "sha256": "6c99b35450aaa77e47845f8e1d0f8c8ed78cf48ba456a8e1b96866b8f4d38bf7"
+    }
+  ],
+  "limitations": [
+    "Isolated API34 x86_64 AOSP emulator with synthetic inputs. Physical devices, live GPS and provider keys untested."
+  ]
+}

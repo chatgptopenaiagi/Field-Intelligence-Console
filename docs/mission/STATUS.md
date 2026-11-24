@@ -1,6 +1,6 @@
 # Mission 003 · development
 
-The owner resumed Mission 003 on 2026-11-24. Read [the current engineering and validation record](MISSION_003.md) first. The private beta7 release is the published baseline.
+Mission 003 development is at `4.0.0-beta.8.dev1` (`1bdad1607736306278bfb49f0d39014935d30bd6`). All three hosted platform gates passed on that exact source. The emulator passed all eight instrumentation tests. Windows, the clean wheel, and the cross-platform document round trip passed. Physical handset and official receiving-app validation remain open. Beta7 remains the published private prerelease. [Test history and limitations](MISSION_003.md) · [Exchange results](evidence/mission-003/cross-platform-exchange.json)
 
 # Mission 002 · 2026-11-24
 
