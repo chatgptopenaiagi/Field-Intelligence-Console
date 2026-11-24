@@ -1,0 +1,69 @@
+{
+  "stage": "published",
+  "verified": true,
+  "tag": "v4.0.0-beta.7",
+  "repo": "chatgptopenaiagi/Field-Intelligence-Console",
+  "visibility": "private",
+  "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.7",
+  "release_id": "RE_kwDOU5zGm84bQpfV",
+  "draft": false,
+  "prerelease": true,
+  "published_at": "2026-11-24T21:23:42Z",
+  "downloaded_assets": [
+    {
+      "name": "artifact-inventory.json",
+      "bytes": 1272,
+      "sha256": "efac7d2ff1090a2a433ccacfdc8597db6207f818563da864d8029d281991d5b8"
+    },
+    {
+      "name": "field_intelligence_console-4.0.0b7-py3-none-any.whl",
+      "bytes": 30097,
+      "sha256": "e39ac1a81516d9ded6d3c2311f11ed798d424029b1fd2fe90829f67dfc6471e5"
+    },
+    {
+      "name": "field_intelligence_console-4.0.0b7.tar.gz",
+      "bytes": 32379,
+      "sha256": "cbca22ed9354f8257cd9a549baeb23db044946a9daeb5485540974dd03818239"
+    },
+    {
+      "name": "FieldIntelligenceConsole-4.0.0-beta.7-source.zip",
+      "bytes": 575266,
+      "sha256": "eb09af0c7f150ccd280fd0c101f57af1fed228e5edead44196023c92a1ffc134"
+    },
+    {
+      "name": "FieldIntelligenceConsole-BETA-Android.apk",
+      "bytes": 60654713,
+      "sha256": "1c4ed7a7c058d2a5214f843baea31990cd6964e3c44880fc505b9e8dc1701a4d"
+    },
+    {
+      "name": "FieldIntelligenceConsole-BETA-Windows-x64.exe",
+      "bytes": 16187832,
+      "sha256": "83019af58ee0d562813e36336da39cd274bdfe7faac7141528af75424c1edc6e"
+    },
+    {
+      "name": "release-manifest.json",
+      "bytes": 6688,
+      "sha256": "77a56cd94581b570a43282a17645f7351faea2a8ced8476721962c70138c0d38"
+    },
+    {
+      "name": "RELEASE_NOTES.md",
+      "bytes": 2963,
+      "sha256": "4487eb01cf3a89566f2584bab971995f1c79249098ec05d2260c9d429aaf089a"
+    },
+    {
+      "name": "SBOM.cdx.json",
+      "bytes": 164094,
+      "sha256": "0f57c13b0005ba8c9766cef574ae15732d2d44fe52437c4ade48cd1c9c702482"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 992,
+      "sha256": "8b519c474032082f10ab43379c6d384461efb55d5ca31c9c049464896b11ecbb"
+    },
+    {
+      "name": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 115199,
+      "sha256": "5d63767f9040ae50b1cf88100e2860e207d767423a04b23833cc88ceeff3e42a"
+    }
+  ]
+}

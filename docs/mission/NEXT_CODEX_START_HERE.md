@@ -1,6 +1,6 @@
 # Mission 002 · 2026-11-24
 
-See [the active recovery record](MISSION_002.md) before using the historical checkpoint below.
+Mission 002 completed. The [beta7 prerelease](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.7) is published in the private repository. Start with [the recovery record](MISSION_002.md) and [exact release evidence](evidence/2026-11-24/).
 
 # NEXT CODEX — START HERE
 

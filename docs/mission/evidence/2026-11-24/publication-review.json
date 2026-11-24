@@ -1,0 +1,31 @@
+{
+  "status": "REVIEWED_FOR_PRIVATE_PRERELEASE",
+  "tag": "v4.0.0-beta.7",
+  "source_sha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+  "reviewed_utc": "2026-11-24T21:19:58.094632+00:00",
+  "source_archive_files": 255,
+  "source_archive_crlf_normalizations": 232,
+  "reachable_source_commits": 44,
+  "unique_blobs": 564,
+  "unique_paths": 255,
+  "source_scope": "Prior history review reused. Two incremental flags in historical beta5 exports matched the zero-coordinate report fixture and example.org test addresses. Annotated tag uses repository Codex noreply identity.",
+  "build_packages_scanned": 5,
+  "build_scan_findings": 0,
+  "build_scan_incomplete": 0,
+  "metadata_review": "Reviewed eleven allowed files, exact hashes, build/runtime receipts, package identities, private visibility, installation instructions, signer limitations, SBOM (189 components), and upstream notices. The single notice email is the libbzip2 license attribution.",
+  "incremental_log_runs": [
+    44742158905,
+    44742159009,
+    44742159088,
+    44742159219,
+    45482458393,
+    45482458425,
+    45482458460,
+    45482458470,
+    45489676633
+  ],
+  "first_beta7_attempt_reviewed": true,
+  "log_pattern_findings": 0,
+  "scope": "Original private repository only. Real contacts and user databases were excluded. The exported Android fixture values and report provenance were reviewed before dispatch.",
+  "hosted_exchange_run": 45489676633
+}

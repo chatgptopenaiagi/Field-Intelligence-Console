@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "source_sha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+  "tag": "v4.0.0-beta.7",
+  "tests": 6,
+  "apk_sha256": "1c4ed7a7c058d2a5214f843baea31990cd6964e3c44880fc505b9e8dc1701a4d",
+  "instrumentation_apk_sha256": "78cea75fa9d6a329eff58182797616f61a17df1bdb3d9b69cbfb24e8c8bd444e",
+  "runtime": "Isolated API34 AOSP x86_64 emulator",
+  "acceleration": "off",
+  "ui_wait_millis": 60000,
+  "instrumentation_timeout_seconds": 1800,
+  "physical_device": "NOT_EXECUTED"
+}

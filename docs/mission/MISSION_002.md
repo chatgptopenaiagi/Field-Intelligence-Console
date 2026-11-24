@@ -1,6 +1,6 @@
 # Mission 002 recovery record
 
-Mission 002 resumed on 2026-11-24 in the existing private repository. Delivery is a prerelease accessible to repository readers once verification passes.
+Mission 002 resumed on 2026-11-24 in the existing private repository. The [beta7 prerelease](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.7) is published in that repository. All eleven published downloads were compared byte for byte with the verified candidate.
 
 ## Recovered checkpoint
 
@@ -14,7 +14,7 @@ The eight beta6 assets were recovered from Actions artifact 14632013408. Every s
 
 The version is 4.0.0-beta.7, Android code 10, Python 4.0.0b7 and Windows 4.0.0.7. The Kotlin/Compose/Room Android app, native Tk Windows workstation, Python CLI/SQLite core and shared v1 contracts retain the architecture described in [ARCHITECTURE.md](../ARCHITECTURE.md). Release engineering changes are in [CHANGELOG.md](../../CHANGELOG.md) and the private-repository procedure in [RELEASING.md](../../RELEASING.md).
 
-Recover the source with `git rev-parse 'v4.0.0-beta.7^{commit}'` once tagged. Query workflows by that SHA. Use the combined build's own APK, EXE and wheel for exact runtime, Android document workflows, hosted exchange, final inventory and release asset download verification. The mission-owned local API 34 AVD is FIC_MISSION002_API34 on emulator-5584. Use only synthetic fixtures.
+Recover the exact shipped source with `git rev-parse 'v4.0.0-beta.7^{commit}'`. Query workflows by that SHA. The mission-owned local API 34 AVD is FIC_MISSION002_API34 on emulator-5584. Use only synthetic fixtures.
 
 ## Verification on the candidate binaries
 
@@ -39,3 +39,15 @@ Beta7 combined attempt 1 failed during hosted app installation on the software e
 From a clean detached checkout of the beta7 tag, the release finalizer validated the original eight binaries/metadata files against the build receipt and the local exact-APK runtime receipt. It produced eleven files under `.local/evidence/mission002/beta7-local-finalize/assets/`, including installation instructions, limitations, inventory, release manifest and checksums. [Local inventory](evidence/2026-11-24/beta7-local-inventory.json).
 
 The same exchange implementation used by CI ran locally on a separate, non-interactive Windows desktop. Two fresh wheel environments, the packaged EXE and the Android document-picker exports passed exact entity, ancestry and report comparison. The [local exchange receipt](evidence/2026-11-24/beta7-local-exchange.json) records all three distribution hashes and the packaged UI count. Hosted receipts and release readback are tracked separately.
+
+## Release and recovery
+
+The [combined workflow, attempt 2](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45482458425/attempts/2) reused the first build and passed six hosted instrumentation tests in software mode. The hosted finalizer verified all eleven files. The [hosted exchange run](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45489676633) used the beta7 SAF exports and the same APK, EXE and wheel hashes. Both installed-wheel passes and the 28 packaged GUI checks passed. Two contacts, their ancestry and one complete report matched after the round trip.
+
+The coordinator reviewed the tag and source archive, incremental history and Actions logs, build scan, SBOM and notices. The two new historical findings were synthetic fixture coordinates and example.org email addresses. The notice email is the upstream libbzip2 license attribution. See the [publication review](evidence/2026-11-24/publication-review.json).
+
+The [private-repository prerelease](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.7) contains eleven assets. All eleven were downloaded from the draft, compared with the candidate, then downloaded and compared again after publication. The release readback confirmed the tag, prerelease flag, published state and private repository access. Beta1 remains a separate draft. The [release verification](evidence/2026-11-24/release-verification.json) lists exact sizes and SHA-256 hashes, including the checksum file's own hash. [Manifest](evidence/2026-11-24/beta7-release-manifest.json) · [Exchange receipt](evidence/2026-11-24/beta7-hosted-exchange.json) · [Workflow results](evidence/2026-11-24/beta7-workflows.json).
+
+For recovery on another machine, use repository access to download the release with `gh release download v4.0.0-beta.7 --repo chatgptopenaiagi/Field-Intelligence-Console --dir beta7-download` into an empty directory. Use the committed release-verification inventory to verify the byte count and SHA-256 of every file. Read `RELEASE_NOTES.md` in that directory for installation and limitations. The three deliverables and the other eight release files also remain together locally in `.local/evidence/mission002/published-download/`.
+
+Release acceptance is complete. Any future binary change needs its own version, tag and exact-artifact evidence. The hardware and live-provider coverage limits above remain. The latest handoff is the documentation-only commit with message `Record published beta7 prerelease and verified asset inventory [skip ci]` on `v4-development`.

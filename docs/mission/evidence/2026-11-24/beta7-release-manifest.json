@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "product": "Field Intelligence Console",
+  "version": "4.0.0-beta.7",
+  "tag": "v4.0.0-beta.7",
+  "source_sha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+  "visibility": "private",
+  "release_kind": "BETA prerelease",
+  "artifacts": [
+    {
+      "name": "FieldIntelligenceConsole-4.0.0-beta.7-source.zip",
+      "bytes": 575266,
+      "sha256": "eb09af0c7f150ccd280fd0c101f57af1fed228e5edead44196023c92a1ffc134"
+    },
+    {
+      "name": "FieldIntelligenceConsole-BETA-Android.apk",
+      "bytes": 60654713,
+      "sha256": "1c4ed7a7c058d2a5214f843baea31990cd6964e3c44880fc505b9e8dc1701a4d"
+    },
+    {
+      "name": "FieldIntelligenceConsole-BETA-Windows-x64.exe",
+      "bytes": 16187832,
+      "sha256": "83019af58ee0d562813e36336da39cd274bdfe7faac7141528af75424c1edc6e"
+    },
+    {
+      "name": "RELEASE_NOTES.md",
+      "bytes": 2963,
+      "sha256": "4487eb01cf3a89566f2584bab971995f1c79249098ec05d2260c9d429aaf089a"
+    },
+    {
+      "name": "SBOM.cdx.json",
+      "bytes": 164094,
+      "sha256": "0f57c13b0005ba8c9766cef574ae15732d2d44fe52437c4ade48cd1c9c702482"
+    },
+    {
+      "name": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 115199,
+      "sha256": "5d63767f9040ae50b1cf88100e2860e207d767423a04b23833cc88ceeff3e42a"
+    },
+    {
+      "name": "artifact-inventory.json",
+      "bytes": 1272,
+      "sha256": "efac7d2ff1090a2a433ccacfdc8597db6207f818563da864d8029d281991d5b8"
+    },
+    {
+      "name": "field_intelligence_console-4.0.0b7-py3-none-any.whl",
+      "bytes": 30097,
+      "sha256": "e39ac1a81516d9ded6d3c2311f11ed798d424029b1fd2fe90829f67dfc6471e5"
+    },
+    {
+      "name": "field_intelligence_console-4.0.0b7.tar.gz",
+      "bytes": 32379,
+      "sha256": "cbca22ed9354f8257cd9a549baeb23db044946a9daeb5485540974dd03818239"
+    }
+  ],
+  "android": {
+    "utc": "2026-11-24T20:48:44.6568588Z",
+    "unit": [
+      {
+        "status": "PASS",
+        "failures": 0,
+        "skipped": 0,
+        "errors": 0,
+        "variant": "Debug",
+        "tests": 97
+      },
+      {
+        "status": "PASS",
+        "failures": 0,
+        "skipped": 0,
+        "errors": 0,
+        "variant": "Release",
+        "tests": 97
+      }
+    ],
+    "status": "PASS",
+    "source_dirty": false,
+    "build_tools": "34.0.0",
+    "runtime_validation": {
+      "instrumentation_timeout_seconds": 1800,
+      "status": "PASS",
+      "tests": 6,
+      "evidence": "Hash-bound CI runtime receipt",
+      "acceleration": "off",
+      "kind": "isolated emulator",
+      "ui_wait_millis": 60000,
+      "physical_device": "NOT_EXECUTED"
+    },
+    "artifacts": [
+      {
+        "version": "4.0.0-beta.7",
+        "certificate_sha256": "3d19d2bf5995a48c262fa41184978195d68526810aa637eb8bab7527029e095f",
+        "bytes": 60654713,
+        "version_code": 10,
+        "static_abis": "'arm64-v8a' 'armeabi-v7a' 'x86' 'x86_64'",
+        "name": "app-debug.apk",
+        "package": "com.fieldconsole.debug",
+        "signing": "Android debug/testing identity; not production signing",
+        "sha256": "1c4ed7a7c058d2a5214f843baea31990cd6964e3c44880fc505b9e8dc1701a4d",
+        "signature_verified": true,
+        "variant": "debug"
+      },
+      {
+        "version": "4.0.0-beta.7",
+        "certificate_sha256": "3d19d2bf5995a48c262fa41184978195d68526810aa637eb8bab7527029e095f",
+        "bytes": 44508386,
+        "version_code": 10,
+        "static_abis": "'arm64-v8a' 'armeabi-v7a' 'x86' 'x86_64'",
+        "name": "app-release.apk",
+        "package": "com.fieldconsole",
+        "signing": "Android debug/testing identity; not production signing",
+        "sha256": "12b5439221cb04ad3c25368dee27a443eb30919c16ac4d15a5e3c7b39cc7179d",
+        "signature_verified": true,
+        "variant": "release"
+      }
+    ],
+    "android_sdk": 34,
+    "limitations": "Static ABI/signature checks are not ARM64 physical-device proof. CI status requires actual workflow readback. Release artifact selection remains explicit.",
+    "runtime": "openjdk version \"17.0.21\" 2026-10-20",
+    "source_sha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+    "lint": [
+      {
+        "variant": "Debug",
+        "warning_ids": [
+          "AndroidGradlePluginVersion",
+          "OldTargetApi"
+        ],
+        "errors": 0,
+        "warnings": 4,
+        "status": "PASS"
+      },
+      {
+        "variant": "Release",
+        "warning_ids": [
+          "AndroidGradlePluginVersion",
+          "OldTargetApi"
+        ],
+        "errors": 0,
+        "warnings": 3,
+        "status": "PASS"
+      }
+    ],
+    "gradle": "8.7"
+  },
+  "windows": {
+    "signing": "NotSigned",
+    "status": "PASS",
+    "binary_metadata": {
+      "machine": "AMD64",
+      "subsystem": "Windows GUI",
+      "file_version": "4.0.0.7",
+      "product_version": "4.0.0-beta.7",
+      "python": "3.14.7",
+      "packager": "PyInstaller 6.22.3",
+      "bytes": 16187832,
+      "sha256": "83019af58ee0d562813e36336da39cd274bdfe7faac7141528af75424c1edc6e"
+    },
+    "packaged_widget_checks": 28,
+    "source_sha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+    "focused_tests": 14,
+    "native_checks": 7,
+    "artifact": "FieldIntelligenceConsole-4.0.0-beta.7-windows-x64.exe",
+    "worktree_dirty": false,
+    "limitations": [
+      "Synthetic profiles only",
+      "No live provider key used",
+      "Unsigned experimental Windows application"
+    ]
+  },
+  "python": {
+    "unit_failures": 0,
+    "unit_tests": 47,
+    "runtime": "Python 3.14.7",
+    "source_sha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+    "packaging": "wheel and sdist built",
+    "development_override": false,
+    "status": "PASS",
+    "source_dirty": false,
+    "artifacts": [
+      {
+        "bytes": 30097,
+        "name": "field_intelligence_console-4.0.0b7-py3-none-any.whl",
+        "sha256": "e39ac1a81516d9ded6d3c2311f11ed798d424029b1fd2fe90829f67dfc6471e5"
+      },
+      {
+        "bytes": 32379,
+        "name": "field_intelligence_console-4.0.0b7.tar.gz",
+        "sha256": "cbca22ed9354f8257cd9a549baeb23db044946a9daeb5485540974dd03818239"
+      }
+    ],
+    "limitations": "This receipt describes local gate execution; it is not a GitHub CI or final release publication claim.",
+    "unit_skipped": 0,
+    "isolated_wheel": "six checks passed outside checkout, including offline diagnostics and shared invalid-contract vectors"
+  },
+  "signing": {
+    "android": "debug/testing",
+    "windows": "NotSigned"
+  },
+  "artifact_scan": {
+    "findings": 0,
+    "incomplete": 0,
+    "contextual_review": "Coordinator review required before publication; scanner alone is not authorization"
+  },
+  "physical_device": "NOT_EXECUTED",
+  "reproducibility": "Not compared; traceable repeatable scripts only"
+}

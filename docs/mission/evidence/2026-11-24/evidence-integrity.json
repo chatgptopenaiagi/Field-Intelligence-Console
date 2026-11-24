@@ -1,0 +1,115 @@
+{
+  "at_utc": "2026-11-24T21:25:08.351263+00:00",
+  "files": [
+    {
+      "name": "beta6-build.json",
+      "bytes": 1870,
+      "sha256": "90eac8da71989ea97e1b388ff2628dca3b61cb398a5c43c47ced44b50c674e3f"
+    },
+    {
+      "name": "beta6-hosted-runtime-timeout.json",
+      "bytes": 519,
+      "sha256": "2d4aa2f6b1996c66aff058dffafc2b20184716896f2b7faf20a844a562a020a0"
+    },
+    {
+      "name": "beta6-local-runtime.json",
+      "bytes": 502,
+      "sha256": "cbc6542b9c7abd44cdb2d193f66b112eb88be224f85ec2f41d12d69193b8d3f0"
+    },
+    {
+      "name": "beta7-android-saf.json",
+      "bytes": 870,
+      "sha256": "b70e92dc1f4cc2e51b1b73f596fd7c5b44631f07b0426b9f0d079f5c721372f2"
+    },
+    {
+      "name": "beta7-build.json",
+      "bytes": 1870,
+      "sha256": "00e8443f8acfa1e77b50db9e23390a6c24f5f9970328c40575acf472b89e5967"
+    },
+    {
+      "name": "beta7-hosted-attempt1.json",
+      "bytes": 404,
+      "sha256": "6d3ff949090e1a11925a3cec828890e3acdad18e7d893e842c5ba7de1a0a70bb"
+    },
+    {
+      "name": "beta7-hosted-exchange.json",
+      "bytes": 1440,
+      "sha256": "4f2b230376b47d506ca30ba194c3e31045ee208603da2f4ae73296e36132542b"
+    },
+    {
+      "name": "beta7-hosted-runtime.json",
+      "bytes": 491,
+      "sha256": "d57fcf782717e3000fc04cc7eeef2d45a1579946ad402cc7836019e800f139e9"
+    },
+    {
+      "name": "beta7-local-exchange.json",
+      "bytes": 1440,
+      "sha256": "4f2b230376b47d506ca30ba194c3e31045ee208603da2f4ae73296e36132542b"
+    },
+    {
+      "name": "beta7-local-inventory.json",
+      "bytes": 1787,
+      "sha256": "2ca122b94695021f79780f57bd239bbe994236e148f47a6281d53a71347c506b"
+    },
+    {
+      "name": "beta7-local-manifest.json",
+      "bytes": 6892,
+      "sha256": "d6c897c71b433f46dc5a19af67dd3faa556d24819845c80a3f7fab208ce1213e"
+    },
+    {
+      "name": "beta7-local-runtime.json",
+      "bytes": 502,
+      "sha256": "c99cb947e1d01dab1c1ef0134d2bc29f8e03221c2800a8fd455db311b5099ca7"
+    },
+    {
+      "name": "beta7-native-ui.json",
+      "bytes": 667,
+      "sha256": "d9c44871bddbecce8530ec6382fcaa6d722532db77a409b5f74de4f60e8a8cc5"
+    },
+    {
+      "name": "beta7-observations.json",
+      "bytes": 967,
+      "sha256": "6387f5ad24c5adc97501b5e1bdb56a6dd89ddf9f3d7bce2758e6c7b87ae62b18"
+    },
+    {
+      "name": "beta7-packaged-ui.json",
+      "bytes": 1424,
+      "sha256": "647d0d5e34d9ef5d41550e6e00ae399b0134f635d9dfa33896bf8f93de4a4265"
+    },
+    {
+      "name": "beta7-release-manifest.json",
+      "bytes": 6688,
+      "sha256": "77a56cd94581b570a43282a17645f7351faea2a8ced8476721962c70138c0d38"
+    },
+    {
+      "name": "beta7-workflows.json",
+      "bytes": 1947,
+      "sha256": "3ca3571bc93a18b9885c5ba180cdad120a84c2bc83ca888baa690cf23b87c73b"
+    },
+    {
+      "name": "device-network.json",
+      "bytes": 4621,
+      "sha256": "2cf6997110f6650f882d9dbb192332952255efc5520b8b31907ad8d632faa839"
+    },
+    {
+      "name": "device-report.json",
+      "bytes": 1258,
+      "sha256": "6c99b35450aaa77e47845f8e1d0f8c8ed78cf48ba456a8e1b96866b8f4d38bf7"
+    },
+    {
+      "name": "draft-verification.json",
+      "bytes": 2305,
+      "sha256": "d5287738f6579f880c20e4d9465278df079a4181bce7c424b61d7019a96d6c35"
+    },
+    {
+      "name": "publication-review.json",
+      "bytes": 1458,
+      "sha256": "59c2119e8fe0ac2e2fd5e39274b25a1f151be65e1bf1de86a063c7c50e5dddcb"
+    },
+    {
+      "name": "release-verification.json",
+      "bytes": 2312,
+      "sha256": "c415fa7d68e42a72911729cd2d5386ef78a11069b8d5dbd7960071d36666912d"
+    }
+  ]
+}

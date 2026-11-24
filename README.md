@@ -1,11 +1,7 @@
 # 🚀 FIELD INTELLIGENCE CONSOLE
 ## BETA
 
-[Beta releases](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases)
-
-**4.0.0-beta.7 is undergoing release verification.** Download only a published
-prerelease with all three platform assets and SHA-256 checksums. Earlier beta tags
-are preserved candidates; a tag alone does not establish a working release.
+**[Download Field Intelligence Console 4.0.0-beta.7](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.7)** from the private repository. The prerelease includes the Windows x64 EXE, Android testing APK and Python wheel. Verify the download against `SHA256SUMS.txt`. The [Mission 002 recovery record](docs/mission/MISSION_002.md) links the test reports and release verification.
 
 **ONE TAP. INSTANT AWARENESS.**
 
@@ -18,8 +14,7 @@ an independently installable Python core. This is experimental software.
 
 Artifacts are delivered through the original
 [repository releases](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases).
-Prerelease publication follows the complete runtime and privacy review. See the release's actual assets/status;
-a source checkout or an unfinished draft is not a completed binary release.
+The published prerelease includes installation notes, a manifest and SHA-256 checksums.
 
 - **Android:** install `FieldIntelligenceConsole-BETA-Android.apk`, a debug/testing APK, on Android 10/API29
   or newer. It uses `com.fieldconsole.debug`; the release application identity remains

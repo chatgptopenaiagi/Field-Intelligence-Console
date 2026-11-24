@@ -1,0 +1,52 @@
+[
+  {
+    "conclusion": "success",
+    "databaseId": 45489676633,
+    "headBranch": "v4.0.0-beta.7",
+    "headSha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+    "status": "completed",
+    "updatedAt": "2026-11-24T21:19:42Z",
+    "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45489676633",
+    "workflowName": "Explicit synthetic cross-platform exchange"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45482458393,
+    "headBranch": "v4-development",
+    "headSha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+    "status": "completed",
+    "updatedAt": "2026-11-24T20:36:54Z",
+    "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45482458393",
+    "workflowName": "Python core"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45482458470,
+    "headBranch": "v4-development",
+    "headSha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+    "status": "completed",
+    "updatedAt": "2026-11-24T20:38:43Z",
+    "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45482458470",
+    "workflowName": "Windows workstation"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45482458460,
+    "headBranch": "v4-development",
+    "headSha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+    "status": "completed",
+    "updatedAt": "2026-11-24T20:46:44Z",
+    "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45482458460",
+    "workflowName": "Android"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45482458425,
+    "headBranch": "v4.0.0-beta.7",
+    "headSha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+    "status": "completed",
+    "updatedAt": "2026-11-24T21:15:42Z",
+    "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45482458425",
+    "workflowName": "Experimental release candidate"
+  }
+]

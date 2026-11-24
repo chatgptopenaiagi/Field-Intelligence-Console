@@ -1,0 +1,27 @@
+{
+  "device": "FIC_MISSION002_API34",
+  "serial": "emulator-5584",
+  "source_sha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+  "observations": [
+    "Three synthetic inputs staged and byte-verified",
+    "BETA \u00b7 4.0.0-beta.7",
+    "Location Error",
+    "Valid: 2; invalid: 0; already stored: 0",
+    "EMPTY STORE",
+    "2 saved contacts",
+    "Valid: 2; invalid: 0; already stored: 2",
+    "2 saved contacts",
+    "Valid: 1; invalid: 0; already stored: 0",
+    "Import VCF",
+    "FIC-selected-network.json",
+    "export network 4621 bytes 2cf6997110f6650f882d9dbb192332952255efc5520b8b31907ad8d632faa839",
+    "Preview report import",
+    "Synthetic observation",
+    "FIC-field-report.json",
+    "export report 1258 bytes 6c99b35450aaa77e47845f8e1d0f8c8ed78cf48ba456a8e1b96866b8f4d38bf7",
+    "BETA \u00b7 4.0.0-beta.7",
+    "Synthetic observation",
+    "2 saved contacts",
+    "Restart retained both contacts and the report"
+  ]
+}

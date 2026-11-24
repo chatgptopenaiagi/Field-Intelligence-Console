@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Packaged EXE rendered native Known Network window",
+    "Native Ctrl+N opens real contact editor",
+    "Native mouse and keyboard create/save a persisted contact",
+    "Native Escape cancels a second contact editor",
+    "Native Ctrl+F and text search interaction",
+    "Native window close exits portable application",
+    "Second packaged process retains data and preferences"
+  ],
+  "scope": "Unique copied portable EXE; synthetic isolated profile",
+  "second_editor_focus": {
+    "native_class": "TkChild",
+    "ctrl_down": false,
+    "alt_down": false,
+    "shift_down": false
+  },
+  "check_count": 7
+}
