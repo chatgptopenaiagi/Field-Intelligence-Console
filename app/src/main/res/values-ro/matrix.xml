@@ -109,4 +109,5 @@
     <string name="latitude">Latitudine</string>
     <string name="longitude">Longitudine</string>
     <string name="permission_location_rationale">Cu permisiunea dumneavoastră, Field Intelligence Console obține coordonatele dispozitivului la scanare. Puteți alege și un loc manual.</string>
+    <string name="confirm_selection">Confirmă țara</string>
 </resources>

@@ -108,4 +108,5 @@
     <string name="manual_point">Manually selected location</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
+    <string name="confirm_selection">Confirm country</string>
 </resources>

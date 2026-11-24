@@ -73,10 +73,16 @@ fun RegionalPanel(geo: GeoContext?) {
         if (valid) Text(Locale("", input).displayCountry)
         Row {
             TextButton(enabled = valid, onClick = {
-                manual = input; prefs.edit().putString("manual_country", input).apply(); editing = false
-            }) { Text(stringResource(android.R.string.ok)) }
+                manual = input
+                prefs.edit().putString("manual_country", input).apply()
+                editing = false
+                RegionalLanguage.refreshAutomatic(context)
+            }) { Text(stringResource(R.string.confirm_selection)) }
             TextButton(onClick = {
-                manual = null; prefs.edit().remove("manual_country").apply(); editing = false
+                manual = null
+                prefs.edit().remove("manual_country").apply()
+                editing = false
+                RegionalLanguage.refreshAutomatic(context)
             }) { Text(stringResource(R.string.use_location)) }
         }
     }

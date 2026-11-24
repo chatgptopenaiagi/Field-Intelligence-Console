@@ -20,6 +20,30 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class MatrixTransferDeviceTest {
+    @Test fun automaticLanguageUsesDevicePreferencesAfterManualSelection() {
+        org.junit.Assume.assumeTrue(android.os.Build.VERSION.SDK_INT >= 33)
+        val target = InstrumentationRegistry.getInstrumentation().targetContext
+        val manager = target.getSystemService(android.app.LocaleManager::class.java)
+        val settings = target.getSharedPreferences("fic_regional", Context.MODE_PRIVATE)
+        val original = manager.applicationLocales
+        val originalMode = settings.getString("language", null)
+        val originalApplied = settings.getString("applied", null)
+        val deviceLanguages = manager.systemLocales
+        val expected = (0 until deviceLanguages.size()).map { deviceLanguages[it].language }
+            .firstOrNull { it in setOf("de", "ro", "en") }
+        org.junit.Assume.assumeNotNull(expected)
+        val alternate = if (expected == "de") "ro" else "de"
+        try {
+            com.fieldconsole.location.RegionalLanguage.select(target, alternate)
+            assertEquals(alternate, manager.applicationLocales.toLanguageTags())
+            com.fieldconsole.location.RegionalLanguage.select(target, "auto")
+            assertEquals(expected, manager.applicationLocales.toLanguageTags())
+        } finally {
+            settings.edit().putString("language", originalMode).putString("applied", originalApplied).apply()
+            manager.applicationLocales = original
+        }
+    }
+
     @Test fun shortAndLongPayloadsReachAnAndroidReceivingActivityIntact() {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val target = instrumentation.targetContext

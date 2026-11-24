@@ -20,15 +20,19 @@ object RegionalLanguage {
         preferred.firstOrNull { it in supported }
             ?: when (country) { "AT", "DE" -> "de"; "RO" -> "ro"; else -> "en" }
 
-    private fun automatic(country: String?): String {
-        val languages = Resources.getSystem().configuration.locales
+    private fun automatic(context: Context): String {
+        val settings = prefs(context)
+        val country = settings.getString("manual_country", null) ?: settings.getString("country", null)
+        val languages = if (Build.VERSION.SDK_INT >= 33) {
+            context.getSystemService(LocaleManager::class.java).systemLocales
+        } else Resources.getSystem().configuration.locales
         return automatic(country, (0 until languages.size()).map { languages[it].language })
     }
 
     fun attach(base: Context): Context {
         if (Build.VERSION.SDK_INT >= 33) return base
         val choice = mode(base)
-        val lang = if (choice == "auto") automatic(prefs(base).getString("country", null)) else choice
+        val lang = if (choice == "auto") automatic(base) else choice
         return base.createConfigurationContext(Configuration(base.resources.configuration).apply {
             setLocales(LocaleList(Locale.forLanguageTag(lang)))
         })
@@ -37,19 +41,23 @@ object RegionalLanguage {
     fun select(context: Context, choice: String) {
         require(choice == "auto" || choice in supported)
         prefs(context).edit().putString("language", choice).apply()
-        apply(context, if (choice == "auto") automatic(prefs(context).getString("country", null)) else choice)
+        apply(context, if (choice == "auto") automatic(context) else choice)
     }
 
     fun onFix(context: Context, geo: GeoContext) {
         val country = CountryBoundary.current(geo, System.currentTimeMillis()) ?: return
         prefs(context).edit().putString("country", country).apply()
+        refreshAutomatic(context)
+    }
+
+    fun refreshAutomatic(context: Context) {
         if (mode(context) != "auto") return
         if (Build.VERSION.SDK_INT >= 33) {
             val current = context.getSystemService(LocaleManager::class.java).applicationLocales.toLanguageTags()
             // A language set in Android's per-app settings takes precedence over travel.
             if (current.isNotEmpty() && current != prefs(context).getString("applied", "")) return
         }
-        apply(context, automatic(country))
+        apply(context, automatic(context))
     }
 
     private fun apply(context: Context, lang: String) {
