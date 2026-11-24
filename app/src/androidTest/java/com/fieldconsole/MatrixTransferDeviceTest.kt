@@ -1,11 +1,9 @@
 package com.fieldconsole
 
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Bundle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.fieldconsole.data.local.entity.FieldEntry
@@ -19,19 +17,6 @@ import java.util.concurrent.TimeUnit
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
-
-/** Only present in the instrumentation APK. Echo to the requesting test for a byte comparison. */
-class SyntheticShareReceiver : Activity() {
-    override fun onCreate(state: Bundle?) {
-        super.onCreate(state)
-        val token = intent.getStringExtra("receipt")
-        if (token != null && token.startsWith("com.fieldconsole.test.receipt.")) {
-            sendBroadcast(Intent(token).setPackage("com.fieldconsole.debug")
-                .putExtra("text", intent.getStringExtra(Intent.EXTRA_TEXT)))
-        }
-        finish()
-    }
-}
 
 @RunWith(AndroidJUnit4::class)
 class MatrixTransferDeviceTest {
