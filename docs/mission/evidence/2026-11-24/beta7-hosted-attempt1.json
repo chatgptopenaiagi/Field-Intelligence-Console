@@ -1,0 +1,20 @@
+[
+  {
+    "stage": "install",
+    "apk": "FieldIntelligenceConsole-BETA-Android.apk",
+    "attempt": 1,
+    "exit_code": 224,
+    "result": "TRANSIENT"
+  },
+  {
+    "stage": "install",
+    "apk": "FieldIntelligenceConsole-BETA-Android.apk",
+    "attempt": 2,
+    "exit_code": 255,
+    "result": "FAIL"
+  },
+  {
+    "stage": "failure",
+    "reason": "APK installation failed: see stage diagnostics"
+  }
+]

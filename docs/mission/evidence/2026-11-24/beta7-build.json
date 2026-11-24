@@ -1,0 +1,52 @@
+{
+  "source_sha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+  "artifacts": [
+    {
+      "sha256": "efac7d2ff1090a2a433ccacfdc8597db6207f818563da864d8029d281991d5b8",
+      "name": "artifact-inventory.json",
+      "bytes": 1272
+    },
+    {
+      "sha256": "e39ac1a81516d9ded6d3c2311f11ed798d424029b1fd2fe90829f67dfc6471e5",
+      "name": "field_intelligence_console-4.0.0b7-py3-none-any.whl",
+      "bytes": 30097
+    },
+    {
+      "sha256": "cbca22ed9354f8257cd9a549baeb23db044946a9daeb5485540974dd03818239",
+      "name": "field_intelligence_console-4.0.0b7.tar.gz",
+      "bytes": 32379
+    },
+    {
+      "sha256": "eb09af0c7f150ccd280fd0c101f57af1fed228e5edead44196023c92a1ffc134",
+      "name": "FieldIntelligenceConsole-4.0.0-beta.7-source.zip",
+      "bytes": 575266
+    },
+    {
+      "sha256": "1c4ed7a7c058d2a5214f843baea31990cd6964e3c44880fc505b9e8dc1701a4d",
+      "name": "FieldIntelligenceConsole-BETA-Android.apk",
+      "bytes": 60654713
+    },
+    {
+      "sha256": "83019af58ee0d562813e36336da39cd274bdfe7faac7141528af75424c1edc6e",
+      "name": "FieldIntelligenceConsole-BETA-Windows-x64.exe",
+      "bytes": 16187832
+    },
+    {
+      "sha256": "0f57c13b0005ba8c9766cef574ae15732d2d44fe52437c4ade48cd1c9c702482",
+      "name": "SBOM.cdx.json",
+      "bytes": 164094
+    },
+    {
+      "sha256": "5d63767f9040ae50b1cf88100e2860e207d767423a04b23833cc88ceeff3e42a",
+      "name": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 115199
+    }
+  ],
+  "instrumentation_apk_sha256": "78cea75fa9d6a329eff58182797616f61a17df1bdb3d9b69cbfb24e8c8bd444e",
+  "tag_state": "verified annotated tag",
+  "source_dirty": false,
+  "version": "4.0.0-beta.7",
+  "status": "BUILD_PASS",
+  "tag": "v4.0.0-beta.7",
+  "finalization": "Requires PASS Android runtime bound to this exact APK, then final manifest/checksums"
+}

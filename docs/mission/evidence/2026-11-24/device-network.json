@@ -1,0 +1,153 @@
+{
+  "schema": "fic.network",
+  "schema_version": 1,
+  "app_version": "4.0.0-beta.7",
+  "exported_at": "2026-11-24T20:53:33.050929Z",
+  "entities": [
+    {
+      "id": "a524d80ffa27b839b7ab90901ff5fd17573d8743908583b43837675408a9e699",
+      "kind": "person",
+      "display_name": "Alex Éxample",
+      "structured_name": {
+        "family": "Éxample",
+        "given": "Alex",
+        "additional": "",
+        "prefix": "",
+        "suffix": ""
+      },
+      "organization": "Synthetic Research Cooperative",
+      "role": "",
+      "notes": "Synthetic record\nSaved association only",
+      "tags": [],
+      "phones": [
+        {
+          "value": "tel:+1-202-555-0100",
+          "normalized": "+12025550100",
+          "label": "work"
+        },
+        {
+          "value": "020 7946 0000",
+          "normalized": "02079460000",
+          "label": "home"
+        }
+      ],
+      "emails": [
+        {
+          "value": "alex@example.org",
+          "normalized": "alex@example.org",
+          "label": "work"
+        }
+      ],
+      "addresses": [
+        {
+          "id": "a524d80ffa27b839b7ab90901ff5fd17573d8743908583b43837675408a9e699-address-0",
+          "original": "1 Example Street, Example City, Example Region, 00000, Example Country",
+          "label": "work",
+          "po_box": "",
+          "extended": "",
+          "street": "1 Example Street",
+          "neighborhood": "",
+          "locality": "Example City",
+          "region": "Example Region",
+          "postal_code": "00000",
+          "country": "Example Country"
+        },
+        {
+          "id": "a524d80ffa27b839b7ab90901ff5fd17573d8743908583b43837675408a9e699-address-1",
+          "original": "2 Other Street, Other City, 00001, Example Country",
+          "label": "home",
+          "po_box": "",
+          "extended": "",
+          "street": "2 Other Street",
+          "neighborhood": "",
+          "locality": "Other City",
+          "region": "",
+          "postal_code": "00001",
+          "country": "Example Country"
+        }
+      ],
+      "associations": [
+        {
+          "id": "a524d80ffa27b839b7ab90901ff5fd17573d8743908583b43837675408a9e699-association-0",
+          "address_id": "a524d80ffa27b839b7ab90901ff5fd17573d8743908583b43837675408a9e699-address-0",
+          "basis": "saved_address",
+          "source": "imported_contact",
+          "temporal_status": "saved",
+          "point": null,
+          "geocode_status": "unresolved",
+          "provider": null,
+          "resolved_at": null,
+          "verified_at": null,
+          "normalized_address": null
+        },
+        {
+          "id": "a524d80ffa27b839b7ab90901ff5fd17573d8743908583b43837675408a9e699-association-1",
+          "address_id": "a524d80ffa27b839b7ab90901ff5fd17573d8743908583b43837675408a9e699-address-1",
+          "basis": "saved_address",
+          "source": "imported_contact",
+          "temporal_status": "saved",
+          "point": null,
+          "geocode_status": "unresolved",
+          "provider": null,
+          "resolved_at": null,
+          "verified_at": null,
+          "normalized_address": null
+        }
+      ],
+      "ancestry": [
+        {
+          "source_id": "c3843286702473b6aeca92c1970563cbd7a69577e68923b8baaf96bcb2d4f068",
+          "record_id": "synthetic-alex-001",
+          "format": "vcf",
+          "imported_at": "2026-11-24T20:52:32.311619Z",
+          "updated_at": null
+        }
+      ],
+      "corrections": [],
+      "extensions": {
+        "vcard_properties": [
+          "X-SYNTHETIC:retained unknown value"
+        ]
+      }
+    },
+    {
+      "id": "1827c03213ad4c0f178cca69ccc83849b83e010730bbda1d45ede39f6c383476",
+      "kind": "person",
+      "display_name": "Synthetic Organisation",
+      "structured_name": {
+        "family": "",
+        "given": "",
+        "additional": "",
+        "prefix": "",
+        "suffix": ""
+      },
+      "organization": "Synthetic Organisation",
+      "role": "",
+      "notes": "",
+      "tags": [],
+      "phones": [],
+      "emails": [
+        {
+          "value": "office@example.org",
+          "normalized": "office@example.org",
+          "label": "unspecified"
+        }
+      ],
+      "addresses": [],
+      "associations": [],
+      "ancestry": [
+        {
+          "source_id": "c3843286702473b6aeca92c1970563cbd7a69577e68923b8baaf96bcb2d4f068",
+          "record_id": "synthetic-org-002",
+          "format": "vcf",
+          "imported_at": "2026-11-24T20:52:32.352728Z",
+          "updated_at": null
+        }
+      ],
+      "corrections": [],
+      "extensions": {
+        "vcard_properties": []
+      }
+    }
+  ]
+}

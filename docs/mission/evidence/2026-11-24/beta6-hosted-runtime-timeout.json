@@ -1,0 +1,26 @@
+[
+  {
+    "stage": "install",
+    "apk": "FieldIntelligenceConsole-BETA-Android.apk",
+    "attempt": 1,
+    "exit_code": 0,
+    "result": "PASS"
+  },
+  {
+    "stage": "install",
+    "apk": "app-debug-androidTest.apk",
+    "attempt": 1,
+    "exit_code": 0,
+    "result": "PASS"
+  },
+  {
+    "stage": "instrumentation",
+    "exit_code": 124,
+    "tests": 0,
+    "synthetic_test_output": "Command timed out"
+  },
+  {
+    "stage": "failure",
+    "reason": "Actual APK instrumentation did not pass all required tests"
+  }
+]

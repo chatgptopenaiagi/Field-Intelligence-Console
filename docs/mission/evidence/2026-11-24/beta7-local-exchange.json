@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "source_sha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+  "observed_android_export_source_sha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+  "apk_sha256": "1c4ed7a7c058d2a5214f843baea31990cd6964e3c44880fc505b9e8dc1701a4d",
+  "exe_sha256": "83019af58ee0d562813e36336da39cd274bdfe7faac7141528af75424c1edc6e",
+  "wheel_sha256": "e39ac1a81516d9ded6d3c2311f11ed798d424029b1fd2fe90829f67dfc6471e5",
+  "input_hashes": {
+    "network": "2cf6997110f6650f882d9dbb192332952255efc5520b8b31907ad8d632faa839",
+    "report": "6c99b35450aaa77e47845f8e1d0f8c8ed78cf48ba456a8e1b96866b8f4d38bf7",
+    "android_receipt": "b70e92dc1f4cc2e51b1b73f596fd7c5b44631f07b0426b9f0d079f5c721372f2"
+  },
+  "entities": 2,
+  "reports": 1,
+  "packaged_ui_checks": 28,
+  "exact_entities_and_ancestry": true,
+  "exact_report": true,
+  "steps": [
+    "fresh wheel install outside checkout",
+    "atomic import/reimport/reopen/export",
+    "exact packaged EXE GUI preview/confirm/export",
+    "second fresh installed wheel exact readback"
+  ],
+  "limitations": [
+    "Explicit synthetic inputs only; receipt is an export attestation, not new Android runtime execution.",
+    "Observed export source is retained independently; exact APK bytes bind its relevance.",
+    "Separate release build native seven-check gate remains required.",
+    "No physical device, personal contacts or live provider coverage claimed."
+  ]
+}
