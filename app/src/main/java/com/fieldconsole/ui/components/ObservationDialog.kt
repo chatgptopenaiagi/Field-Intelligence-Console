@@ -1,5 +1,7 @@
 package com.fieldconsole.ui.components
 
+import com.fieldconsole.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -26,14 +28,14 @@ fun ObservationDialog(
     onConfirm: (note: String, tag: String, geo: GeoContext) -> Unit,
     onDismiss: () -> Unit
 ) {
-    var note     by remember { mutableStateOf("") }
-    var tag      by remember { mutableStateOf("") }
+    var note     by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf("") }
+    var tag      by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf("") }
     val tagFocus = remember { FocusRequester() }
 
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Location Captured", style = MaterialTheme.typography.titleLarge,
+            Text(stringResource(R.string.captured), style = MaterialTheme.typography.titleLarge,
                  fontWeight = FontWeight.Bold)
         },
         text = {
@@ -66,7 +68,7 @@ fun ObservationDialog(
                                 color      = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                             Text(
-                                text  = "${geo.coordString}  (\u00b1${geo.accuracy.toInt()} m)",
+                                text  = "${geo.coordString}  (${geo.accuracyText})",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                                            .copy(alpha = 0.75f)
@@ -78,8 +80,8 @@ fun ObservationDialog(
                 OutlinedTextField(
                     value           = note,
                     onValueChange   = { note = it },
-                    label           = { Text("Observation (optional)") },
-                    placeholder     = { Text("What do you see here?") },
+                    label           = { Text(stringResource(R.string.observation)) },
+                    placeholder     = { Text(stringResource(R.string.observation_hint)) },
                     maxLines        = 3,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     keyboardActions = KeyboardActions(onNext = { tagFocus.requestFocus() }),
@@ -89,8 +91,8 @@ fun ObservationDialog(
                 OutlinedTextField(
                     value           = tag,
                     onValueChange   = { tag = it },
-                    label           = { Text("Tag (optional)") },
-                    placeholder     = { Text("e.g. infrastructure, risk, logistics") },
+                    label           = { Text(stringResource(R.string.tag)) },
+                    placeholder     = { Text(stringResource(R.string.tag_hint)) },
                     singleLine      = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = { onConfirm(note, tag, geo) }),
@@ -102,11 +104,11 @@ fun ObservationDialog(
         },
         confirmButton = {
             Button(onClick = { onConfirm(note, tag, geo) }) {
-                Text("OPEN MATRIX")
+                Text(stringResource(R.string.open_matrix))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
         }
     )
 }

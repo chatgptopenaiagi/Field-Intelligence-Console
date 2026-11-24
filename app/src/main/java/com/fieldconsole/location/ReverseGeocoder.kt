@@ -51,7 +51,7 @@ class ReverseGeocoder internal constructor(
             street = listOfNotNull(address.subThoroughfare, address.thoroughfare)
                 .joinToString(" ").takeIf { it.isNotBlank() },
             district = address.subLocality ?: address.locality ?: address.subAdminArea,
-            city = address.locality ?: address.subAdminArea ?: address.adminArea,
+            city = address.locality, region = address.adminArea,
             country = address.countryName, countryCode = address.countryCode)
     }
 }

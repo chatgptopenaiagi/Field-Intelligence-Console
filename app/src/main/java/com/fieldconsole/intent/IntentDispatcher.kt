@@ -36,10 +36,6 @@ class IntentDispatcher @Inject constructor(
     // ── Module 1 — INFO SCAN ──────────────────────────────────────────────────
 
     fun infoScan(context: Context, geo: GeoContext, entry: FieldEntry? = null) {
-        entry?.let {
-            val prompt = promptGen.infoScanPrompt(it, geo)
-            copyToClipboard(context, prompt, "Info Scan Prompt")
-        }
         val query = if (geo.hasPlaceName)
             "current information about ${geo.fullPlaceName} ${geo.coordString}"
         else
@@ -50,10 +46,6 @@ class IntentDispatcher @Inject constructor(
     // ── Module 2 — HISTORY ────────────────────────────────────────────────────
 
     fun history(context: Context, geo: GeoContext, entry: FieldEntry? = null) {
-        entry?.let {
-            val prompt = promptGen.historyPrompt(it, geo)
-            copyToClipboard(context, prompt, "History Prompt")
-        }
         if (geo.hasPlaceName) {
             val place = listOfNotNull(geo.district, geo.city)
                 .filter { it.isNotBlank() }.firstOrNull() ?: geo.city ?: geo.fullPlaceName
@@ -104,25 +96,21 @@ class IntentDispatcher @Inject constructor(
 
     // ── Module 4 — AI ANALYSIS ────────────────────────────────────────────────
 
-    fun aiAnalysis(context: Context, geo: GeoContext, note: String = "", tag: String = "") {
-        val entry = FieldEntry(
-            latitude  = geo.latitude, longitude = geo.longitude,
-            accuracy  = geo.accuracy, note = note, tag = tag,
-            timestamp = geo.timestamp, placeName = geo.fullPlaceName
-        )
-        val prompt = promptGen.generate(entry, geo)
-        copyToClipboard(context, prompt, "Field Intelligence Prompt")
-        Toast.makeText(context, "Prompt copied. Opening AI…", Toast.LENGTH_SHORT).show()
-        openChatGPT(context, prompt)
+    fun reviewPrompt(function: String, entry: FieldEntry, geo: GeoContext): String {
+        val body = when (function) {
+            "INFO SCAN" -> promptGen.infoScanPrompt(entry, geo)
+            "HISTORY" -> promptGen.historyPrompt(entry, geo)
+            "RISK / SAFETY" -> promptGen.riskPrompt(entry, geo)
+            "FINANCIAL" -> promptGen.financialPrompt(entry, geo)
+            "AI ANALYSIS" -> promptGen.generate(entry, geo)
+            else -> error("Unsupported AI function")
+        }
+        return "Function: $function\n$body\n${MatrixHandoff.END}"
     }
 
     // ── Module 5 — RISK / SAFETY ──────────────────────────────────────────────
 
     fun riskSafety(context: Context, geo: GeoContext, entry: FieldEntry? = null) {
-        entry?.let {
-            val prompt = promptGen.riskPrompt(it, geo)
-            copyToClipboard(context, prompt, "Risk Assessment Prompt")
-        }
         openUrl(context,
             "https://www.google.com/maps/search/police+station+hospital+fire+station/" +
             "@${geo.latitude},${geo.longitude},15z")
@@ -139,10 +127,6 @@ class IntentDispatcher @Inject constructor(
     // ── Module 7 — FINANCIAL ──────────────────────────────────────────────────
 
     fun financial(context: Context, geo: GeoContext, entry: FieldEntry? = null) {
-        entry?.let {
-            val prompt = promptGen.financialPrompt(it, geo)
-            copyToClipboard(context, prompt, "Financial Intelligence Prompt")
-        }
         val query = if (geo.hasPlaceName)
             "real estate prices business activity commercial area ${geo.fullPlaceName} property value"
         else
@@ -168,7 +152,7 @@ class IntentDispatcher @Inject constructor(
             appendLine("FIELD LOCATION")
             appendLine("Place:       ${geo.fullPlaceName}")
             appendLine("Coordinates: ${geo.coordString}")
-            appendLine("Accuracy:    ±${geo.accuracy.toInt()} m")
+            appendLine("Accuracy:    ${geo.accuracyText}")
             appendLine("Timestamp:   $ts")
             if (note.isNotBlank()) appendLine("Observation: $note")
             if (tag.isNotBlank())  appendLine("Tag:         $tag")
@@ -185,7 +169,7 @@ class IntentDispatcher @Inject constructor(
             appendLine()
             appendLine("Location:    ${geo.coordString}")
             appendLine("Place:       ${geo.fullPlaceName}")
-            appendLine("Accuracy:    ±${geo.accuracy.toInt()} m")
+            appendLine("Accuracy:    ${geo.accuracyText}")
             appendLine("Timestamp:   $ts")
             if (note.isNotBlank()) appendLine("Observation: $note")
             if (tag.isNotBlank())  appendLine("Tag:         $tag")
@@ -250,12 +234,6 @@ class IntentDispatcher @Inject constructor(
         } catch (e: Exception) {
             openUrl(context, "https://maps.google.com/maps?daddr=$lat,$lon")
         }
-    }
-
-    fun openChatGPT(context: Context, prompt: String) {
-        val appIntent = context.packageManager.getLaunchIntentForPackage("com.openai.chatgpt")
-        if (appIntent != null) context.startActivity(appIntent)
-        else openUrl(context, "https://chat.openai.com/?q=${enc(prompt.take(500))}")
     }
 
     fun openWikipedia(context: Context, query: String) {

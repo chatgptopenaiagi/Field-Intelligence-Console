@@ -13,8 +13,8 @@ android {
         applicationId   = "com.fieldconsole"
         minSdk          = 29
         targetSdk       = 34
-        versionCode     = 10
-        versionName     = "4.0.0-beta.7"
+        versionCode     = 11
+        versionName     = "4.0.0-beta.8.dev1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
@@ -60,6 +60,7 @@ android {
     sourceSets.getByName("androidTest").assets.srcDir(rootProject.file("shared"))
     sourceSets.getByName("test").resources.srcDir("schemas")
     sourceSets.getByName("test").resources.srcDir(rootProject.file("shared"))
+    sourceSets.getByName("main").resources.srcDir(rootProject.file("python/src/field_intelligence_console/regional_data"))
     sourceSets.getByName("main").resources.srcDir(rootProject.file("shared/schemas"))
     packaging {
         resources {

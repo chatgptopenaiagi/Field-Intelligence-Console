@@ -6,6 +6,7 @@ on:
     paths:
       - 'app/**'
       - 'shared/**'
+      - 'python/src/field_intelligence_console/regional_data/**'
       - 'gradle/**'
       - '*.gradle.kts'
       - 'gradle.properties'
@@ -15,6 +16,7 @@ on:
     paths:
       - 'app/**'
       - 'shared/**'
+      - 'python/src/field_intelligence_console/regional_data/**'
       - 'gradle/**'
       - '*.gradle.kts'
       - 'gradle.properties'

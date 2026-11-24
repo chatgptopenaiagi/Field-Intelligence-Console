@@ -1,5 +1,7 @@
 package com.fieldconsole.ui.search
 
+import com.fieldconsole.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -42,7 +44,7 @@ fun SmartSearchScreen(
                     OutlinedTextField(
                         value         = query,
                         onValueChange = { query = it },
-                        placeholder   = { Text("Search observations, tags, places…") },
+                        placeholder   = { Text(stringResource(R.string.search_hint)) },
                         singleLine    = true,
                         modifier      = Modifier
                             .fillMaxWidth()
@@ -59,7 +61,7 @@ fun SmartSearchScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -91,7 +93,7 @@ fun SmartSearchScreen(
             ) {
                 if (query.isBlank()) {
                     item {
-                        Text("Recent Observations",
+                        Text(stringResource(R.string.recent),
                              style = MaterialTheme.typography.titleSmall,
                              fontWeight = FontWeight.Bold,
                              color = MaterialTheme.colorScheme.primary)

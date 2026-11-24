@@ -25,14 +25,42 @@ class ExistingIntentContractTest {
     private val dispatcher = IntentDispatcher(FieldPromptGenerator())
     private val geo = GeoContext(latitude = 48.2, longitude = 16.3, timestamp = 123L)
 
-    @Test fun `existing AI action copies prompt and requests external browser without credentials`() {
-        dispatcher.aiAnalysis(context, geo, "test observation", "survey")
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val prompt = clipboard.primaryClip!!.getItemAt(0).text.toString()
-        assertTrue(prompt.contains("test observation"))
-        assertTrue(prompt.contains("survey"))
-        assertEquals(Intent.ACTION_VIEW, launched.single().action)
-        assertEquals("chat.openai.com", launched.single().data!!.host)
+    @Test fun `Android parcel preserves the reviewed text in all five analysis modes`() {
+        for (note in listOf("test observation", "Wien · București · 東京 🌍 & ? %\n".repeat(140))) {
+            val entry = com.fieldconsole.data.local.entity.FieldEntry(latitude=48.2, longitude=16.3, accuracy=3.75f,
+                timestamp=123L, note=note, tag="survey")
+            for (mode in listOf("INFO SCAN","HISTORY","AI ANALYSIS","RISK / SAFETY","FINANCIAL")) {
+                val text = dispatcher.reviewPrompt(mode, entry, geo.copy(provider="gps"))
+                val intent = com.fieldconsole.intent.MatrixHandoff.chatIntent(text)
+                val parcel = android.os.Parcel.obtain()
+                try {
+                    intent.writeToParcel(parcel, 0)
+                    parcel.setDataPosition(0)
+                    val received = Intent.CREATOR.createFromParcel(parcel)
+                    assertEquals("com.openai.chatgpt", received.`package`)
+                    assertEquals(Intent.ACTION_SEND, received.action)
+                    assertEquals(text, received.getStringExtra(Intent.EXTRA_TEXT))
+                    for (expected in listOf(note,mode,"3.75", "1970-01-01T00:00:00.123Z", "gps")) assertTrue(text.contains(expected))
+                } finally { parcel.recycle() }
+            }
+        }
+        val handoff = com.fieldconsole.intent.MatrixHandoff
+        assertFalse(handoff.completeText("Accur"))
+        assertFalse(handoff.completeText("x".repeat(70000) + "\n" + handoff.END))
+    }
+
+    @Test fun `Earth targets only Earth at valid selected coordinates`() {
+        val handoff = com.fieldconsole.intent.MatrixHandoff
+        assertTrue(handoff.openEarth(context, geo))
+        assertEquals("com.google.earth", launched.single().`package`)
+        assertEquals("https://earth.google.com/web/search/48.2,16.3/", launched.single().data.toString())
+        val unavailable = object : ContextWrapper(context) {
+            override fun startActivity(intent: Intent) { throw android.content.ActivityNotFoundException() }
+        }
+        assertFalse(handoff.openEarth(unavailable, geo))
+        for (invalid in listOf(GeoContext(), geo.copy(latitude=91.0), geo.copy(longitude=Double.POSITIVE_INFINITY)))
+            assertFalse(handoff.openEarth(context, invalid))
+        assertEquals(1, launched.size)
     }
 
     @Test fun `existing report action shares inline text with observation and coordinates`() {

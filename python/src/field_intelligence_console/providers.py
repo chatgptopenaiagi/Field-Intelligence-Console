@@ -29,7 +29,7 @@ class _NoRedirect(HTTPRedirectHandler):
 def _http(address, key, timeout):
     query = urlencode({"q": address, "key": key, "limit": 5, "no_annotations": 1, "no_record": 1})
     request = Request("https://api.opencagedata.com/geocode/v1/json?" + query,
-                      headers={"User-Agent": "FieldIntelligenceConsole/4.0.0-beta.7", "Accept": "application/json"})
+                      headers={"User-Agent": "FieldIntelligenceConsole/4.0.0-beta.8.dev1", "Accept": "application/json"})
     opener = build_opener(_NoRedirect())
     try:
         with opener.open(request, timeout=timeout) as response:

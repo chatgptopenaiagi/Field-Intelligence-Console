@@ -39,6 +39,8 @@ class MainActivity : ComponentActivity() {
 
     @Inject lateinit var dispatcher: IntentDispatcher
 
+    override fun attachBaseContext(newBase: android.content.Context) = super.attachBaseContext(com.fieldconsole.location.RegionalLanguage.attach(newBase))
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -86,8 +88,10 @@ class MainActivity : ComponentActivity() {
                         })
                     }
 
-                    composable("history") {
-                        HistoryScreen(onBack = { nav.popBackStack() })
+                    composable("history") { screen ->
+                        val mainEntry = remember(screen) { nav.getBackStackEntry("main") }
+                        val mainVm: MainViewModel = hiltViewModel(mainEntry)
+                        HistoryScreen(onBack = { nav.popBackStack() }, onOpen = { entry -> mainVm.openEntry(entry); nav.popBackStack() })
                     }
 
                     composable("search") { searchEntry ->

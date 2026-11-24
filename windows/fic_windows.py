@@ -18,7 +18,7 @@ from field_intelligence_console import (
     parse_import, query_network, validate_report, now_iso,
 )
 
-VERSION = "4.0.0-beta.7"
+VERSION = "4.0.0-beta.8.dev1"
 MAX_BYTES = 5 * 1024 * 1024
 SCOPES = ("street", "radius", "neighborhood", "city", "region", "country", "building")
 ADDRESS_FIELDS = ("street", "neighborhood", "locality", "region", "postal_code", "country")
@@ -611,6 +611,7 @@ class Workstation:
         ttk.Entry(form, textvariable=self.radius).grid(row=7, column=1, sticky="w", padx=10)
         bar = ttk.Frame(self.place_tab)
         bar.pack(fill="x", pady=12)
+        self.button(bar, "Emergency numbers", lambda: self.guard("Emergency numbers", self.show_country_numbers))
         self.save_place_button = self.button(bar, "Use this manual place", lambda: self.guard("Place", self.save_place))
         self.button(bar, "Open map for saved point", self.open_map)
         ttk.Label(self.place_tab, text="Street/neighborhood text matches require locality and country context. Missing evidence is unavailable, not zero people. Radius means distance to a qualified saved point, not walking distance or current whereabouts. External geocoding is OFF; no imported address is transmitted.", wraplength=950).pack(anchor="w")
@@ -635,6 +636,19 @@ class Workstation:
         if self.place.get("latitude") is not None and self.place.get("longitude") is not None:
             parts.append(f"{self.place['latitude']}, {self.place['longitude']}")
         return "Selected area: " + (", ".join(parts) or "unavailable") + f" — {self.place_origin}"
+
+    def show_country_numbers(self):
+        from tkinter import simpledialog
+        from field_intelligence_console.regional import interior_country, emergency_services
+        lat, lon = self.place.get("latitude"), self.place.get("longitude")
+        suggested = interior_country(lat, lon) if lat is not None and lon is not None else ""
+        country = simpledialog.askstring("Emergency numbers", "Confirm the country (two-letter ISO code).",
+                                         initialvalue=suggested or "", parent=self.root)
+        if country is None:
+            return
+        rows = emergency_services(country)
+        text = "\n\n".join(f"{r['category']} · {r['number']}\n{r['verified']} · {r['source']}" for r in rows)
+        messagebox.showinfo("Emergency numbers", text or "EMERGENCY NUMBER NOT VERIFIED", parent=self.root)
 
     def open_map(self):
         lat, lon = self.place.get("latitude"), self.place.get("longitude")

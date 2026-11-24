@@ -32,7 +32,7 @@ if (-not (Test-Path -LiteralPath $runtime)) {
 if ($LASTEXITCODE -ne 0) { throw 'Windows build dependencies failed.' }
 if (-not $Wheel) {
     & "$PSScriptRoot/python_gate.ps1" -Python $Python -OutputRoot "$OutputRoot/python" -AllowDirtyDevelopment:$AllowDirtyDevelopment
-    $Wheel = "$OutputRoot/python/packages/field_intelligence_console-4.0.0b7-py3-none-any.whl"
+    $Wheel = "$OutputRoot/python/packages/field_intelligence_console-4.0.0b8.dev1-py3-none-any.whl"
 }
 $Wheel = (Resolve-Path -LiteralPath $Wheel).Path
 & $runtime -m pip install --disable-pip-version-check --force-reinstall --constraint windows/constraints.txt $Wheel
@@ -42,7 +42,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Windows focused UI tests failed; inspect local
 $focusedReceipt = Get-Content -Raw "$OutputRoot/focused-tests.json" | ConvertFrom-Json
 if ($focusedReceipt.tests -lt 14 -or $focusedReceipt.skipped -ne 0 -or $focusedReceipt.status -ne 'PASS') { throw 'Focused test evidence is incomplete.' }
 & "$projectRoot/windows/build.ps1" -Wheel $Wheel -Python $runtime -Output "$OutputRoot/artifacts" *> "$OutputRoot/package.log"
-$exe = Join-Path $OutputRoot 'artifacts/FieldIntelligenceConsole-4.0.0-beta.7-windows-x64.exe'
+$exe = Join-Path $OutputRoot 'artifacts/FieldIntelligenceConsole-4.0.0-beta.8.dev1-windows-x64.exe'
 if (-not (Test-Path -LiteralPath $exe)) { throw 'Windows EXE missing.' }
 $profile = Join-Path ([IO.Path]::GetTempPath()) ('FIC-synthetic-gate-' + [guid]::NewGuid().ToString('N'))
 $receipt = Join-Path $OutputRoot 'packaged-ui.json'
@@ -70,7 +70,7 @@ import hashlib,importlib.metadata,json,pathlib,pefile,sys
 p=pathlib.Path(sys.argv[1]);pe=pefile.PE(str(p))
 assert pe.FILE_HEADER.Machine==0x8664 and pe.OPTIONAL_HEADER.Subsystem==2
 strings={k.decode():v.decode() for group in pe.FileInfo for block in group if block.Key==b'StringFileInfo' for table in block.StringTable for k,v in table.entries.items()}
-assert strings['FileVersion']=='4.0.0.7' and strings['ProductVersion']=='4.0.0-beta.7'
+assert strings['FileVersion']=='4.0.0.8' and strings['ProductVersion']=='4.0.0-beta.8.dev1'
 fixed=pe.VS_FIXEDFILEINFO[0]
 major,minor,patch,build=map(int,strings['FileVersion'].split('.'))
 assert (fixed.FileVersionMS,fixed.FileVersionLS)==((major<<16)|minor,(patch<<16)|build)

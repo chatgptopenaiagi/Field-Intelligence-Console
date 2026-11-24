@@ -48,11 +48,20 @@ sealed class MainUiState {
 class MainViewModel @Inject constructor(
     private val repository:  FieldEntryRepository,
     private val locationMgr: LocationManager,
-    private val geocoder:    ReverseGeocoder
+    private val geocoder:    ReverseGeocoder,
+    private val savedState: androidx.lifecycle.SavedStateHandle = androidx.lifecycle.SavedStateHandle()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<MainUiState>(MainUiState.Idle)
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
+
+    init {
+        savedState.get<Long>("activeEntry")?.let { id ->
+            viewModelScope.launch { repository.getById(id)?.let { openEntry(it) } }
+        }
+    }
+
+    private var activeMatrix: MainUiState.ActionMatrix? = null
 
     val allEntries = repository.observeAll()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
@@ -93,7 +102,7 @@ class MainViewModel @Inject constructor(
                         accuracy  = result.accuracy,
                         timestamp = result.timestamp
                     )
-                    _uiState.value = MainUiState.AwaitingObservation(geo)
+                    _uiState.value = MainUiState.AwaitingObservation(geo.copy(provider = result.provider))
                 }
                 is LocationResult.PermissionDenied ->
                     _uiState.value = MainUiState.Error(
@@ -125,26 +134,29 @@ class MainViewModel @Inject constructor(
             )
             val id    = repository.save(entry)
             val saved = entry.copy(id = id)
+            savedState["activeEntry"] = id
             _uiState.value = MainUiState.ActionMatrix(saved, geo)
         }
     }
 
     fun onObservationDismissed() { _uiState.value = MainUiState.Idle }
 
-    fun onReset()          { _uiState.value = MainUiState.Idle }
+    fun onReset() { savedState.remove<Long>("activeEntry"); activeMatrix = null; _uiState.value = MainUiState.Idle }
     fun onErrorDismissed() { _uiState.value = MainUiState.Idle }
 
     fun onEmergencyPressed(geo: GeoContext) {
+        activeMatrix = _uiState.value as? MainUiState.ActionMatrix
         _uiState.value = MainUiState.Emergency(geo)
     }
 
-    fun onEmergencyDismissed() { _uiState.value = MainUiState.Idle }
+    fun onEmergencyDismissed() { _uiState.value = activeMatrix ?: MainUiState.Idle }
 
     fun openEntry(entry: FieldEntry) {
         viewModelScope.launch {
             val geo = geocoder.resolve(entry.latitude, entry.longitude,
                                        entry.accuracy, entry.timestamp)
-            _uiState.value = MainUiState.ActionMatrix(entry, geo)
+            savedState["activeEntry"] = entry.id
+            _uiState.value = MainUiState.ActionMatrix(entry, geo.copy(saved = true))
         }
     }
 

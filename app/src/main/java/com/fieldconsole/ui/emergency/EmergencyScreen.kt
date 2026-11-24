@@ -1,5 +1,7 @@
 package com.fieldconsole.ui.emergency
 
+import androidx.compose.ui.res.stringResource
+import com.fieldconsole.R
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -37,7 +39,7 @@ fun EmergencyScreen(
     val state   = vm.state.collectAsState().value
     val context = LocalContext.current
 
-    LaunchedEffect(geo) { vm.load(geo.latitude, geo.longitude, geo.countryCode ?: "INT") }
+    LaunchedEffect(geo) { vm.load(geo.latitude, geo.longitude, com.fieldconsole.data.emergency.CountryBoundary.current(geo, System.currentTimeMillis()) ?: "UNKNOWN") }
 
     Scaffold(
         topBar = {
@@ -48,7 +50,7 @@ fun EmergencyScreen(
                              tint = Color(0xFFCC0000), modifier = Modifier.size(22.dp))
                         Spacer(Modifier.width(8.dp))
                         Column {
-                            Text("EMERGENCY", style = MaterialTheme.typography.titleLarge,
+                            Text(stringResource(R.string.emergency), style = MaterialTheme.typography.titleLarge,
                                  fontWeight = FontWeight.Black, color = Color(0xFFCC0000))
                             Text(geo.shortLabel, style = MaterialTheme.typography.labelSmall,
                                  color = MaterialTheme.colorScheme.primary)
@@ -57,7 +59,7 @@ fun EmergencyScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onDismiss) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -76,7 +78,7 @@ fun EmergencyScreen(
         ) {
 
             // ── Quick navigation buttons ──────────────────────────────────────
-            Text("Quick Actions", style = MaterialTheme.typography.titleSmall,
+            Text(stringResource(R.string.quick_actions), style = MaterialTheme.typography.titleSmall,
                  fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
 
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -87,7 +89,7 @@ fun EmergencyScreen(
                 ) {
                     Icon(Icons.Default.Navigation, null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Navigate", fontSize = 12.sp)
+                    Text(stringResource(R.string.navigate), fontSize = 12.sp)
                 }
                 OutlinedButton(
                     onClick  = { dispatcher.copyLocation(context, geo) },
@@ -95,31 +97,21 @@ fun EmergencyScreen(
                 ) {
                     Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Copy GPS", fontSize = 12.sp)
+                    Text(stringResource(R.string.copy_gps), fontSize = 12.sp)
                 }
             }
 
             // ── Emergency numbers ─────────────────────────────────────────────
-            Text("Emergency Numbers — ${state.countryCode}",
-                 style = MaterialTheme.typography.titleSmall,
-                 fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-
-            if (state.numbers.isEmpty()) {
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-            } else {
-                state.numbers.forEach { num ->
-                    EmergencyNumberCard(num)
-                }
-            }
+            RegionalPanel(geo)
 
             // ── Nearby services ───────────────────────────────────────────────
-            Text("Nearby Emergency Services",
+            Text(stringResource(R.string.nearby),
                  style = MaterialTheme.typography.titleSmall,
                  fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
 
             if (state.isLoading && state.services.isEmpty()) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                Text("Searching nearby services via OpenStreetMap…",
+                Text(stringResource(R.string.searching_services),
                      style = MaterialTheme.typography.bodySmall,
                      color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
             }
@@ -133,7 +125,7 @@ fun EmergencyScreen(
             }
 
             if (state.showNoResults) {
-                Text("No emergency services found in 5 km radius.",
+                Text(stringResource(R.string.no_services),
                      style = MaterialTheme.typography.bodySmall,
                      color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
             }
@@ -148,62 +140,6 @@ fun EmergencyScreen(
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
             )
-        }
-    }
-}
-
-@Composable
-private fun EmergencyNumberCard(num: EmergencyNumber) {
-    val context = LocalContext.current
-    val catColor = when (num.category) {
-        EmergencyNumber.Category.POLICE          -> Color(0xFF1565C0)
-        EmergencyNumber.Category.FIRE            -> Color(0xFFB71C1C)
-        EmergencyNumber.Category.AMBULANCE       -> Color(0xFF1B5E20)
-        EmergencyNumber.Category.MEDICAL_ADVICE  -> Color(0xFF2E7D32)
-        EmergencyNumber.Category.PHARMACY        -> Color(0xFF4A148C)
-        EmergencyNumber.Category.POISON          -> Color(0xFF880E4F)
-        EmergencyNumber.Category.GAS             -> Color(0xFFE65100)
-        EmergencyNumber.Category.GENERAL         -> Color(0xFF37474F)
-    }
-
-    Card(
-        colors   = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Row(
-            modifier          = Modifier.padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Surface(color = catColor, shape = MaterialTheme.shapes.small) {
-                Text(
-                    text     = num.number,
-                    color    = Color.White,
-                    fontWeight = FontWeight.Black,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-                )
-            }
-            Spacer(Modifier.width(12.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(num.label, fontWeight = FontWeight.Bold,
-                     style = MaterialTheme.typography.bodyMedium)
-                Text(num.description, style = MaterialTheme.typography.bodySmall,
-                     color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            Row {
-                IconButton(onClick = {
-                    EmergencyDialer.open(context, num.number)
-                }) {
-                    Icon(Icons.Default.Call, "Call", tint = Color(0xFF2E7D32))
-                }
-                IconButton(onClick = {
-                    val cm = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE)
-                            as android.content.ClipboardManager
-                    cm.setPrimaryClip(android.content.ClipData.newPlainText("number", num.number))
-                }) {
-                    Icon(Icons.Default.ContentCopy, "Copy")
-                }
-            }
         }
     }
 }
@@ -257,27 +193,19 @@ private fun EmergencyServiceCard(svc: EmergencyService) {
                 Text("%.0f m straight-line".format(svc.distanceM),
                      style = MaterialTheme.typography.labelSmall,
                      color = MaterialTheme.colorScheme.primary)
-                Text("Travel time / open now: unknown",
+                Text(stringResource(R.string.open_status),
                      style = MaterialTheme.typography.labelSmall,
                      color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                if (svc.phone.isNotBlank()) {
-                    TextButton(onClick = {
-                        EmergencyDialer.open(context, svc.phone)
-                    }) {
-                        Icon(Icons.Default.Call, null, modifier = Modifier.size(16.dp))
-                        Spacer(Modifier.width(4.dp))
-                        Text("Call")
-                    }
-                }
                 TextButton(onClick = {
                     val uri = Uri.parse("geo:${svc.lat},${svc.lon}?q=${svc.lat},${svc.lon}(${svc.name})")
-                    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                    if (!com.fieldconsole.intent.MatrixHandoff.launch(context, Intent(Intent.ACTION_VIEW, uri)))
+                        android.widget.Toast.makeText(context, R.string.no_receiver, android.widget.Toast.LENGTH_LONG).show()
                 }) {
                     Icon(Icons.Default.Navigation, null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Navigate")
+                    Text(stringResource(R.string.navigate))
                 }
             }
         }

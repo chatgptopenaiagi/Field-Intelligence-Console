@@ -34,7 +34,7 @@ class EmergencyViewModel @Inject constructor(
     val state: StateFlow<EmergencyUiData> = _state.asStateFlow()
     private var loadJob: Job? = null
 
-    fun load(lat: Double, lon: Double, countryCode: String = "AT") {
+    fun load(lat: Double, lon: Double, countryCode: String = "UNKNOWN") {
         loadJob?.cancel()
         _state.value = EmergencyUiData(isLoading = true, countryCode = countryCode,
             numbers = EmergencyNumbers.forCountry(countryCode))

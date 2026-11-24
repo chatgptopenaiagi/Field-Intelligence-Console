@@ -46,10 +46,12 @@ class EmergencyDialerTest {
     }
 
     @Test fun `offline country and unknown-country emergency catalogs remain available`() {
-        for (country in listOf("AT", "DE", "GB", "US", "CH", "FR", "IT", "INT", "ZZ")) {
+        for (country in listOf("AT", "DE", "GB", "US", "CH", "FR", "IT", "RO")) {
             val numbers = EmergencyNumbers.forCountry(country)
             assertTrue(numbers.isNotEmpty())
-            assertTrue(numbers.all { it.number.isNotBlank() })
+            assertTrue(numbers.all { it.number.isNotBlank() && it.country == country && it.status == "verified" })
         }
+        assertTrue(EmergencyNumbers.forCountry("ZZ").isEmpty())
+        assertTrue(EmergencyNumbers.forCountry("").isEmpty())
     }
 }

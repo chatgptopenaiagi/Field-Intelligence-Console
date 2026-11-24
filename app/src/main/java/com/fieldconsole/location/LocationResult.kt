@@ -11,7 +11,8 @@ sealed class LocationResult {
         val latitude: Double,
         val longitude: Double,
         val accuracy: Float,
-        val timestamp: Long = System.currentTimeMillis()
+        val timestamp: Long = System.currentTimeMillis(),
+        val provider: String? = null
     ) : LocationResult()
 
     /** The user denied location permission. */

@@ -52,6 +52,10 @@ def run_checks(args):
                 receipt["runtime"].update(tcl=str(root.tk.call("info", "patchlevel")), tk=str(root.tk.call("package", "require", "Tk")))
                 app = Workstation(root, args.profile)
                 root.update()
+                with patch("tkinter.simpledialog.askstring", return_value="RO"), patch("fic_windows.messagebox.showinfo") as panel:
+                    app.show_country_numbers()
+                    details = panel.call_args.args[1]
+                    check("Offline Romanian service catalog in workstation", "112" in details and "https://" in details and "133" not in details)
                 check("Actual Tk window rendered", root.winfo_viewable() == 1)
                 with patch("fic_windows.messagebox.askyesno", return_value=True), patch("fic_windows.messagebox.showerror", side_effect=lambda title, text, **_: (_ for _ in ()).throw(AssertionError(title + ": " + text))):
                     path = args.profile / "synthetic-contacts.vcf"

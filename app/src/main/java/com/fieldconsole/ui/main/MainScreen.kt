@@ -1,5 +1,8 @@
 package com.fieldconsole.ui.main
 
+import androidx.compose.ui.res.stringResource
+import com.fieldconsole.R
+import com.fieldconsole.intent.MatrixHandoff
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -50,6 +53,8 @@ fun MainScreen(
     val uiState  by mainViewModel.uiState.collectAsState()
     val context  = LocalContext.current
 
+    var regional by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(false) }
+    if (regional) com.fieldconsole.ui.emergency.RegionalSettings({ regional = false }, (uiState as? MainUiState.ActionMatrix)?.geo)
     // ── Runtime permission launcher ───────────────────────────────────────────
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -72,6 +77,10 @@ fun MainScreen(
         }
     }
 
+    val captured = (uiState as? MainUiState.AwaitingObservation)?.geo
+    LaunchedEffect(captured) {
+        captured?.let { com.fieldconsole.location.RegionalLanguage.onFix(context, it) }
+    }
     // ── Emergency screen overlay ──────────────────────────────────────────────
     if (uiState is MainUiState.Emergency) {
         EmergencyScreen(
@@ -91,7 +100,7 @@ fun MainScreen(
                 onSearch   = onNavigateToSearch,
                 onNetwork = { onNavigateToNetwork(null) },
                 onReports = { onNavigateToReports(null) },
-                onAppearance = onAppearance
+                onRegional = { regional = true }, onAppearance = onAppearance
             )
         },
         containerColor = MaterialTheme.colorScheme.background
@@ -161,6 +170,7 @@ private fun FicTopBar(
     onSettings: () -> Unit,
     onNetwork: () -> Unit,
     onReports: () -> Unit,
+    onRegional: () -> Unit,
     onAppearance: () -> Unit,
     onHistory:  () -> Unit = {},
     onSearch:   () -> Unit = {}
@@ -179,7 +189,7 @@ private fun FicTopBar(
         },
         actions = {
             IconButton(onClick = onSearch) {
-                Icon(Icons.Default.Search, contentDescription = "Search")
+                Icon(Icons.Default.Search, contentDescription = stringResource(R.string.search))
             }
             IconButton(onClick = onHistory) {
                 if (entryCount > 0) {
@@ -188,17 +198,17 @@ private fun FicTopBar(
                             Text("$entryCount", color = MaterialTheme.colorScheme.onPrimary)
                         }
                     }) {
-                        Icon(Icons.Default.History, contentDescription = "History")
+                        Icon(Icons.Default.History, contentDescription = stringResource(R.string.history))
                     }
                 } else {
-                    Icon(Icons.Default.History, contentDescription = "History")
+                    Icon(Icons.Default.History, contentDescription = stringResource(R.string.history))
                 }
             }
             Box {
-                IconButton(onClick = { toolsExpanded = true }) { Icon(Icons.Default.MoreVert, contentDescription = "Tools and settings") }
+                IconButton(onClick = { toolsExpanded = true }) { Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.tools)) }
                 DropdownMenu(toolsExpanded, { toolsExpanded = false }) {
-                    listOf("Known Network" to onNetwork, "Field reports" to onReports,
-                        "Appearance" to onAppearance, "Engines & APIs" to onSettings).forEach { (label, action) ->
+                    listOf(stringResource(R.string.regional_settings) to onRegional, stringResource(R.string.known_network) to onNetwork, stringResource(R.string.field_reports) to onReports,
+                        stringResource(R.string.appearance) to onAppearance, stringResource(R.string.engines) to onSettings).forEach { (label, action) ->
                         DropdownMenuItem(text = { Text(label) }, onClick = { toolsExpanded = false; action() })
                     }
                 }
@@ -240,7 +250,7 @@ private fun IdleContent(onScan: () -> Unit) {
                          modifier = Modifier.size(56.dp),
                          tint     = MaterialTheme.colorScheme.onPrimary)
                     Spacer(Modifier.height(8.dp))
-                    Text("SCAN", fontSize = 22.sp, fontWeight = FontWeight.Black,
+                    Text(stringResource(R.string.scan), fontSize = 22.sp, fontWeight = FontWeight.Black,
                          color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
@@ -260,9 +270,9 @@ private fun ScanningContent() {
                 strokeWidth = 5.dp
             )
             Spacer(Modifier.height(24.dp))
-            Text("Acquiring GPS fix\u2026", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.scan_fix), style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
-            Text("Resolving location\u2026",
+            Text(stringResource(R.string.scan_resolve),
                  style = MaterialTheme.typography.bodySmall,
                  color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
         }
@@ -282,6 +292,50 @@ private fun ActionMatrixContent(
     onNetwork: () -> Unit,
     onReport: () -> Unit
 ) {
+    var review by remember(entry.id) { mutableStateOf<String?>(null) }
+    var options by remember(entry.id) { mutableStateOf<String?>(null) }
+    var earthFallback by remember { mutableStateOf(false) }
+    val warn = stringResource(R.string.no_receiver)
+    fun unavailable() = android.widget.Toast.makeText(context, warn, android.widget.Toast.LENGTH_LONG).show()
+    val offline = stringResource(R.string.offline_web)
+    fun external(uri: android.net.Uri) {
+        val network = context.getSystemService(android.net.ConnectivityManager::class.java)
+        if (network?.getNetworkCapabilities(network.activeNetwork)
+                ?.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET) != true) {
+            android.widget.Toast.makeText(context, offline, android.widget.Toast.LENGTH_LONG).show()
+            return
+        }
+        if (!MatrixHandoff.launch(context, android.content.Intent(android.content.Intent.ACTION_VIEW, uri))) unavailable()
+    }
+    options?.let { function ->
+        AlertDialog(onDismissRequest = { options = null }, title = { Text(matrixLabel(function)) },
+            confirmButton = { TextButton(onClick = { options = null; handleAction(function, entry, geo, dispatcher, context) }) { Text(stringResource(R.string.open_source)) } },
+            dismissButton = { TextButton(onClick = { options = null; review = dispatcher.reviewPrompt(function, entry, geo) }) { Text(stringResource(R.string.review_ai)) } })
+    }
+    review?.let { prompt ->
+        val valid = MatrixHandoff.completeText(prompt)
+        val clipboard = context.getSystemService(android.content.ClipboardManager::class.java)
+        var fallback by remember(prompt) { mutableStateOf(false) }
+        AlertDialog(onDismissRequest = { review = null }, title = { Text(stringResource(R.string.review_ai)) },
+            text = { Column(Modifier.verticalScroll(rememberScrollState())) {
+                Text(stringResource(if (valid) R.string.share_review else R.string.share_invalid))
+                if (fallback) Text(stringResource(R.string.paste_help))
+                if (valid) androidx.compose.foundation.text.selection.SelectionContainer { Text(prompt) }
+            } },
+            confirmButton = { TextButton(enabled = valid, onClick = {
+                if (fallback) {
+                    dispatcher.copyToClipboard(context, prompt, "FIC")
+                    if (clipboard.primaryClip?.getItemAt(0)?.text?.toString() == prompt) {
+                        external(android.net.Uri.parse("https://chatgpt.com/"))
+                    } else unavailable()
+                } else if (!MatrixHandoff.launch(context, MatrixHandoff.chatIntent(prompt))) fallback = true
+            }) { Text(stringResource(if (fallback) R.string.copy_web else R.string.open_chat)) } },
+            dismissButton = { TextButton(onClick = { review = null }) { Text(stringResource(android.R.string.cancel)) } })
+    }
+    if (earthFallback) AlertDialog(onDismissRequest = { earthFallback = false },
+        title = { Text("Google Earth") }, text = { Text(stringResource(R.string.earth_help)) },
+        confirmButton = { TextButton(onClick = { earthFallback = false; external(MatrixHandoff.earthUrl(geo)) }) { Text(stringResource(R.string.earth_web)) } },
+        dismissButton = { TextButton(onClick = { earthFallback = false; external(android.net.Uri.parse("https://play.google.com/store/apps/details?id=com.google.earth")) }) { Text(stringResource(R.string.install_earth)) } })
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -309,10 +363,11 @@ private fun ActionMatrixContent(
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text  = "${geo.coordString}  (\u00b1${geo.accuracy.toInt()} m)",
+                        text  = "${geo.coordString}  (${geo.accuracyText})",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                    com.fieldconsole.ui.emergency.MeasurementDetails(geo)
                     if (entry.note.isNotBlank()) {
                         Text(entry.note,
                              style = MaterialTheme.typography.bodySmall,
@@ -329,7 +384,7 @@ private fun ActionMatrixContent(
 
         Spacer(Modifier.height(4.dp))
 
-        // ── 8-button matrix ───────────────────────────────────────────────────
+        // ── Cognitive Matrix ───────────────────────────────────────────────────
         val buttons = listOf(
             Triple("INFO SCAN",      Icons.Default.Search,                ColorInfoScan),
             Triple("HISTORY",        Icons.Default.History,               ColorHistory),
@@ -338,7 +393,8 @@ private fun ActionMatrixContent(
             Triple("RISK / SAFETY",  Icons.Default.Warning,               ColorRiskSafety),
             Triple("LOGISTICS",      Icons.Default.LocalShipping,         ColorLogistics),
             Triple("FINANCIAL",      Icons.Default.Business,              ColorFinancial),
-            Triple("EMERGENCY EXIT", Icons.AutoMirrored.Filled.ExitToApp, ColorEmergency)
+            Triple("EMERGENCY EXIT", Icons.AutoMirrored.Filled.ExitToApp, ColorEmergency),
+            Triple("GOOGLE EARTH", Icons.Default.Public, Color(0xFF103A75))
         )
 
         buttons.chunked(2).forEach { row ->
@@ -348,12 +404,17 @@ private fun ActionMatrixContent(
             ) {
                 row.forEach { (label, icon, color) ->
                     ActionMatrixButton(
-                        label   = label,
+                        label   = matrixLabel(label),
                         icon    = icon,
                         color   = color,
                         onClick = {
-                            if (label == "EMERGENCY EXIT") onEmergency()
-                            else handleAction(label, entry, geo, dispatcher, context)
+                            when (label) {
+                                "GOOGLE EARTH" -> if (!geo.validCoordinates) unavailable() else earthFallback = !MatrixHandoff.openEarth(context, geo)
+                                "AI ANALYSIS" -> review = dispatcher.reviewPrompt(label, entry, geo)
+                                "INFO SCAN", "HISTORY", "RISK / SAFETY", "FINANCIAL" -> options = label
+                                "EMERGENCY EXIT" -> onEmergency()
+                                else -> handleAction(label, entry, geo, dispatcher, context)
+                            }
                         },
                         modifier = Modifier.weight(1f)
                     )
@@ -366,12 +427,14 @@ private fun ActionMatrixContent(
 
         Card(onClick = onNetwork, modifier = Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp)) {
-                Text("KNOWN NETWORK", fontWeight = FontWeight.Bold)
-                Text("People, organizations and contacts associated with this place.", style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.known_network), fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.network_intro), style = MaterialTheme.typography.bodySmall)
             }
         }
-        OutlinedButton(onClick = onReport, modifier = Modifier.fillMaxWidth()) { Text("FIC REPORT EXCHANGE") }
+        OutlinedButton(onClick = onReport, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.report_exchange)) }
 
+        OutlinedButton(onClick = { dispatcher.copyToClipboard(context, "${geo.latitude}, ${geo.longitude}", "Coordinates") },
+            enabled = geo.validCoordinates, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.copy_coordinates)) }
         // ── Copy Location ─────────────────────────────────────────────────────
         OutlinedButton(
             onClick  = { dispatcher.copyLocation(context, geo, entry.note, entry.tag) },
@@ -379,7 +442,7 @@ private fun ActionMatrixContent(
         ) {
             Icon(Icons.Default.ContentCopy, null)
             Spacer(Modifier.width(8.dp))
-            Text("COPY LOCATION")
+            Text(stringResource(R.string.copy_location))
         }
 
         // ── Share Field Report ────────────────────────────────────────────────
@@ -389,7 +452,7 @@ private fun ActionMatrixContent(
         ) {
             Icon(Icons.Default.Share, null)
             Spacer(Modifier.width(8.dp))
-            Text("SHARE FIELD REPORT")
+            Text(stringResource(R.string.share_report))
         }
 
         // ── New Scan ──────────────────────────────────────────────────────────
@@ -399,7 +462,7 @@ private fun ActionMatrixContent(
         ) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
             Spacer(Modifier.width(8.dp))
-            Text("NEW SCAN")
+            Text(stringResource(R.string.new_scan))
         }
     }
 }
@@ -412,8 +475,13 @@ private fun ErrorDialog(message: String, onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         icon  = { Icon(Icons.Default.ErrorOutline, null,
                        tint = MaterialTheme.colorScheme.error) },
-        title = { Text("Location Error") },
-        text  = { Text(message) },
+        title = { Text(stringResource(R.string.location_error)) },
+        text  = { Text(when {
+            message.contains("permission", ignoreCase = true) -> stringResource(R.string.denied)
+            message.contains("disabled", ignoreCase = true) -> stringResource(R.string.location_off)
+            message.contains("timed out", ignoreCase = true) -> stringResource(R.string.location_timeout)
+            else -> message
+        }) },
         confirmButton = { Button(onClick = onDismiss) { Text("OK") } }
     )
 }
@@ -431,10 +499,23 @@ private fun handleAction(
         "INFO SCAN"     -> dispatcher.infoScan(context, geo, entry)
         "HISTORY"       -> dispatcher.history(context, geo, entry)
         "NAVIGATION"    -> dispatcher.navigation(context, geo)
-        "AI ANALYSIS"   -> dispatcher.aiAnalysis(context, geo, entry.note, entry.tag)
         "RISK / SAFETY" -> dispatcher.riskSafety(context, geo, entry)
         "LOGISTICS"     -> dispatcher.logistics(context, geo)
         "FINANCIAL"     -> dispatcher.financial(context, geo, entry)
         // EMERGENCY EXIT handled by onEmergency callback above
     }
+}
+
+@Composable
+private fun matrixLabel(key: String): String = when (key) {
+    "INFO SCAN" -> stringResource(R.string.info_scan)
+    "HISTORY" -> stringResource(R.string.history)
+    "NAVIGATION" -> stringResource(R.string.navigation)
+    "AI ANALYSIS" -> stringResource(R.string.ai_analysis)
+    "RISK / SAFETY" -> stringResource(R.string.risk_safety)
+    "LOGISTICS" -> stringResource(R.string.logistics)
+    "FINANCIAL" -> stringResource(R.string.financial)
+    "EMERGENCY EXIT" -> stringResource(R.string.emergency_exit)
+    "GOOGLE EARTH" -> stringResource(R.string.google_earth)
+    else -> key
 }

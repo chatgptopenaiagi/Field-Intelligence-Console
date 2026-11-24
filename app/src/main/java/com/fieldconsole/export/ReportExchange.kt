@@ -16,7 +16,7 @@ object ReportExchange {
         addProperty("observed_at", Instant.ofEpochMilli(entry.timestamp).toString())
         add("location", JsonObject().apply {
             addProperty("latitude", entry.latitude); addProperty("longitude", entry.longitude)
-            addProperty("accuracy_m", entry.accuracy); addProperty("source", "device")
+            if (entry.accuracy.isFinite() && entry.accuracy > 0) addProperty("accuracy_m", entry.accuracy) else add("accuracy_m", com.google.gson.JsonNull.INSTANCE); addProperty("source", "device")
             if (hasResolvedAddress(geo)) addProperty("address", geo.fullPlaceName) else add("address", JsonNull.INSTANCE)
             addProperty("address_source", if (get("address").isJsonNull) "unknown" else "device_geocoder")
             // The existing geocoder has no separate resolution timestamp. Never invent it.

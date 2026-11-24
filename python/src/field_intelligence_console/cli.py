@@ -26,9 +26,13 @@ def _write(path, data):
 
 def parser():
     result = argparse.ArgumentParser(prog="fic", description="Offline FIC validation, conversion and saved-association search")
-    result.add_argument("--version", action="version", version="4.0.0b7")
+    result.add_argument("--version", action="version", version="4.0.0b8.dev1")
     commands = result.add_subparsers(dest="command", required=True)
     commands.add_parser("diagnostics", help="Check version and bundled schemas offline; never open user data")
+    regional = commands.add_parser("emergency", help="Offline lookup for an explicitly selected country or place")
+    place = regional.add_mutually_exclusive_group(required=True)
+    place.add_argument("--country", help="Confirmed two-letter country code")
+    place.add_argument("--coordinates", nargs=2, type=float, metavar=("LAT", "LON"))
     validate = commands.add_parser("validate", help="Validate an explicit FIC JSON file")
     validate.add_argument("input")
     preview = commands.add_parser("preview", help="Parse only; print sanitized counts and diagnostics")
@@ -68,6 +72,12 @@ def main(argv=None):
                               "python": ".".join(map(str, sys.version_info[:3])),
                               "bundled_schemas": "PASS", "network": "not accessed",
                               "user_data": "not accessed"}))
+        elif args.command == "emergency":
+            from .regional import emergency_services, interior_country
+            code = args.country.strip().upper() if args.country else interior_country(*args.coordinates)
+            numbers = emergency_services(code or "")
+            print(json.dumps({"country": code, "selection": "manual country" if args.country else "manual coordinates",
+                              "status": "verified" if numbers else "EMERGENCY NUMBER NOT VERIFIED", "services": numbers}))
         elif args.command == "validate":
             document = json_loads(_read(args.input))
             if document.get("schema") == "fic.network":

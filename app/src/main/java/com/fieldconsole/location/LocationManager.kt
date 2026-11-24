@@ -5,6 +5,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager as AndroidLocationManager
+import android.location.Location
+import android.location.LocationListener
 import android.os.Looper
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
@@ -37,6 +39,8 @@ class LocationManager @Inject constructor(
     fun hasLocationPermission(): Boolean =
         ContextCompat.checkSelfPermission(
             context, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+            context, Manifest.permission.ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
 
     /** Returns true if the device location services (GPS or network) are enabled. */
@@ -57,14 +61,51 @@ class LocationManager @Inject constructor(
         if (!isLocationEnabled())    return LocationResult.LocationDisabled
 
         val result = withTimeoutOrNull(timeoutMs) {
-            locationUpdates(
+            val playAvailable = com.google.android.gms.common.GoogleApiAvailability.getInstance()
+                .isGooglePlayServicesAvailable(context) == com.google.android.gms.common.ConnectionResult.SUCCESS
+            if (!playAvailable) return@withTimeoutOrNull platformFix()
+            try {
+                locationUpdates(
                 interval    = 1_000L,
                 fastestInterval = 500L,
                 priority    = Priority.PRIORITY_HIGH_ACCURACY,
                 maxUpdates  = 1
-            ).first()
+                ).first()
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                platformFix()
+            }
         }
         return result ?: LocationResult.Timeout
+    }
+
+    @SuppressLint("MissingPermission")
+    private suspend fun platformFix(): LocationResult {
+        val manager = context.getSystemService(AndroidLocationManager::class.java)
+        val precise = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        val provider = listOfNotNull(AndroidLocationManager.GPS_PROVIDER.takeIf { precise }, AndroidLocationManager.NETWORK_PROVIDER)
+            .firstOrNull { manager.isProviderEnabled(it) } ?: return LocationResult.LocationDisabled
+        return callbackFlow<LocationResult> {
+            val listener = object : LocationListener {
+                override fun onLocationChanged(loc: Location) {
+                    trySend(LocationResult.Success(loc.latitude, loc.longitude,
+                        if (loc.hasAccuracy()) loc.accuracy else 0f, loc.time, loc.provider))
+                }
+                override fun onProviderDisabled(name: String) { trySend(LocationResult.LocationDisabled) }
+                override fun onProviderEnabled(name: String) = Unit
+                @Deprecated("Legacy callback")
+                override fun onStatusChanged(name: String?, status: Int, extras: android.os.Bundle?) = Unit
+            }
+            try {
+                manager.requestLocationUpdates(provider, 0L, 0f, listener, Looper.getMainLooper())
+            } catch (_: SecurityException) {
+                trySend(LocationResult.PermissionDenied)
+            } catch (_: IllegalArgumentException) {
+                trySend(LocationResult.LocationDisabled)
+            }
+            awaitClose { manager.removeUpdates(listener) }
+        }.first()
     }
 
     /**
@@ -109,15 +150,15 @@ class LocationManager @Inject constructor(
                         LocationResult.Success(
                             latitude  = loc.latitude,
                             longitude = loc.longitude,
-                            accuracy  = loc.accuracy,
-                            timestamp = loc.time
+                            accuracy  = if (loc.hasAccuracy()) loc.accuracy else 0f,
+                            timestamp = loc.time, provider = loc.provider
                         )
                     )
                 }
             }
         }
 
-        fusedClient.requestLocationUpdates(request, callback, Looper.getMainLooper())
+        fusedClient.requestLocationUpdates(request, callback, Looper.getMainLooper()).addOnFailureListener { close(it) }
 
         awaitClose { fusedClient.removeLocationUpdates(callback) }
     }

@@ -1,102 +1,53 @@
 package com.fieldconsole.data.emergency
 
-/**
- * EmergencyNumbers — country-aware emergency contact database.
- *
- * Provides a static lookup by ISO 3166-1 alpha-2 country code.
- * Falls back to EU/international numbers when the country is unknown.
- */
+import com.fieldconsole.location.GeoContext
+import com.google.gson.Gson
+import java.util.Locale
+import kotlin.math.floor
+
 data class EmergencyNumber(
-    val label:       String,
-    val number:      String,
-    val description: String,
-    val category:    Category
+    val country: String, val region: String?, val scope: String,
+    val category: Category, val number: String, val source: String,
+    val verified: String, val status: String
 ) {
-    enum class Category { POLICE, FIRE, AMBULANCE, MEDICAL_ADVICE, PHARMACY, GAS, POISON, GENERAL }
+    enum class Category { POLICE, FIRE, AMBULANCE, MEDICAL_ADVICE, POISON, GENERAL }
 }
 
 object EmergencyNumbers {
+    private data class Catalog(val version: Int, val records: List<EmergencyNumber>)
+    private val records by lazy {
+        requireNotNull(javaClass.getResourceAsStream("/emergency-v1.json")).bufferedReader().use {
+            Gson().fromJson(it, Catalog::class.java).also { catalog -> require(catalog.version == 1) }.records
+        }
+    }
+    fun forCountry(code: String): List<EmergencyNumber> = records.filter {
+        it.country == code.uppercase(Locale.ROOT) && it.status == "verified" &&
+            it.scope == "national" && it.region == null
+    }
+}
 
-    fun forCountry(isoCode: String): List<EmergencyNumber> =
-        COUNTRY_MAP[isoCode.uppercase()] ?: INTERNATIONAL
+object CountryBoundary {
+    private data class Span(val start: Int, val stop: Int, val iso: String)
+    private val rows by lazy {
+        requireNotNull(javaClass.getResourceAsStream("/country-grid-v1.json")).bufferedReader().use { reader ->
+            com.google.gson.JsonParser.parseReader(reader).asJsonArray.map { row ->
+                row.asJsonArray.map { item ->
+                    val span = item.asJsonArray
+                    Span(span[0].asInt, span[1].asInt, span[2].asString)
+                }
+            }
+        }
+    }
+    fun interior(lat: Double, lon: Double): String? {
+        if (!(lat >= -90 && lat < 90 && lon >= -180 && lon < 180)) return null
+        val col = floor((lon + 180) * 5).toInt()
+        return rows[floor((lat + 90) * 5).toInt()].firstOrNull { col in it.start until it.stop }?.iso
+    }
 
-    // ── Country databases ─────────────────────────────────────────────────────
-
-    private val INTERNATIONAL = listOf(
-        EmergencyNumber("European Emergency", "112", "Universal EU emergency number", EmergencyNumber.Category.GENERAL),
-        EmergencyNumber("International SOS",  "+1-215-942-8226", "International assistance", EmergencyNumber.Category.GENERAL)
-    )
-
-    private val AUSTRIA = listOf(
-        EmergencyNumber("European Emergency",  "112",  "Universal EU emergency",        EmergencyNumber.Category.GENERAL),
-        EmergencyNumber("Police",              "133",  "Polizei",                       EmergencyNumber.Category.POLICE),
-        EmergencyNumber("Fire Brigade",        "122",  "Feuerwehr",                     EmergencyNumber.Category.FIRE),
-        EmergencyNumber("Ambulance",           "144",  "Rettung / Notarzt",             EmergencyNumber.Category.AMBULANCE),
-        EmergencyNumber("Medical Advice",      "1450", "Ärztefunkdienst",               EmergencyNumber.Category.MEDICAL_ADVICE),
-        EmergencyNumber("Pharmacy Hotline",    "1455", "Apothekenbereitschaft",          EmergencyNumber.Category.PHARMACY),
-        EmergencyNumber("Gas Emergency",       "128",  "Gasnetz Wien / regional",       EmergencyNumber.Category.GAS),
-        EmergencyNumber("Poison Centre",       "+43-1-406-43-43", "Vergiftungsinformationszentrale", EmergencyNumber.Category.POISON),
-        EmergencyNumber("Mountain Rescue",     "140",  "Bergrettung",                   EmergencyNumber.Category.GENERAL),
-        EmergencyNumber("ÖAMTC Breakdown",     "120",  "Pannenhilfe",                   EmergencyNumber.Category.GENERAL)
-    )
-
-    private val GERMANY = listOf(
-        EmergencyNumber("European Emergency",  "112",  "Europäischer Notruf",           EmergencyNumber.Category.GENERAL),
-        EmergencyNumber("Police",              "110",  "Polizei",                       EmergencyNumber.Category.POLICE),
-        EmergencyNumber("Fire / Ambulance",    "112",  "Feuerwehr / Rettungsdienst",    EmergencyNumber.Category.FIRE),
-        EmergencyNumber("Medical Advice",      "116117","Ärztlicher Bereitschaftsdienst",EmergencyNumber.Category.MEDICAL_ADVICE),
-        EmergencyNumber("Poison Centre",       "+49-30-19240", "Giftnotruf Berlin",     EmergencyNumber.Category.POISON),
-        EmergencyNumber("ADAC Breakdown",      "22222","Pannenhilfe",                   EmergencyNumber.Category.GENERAL)
-    )
-
-    private val UK = listOf(
-        EmergencyNumber("Emergency Services",  "999",  "Police, Fire, Ambulance",       EmergencyNumber.Category.GENERAL),
-        EmergencyNumber("European Emergency",  "112",  "EU standard",                   EmergencyNumber.Category.GENERAL),
-        EmergencyNumber("NHS Non-Emergency",   "111",  "Medical advice",                EmergencyNumber.Category.MEDICAL_ADVICE),
-        EmergencyNumber("Police Non-Emergency","101",  "Non-urgent police",             EmergencyNumber.Category.POLICE),
-        EmergencyNumber("Poison Centre",       "+44-344-892-0111","NPIS: healthcare professionals only; public: NHS 111 (England/Scotland/Wales)", EmergencyNumber.Category.POISON)
-    )
-
-    private val USA = listOf(
-        EmergencyNumber("Emergency Services",  "911",  "Police, Fire, Ambulance",       EmergencyNumber.Category.GENERAL),
-        EmergencyNumber("Poison Control",      "1-800-222-1222", "US Poison Help (human)", EmergencyNumber.Category.POISON),
-        EmergencyNumber("Crisis Line",         "988",  "Suicide & Crisis Lifeline",     EmergencyNumber.Category.MEDICAL_ADVICE)
-    )
-
-    private val SWITZERLAND = listOf(
-        EmergencyNumber("European Emergency",  "112",  "EU standard",                   EmergencyNumber.Category.GENERAL),
-        EmergencyNumber("Police",              "117",  "Polizei",                       EmergencyNumber.Category.POLICE),
-        EmergencyNumber("Fire Brigade",        "118",  "Feuerwehr",                     EmergencyNumber.Category.FIRE),
-        EmergencyNumber("Ambulance",           "144",  "Sanität",                       EmergencyNumber.Category.AMBULANCE),
-        EmergencyNumber("Medical Advice",      "1811", "Medizinische Auskunft",         EmergencyNumber.Category.MEDICAL_ADVICE),
-        EmergencyNumber("Poison Centre",       "145",  "Tox Info Suisse",               EmergencyNumber.Category.POISON),
-        EmergencyNumber("REGA Air Rescue",     "1414", "Rega Helikopter",               EmergencyNumber.Category.AMBULANCE)
-    )
-
-    private val FRANCE = listOf(
-        EmergencyNumber("European Emergency",  "112",  "Numéro d'urgence européen",     EmergencyNumber.Category.GENERAL),
-        EmergencyNumber("Police",              "17",   "Police Nationale",              EmergencyNumber.Category.POLICE),
-        EmergencyNumber("Fire Brigade",        "18",   "Pompiers",                      EmergencyNumber.Category.FIRE),
-        EmergencyNumber("SAMU Ambulance",      "15",   "Service d'Aide Médicale Urgente",EmergencyNumber.Category.AMBULANCE),
-        EmergencyNumber("Poison Centre",       "+33-1-40-05-48-48","Centre antipoison Paris", EmergencyNumber.Category.POISON)
-    )
-
-    private val ITALY = listOf(
-        EmergencyNumber("European Emergency",  "112",  "Numero di emergenza europeo",   EmergencyNumber.Category.GENERAL),
-        EmergencyNumber("Police",              "113",  "Polizia di Stato",              EmergencyNumber.Category.POLICE),
-        EmergencyNumber("Carabinieri",         "112",  "Arma dei Carabinieri",          EmergencyNumber.Category.POLICE),
-        EmergencyNumber("Fire Brigade",        "115",  "Vigili del Fuoco",              EmergencyNumber.Category.FIRE),
-        EmergencyNumber("Ambulance",           "118",  "Emergenza Sanitaria",           EmergencyNumber.Category.AMBULANCE),
-        EmergencyNumber("Poison Centre",       "+39-06-3054343","Centro Antiveleni Roma", EmergencyNumber.Category.POISON)
-    )
-
-    private val COUNTRY_MAP: Map<String, List<EmergencyNumber>> = mapOf(
-        "AT" to AUSTRIA,
-        "DE" to GERMANY,
-        "GB" to UK,
-        "US" to USA,
-        "CH" to SWITZERLAND,
-        "FR" to FRANCE,
-        "IT" to ITALY
-    )
+    fun current(geo: GeoContext?, now: Long): String? {
+        if (geo == null || geo.saved || geo.timestamp <= 0 || geo.timestamp > now ||
+            now - geo.timestamp > 120_000 || !(geo.accuracy > 0 && geo.accuracy <= 1000)) return null
+        val code = interior(geo.latitude, geo.longitude) ?: return null
+        return code.takeIf { geo.countryCode.isNullOrBlank() || it.equals(geo.countryCode, true) }
+    }
 }

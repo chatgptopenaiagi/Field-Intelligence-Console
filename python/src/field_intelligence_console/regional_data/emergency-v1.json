@@ -1,0 +1,475 @@
+{
+  "version": 1,
+  "records": [
+    {
+      "country": "AT",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://www.oesterreich.gv.at/en/themen/notfaelle_unfaelle_und_kriminalitaet/notrufnummern",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "AT",
+      "region": null,
+      "scope": "national",
+      "category": "POLICE",
+      "number": "133",
+      "source": "https://www.oesterreich.gv.at/en/themen/notfaelle_unfaelle_und_kriminalitaet/notrufnummern",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "AT",
+      "region": null,
+      "scope": "national",
+      "category": "FIRE",
+      "number": "122",
+      "source": "https://www.oesterreich.gv.at/en/themen/notfaelle_unfaelle_und_kriminalitaet/notrufnummern",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "AT",
+      "region": null,
+      "scope": "national",
+      "category": "AMBULANCE",
+      "number": "144",
+      "source": "https://www.oesterreich.gv.at/en/themen/notfaelle_unfaelle_und_kriminalitaet/notrufnummern",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "AT",
+      "region": null,
+      "scope": "national",
+      "category": "MEDICAL_ADVICE",
+      "number": "1450",
+      "source": "https://www.oesterreich.gv.at/en/themen/notfaelle_unfaelle_und_kriminalitaet/notrufnummern",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "DE",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "DE",
+      "region": null,
+      "scope": "national",
+      "category": "FIRE",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "DE",
+      "region": null,
+      "scope": "national",
+      "category": "AMBULANCE",
+      "number": "112",
+      "source": "https://verwaltung.bund.de/leistungsverzeichnis/de/rechte-und-pflichten/102837939",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "DE",
+      "region": null,
+      "scope": "national",
+      "category": "MEDICAL_ADVICE",
+      "number": "116117",
+      "source": "https://verwaltung.bund.de/leistungsverzeichnis/de/rechte-und-pflichten/102837939",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "DE",
+      "region": null,
+      "scope": "national",
+      "category": "POLICE",
+      "number": "110",
+      "source": "https://portal.onlinewache.polizei.de/de/sh/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "RO",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://civil-protection-humanitarian-aid.ec.europa.eu/what/civil-protection/national-disaster-management-system/romania_en",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "RO",
+      "region": null,
+      "scope": "national",
+      "category": "POLICE",
+      "number": "112",
+      "source": "https://civil-protection-humanitarian-aid.ec.europa.eu/what/civil-protection/national-disaster-management-system/romania_en",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "RO",
+      "region": null,
+      "scope": "national",
+      "category": "FIRE",
+      "number": "112",
+      "source": "https://civil-protection-humanitarian-aid.ec.europa.eu/what/civil-protection/national-disaster-management-system/romania_en",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "RO",
+      "region": null,
+      "scope": "national",
+      "category": "AMBULANCE",
+      "number": "112",
+      "source": "https://civil-protection-humanitarian-aid.ec.europa.eu/what/civil-protection/national-disaster-management-system/romania_en",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "FR",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://www.service-public.gouv.fr/particuliers/vosdroits/F33954",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "FR",
+      "region": null,
+      "scope": "national",
+      "category": "POLICE",
+      "number": "17",
+      "source": "https://www.service-public.gouv.fr/particuliers/vosdroits/F33954",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "FR",
+      "region": null,
+      "scope": "national",
+      "category": "AMBULANCE",
+      "number": "15",
+      "source": "https://www.service-public.gouv.fr/particuliers/vosdroits/F33954",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "FR",
+      "region": null,
+      "scope": "national",
+      "category": "FIRE",
+      "number": "18",
+      "source": "https://www.service-public.gouv.fr/particuliers/vosdroits/F33954",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "BE",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "BG",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "HR",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "CY",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "CZ",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "DK",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "EE",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "FI",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "GR",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "HU",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "IE",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "IT",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "LV",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "LT",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "LU",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "MT",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "NL",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "PL",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "PT",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "SK",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "SI",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "ES",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "SE",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "CH",
+      "region": null,
+      "scope": "national",
+      "category": "POLICE",
+      "number": "117",
+      "source": "https://www.ch.ch/en/travel-and-emigrate/useful-travel-information/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "CH",
+      "region": null,
+      "scope": "national",
+      "category": "AMBULANCE",
+      "number": "144",
+      "source": "https://www.ch.ch/en/travel-and-emigrate/useful-travel-information/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "GB",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "999",
+      "source": "https://www.gov.uk/guidance/999-and-112-the-uks-national-emergency-numbers",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "GB",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "112",
+      "source": "https://www.gov.uk/guidance/999-and-112-the-uks-national-emergency-numbers",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "US",
+      "region": null,
+      "scope": "national",
+      "category": "GENERAL",
+      "number": "911",
+      "source": "https://www.911.gov/calling-911/",
+      "verified": "2026-11-24",
+      "status": "verified"
+    },
+    {
+      "country": "US",
+      "region": null,
+      "scope": "national",
+      "category": "POISON",
+      "number": "1-800-222-1222",
+      "source": "https://poisonhelp.hrsa.gov/about-us",
+      "verified": "2026-11-24",
+      "status": "verified"
+    }
+  ]
+}

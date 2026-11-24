@@ -19,6 +19,10 @@ import json
 from pathlib import Path
 import field_intelligence_console as fic
 assert 'site-packages' in fic.__file__, 'Source checkout imported accidentally'
+from field_intelligence_console.regional import interior_country, emergency_services
+assert interior_country(44.43, 26.10) == 'RO'
+assert {row['number'] for row in emergency_services('RO')} == {'112'}
+assert emergency_services('ZZ') == []
 resource = resources.files('field_intelligence_console')
 data = resource.joinpath('fixtures', 'contacts.vcf').read_bytes()
 preview = fic.parse_import(data, 'vcf')
@@ -40,7 +44,7 @@ with fic.Store('synthetic.sqlite') as store:
     store.save_report(report)
     assert store.get_report(report['id']) == report
     assert 'network' not in fic.ai_packet(report)
-assert metadata.version('field-intelligence-console') == '4.0.0b7'
+assert metadata.version('field-intelligence-console') == '4.0.0b8.dev1'
 for case in json.loads(resource.joinpath('fixtures','invalid-contracts.json').read_text('utf-8'))['cases']:
     document=json.loads(resource.joinpath('fixtures',case['fixture']).read_text('utf-8'))
     target=document

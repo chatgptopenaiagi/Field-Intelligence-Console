@@ -1,5 +1,7 @@
 package com.fieldconsole.ui.history
 
+import com.fieldconsole.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +25,7 @@ import java.util.Locale
 @Composable
 fun HistoryScreen(
     onBack:  () -> Unit,
+    onOpen: (FieldEntry) -> Unit,
     vm:      HistoryViewModel = hiltViewModel()
 ) {
     val entries by vm.allEntries.collectAsState()
@@ -32,15 +35,15 @@ fun HistoryScreen(
     if (showDeleteAllDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteAllDialog = false },
-            title  = { Text("Delete All Observations?") },
+            title  = { Text(stringResource(R.string.delete_all_title)) },
             text   = { Text("This will permanently delete all $count saved observations. This cannot be undone.") },
             confirmButton = {
                 TextButton(onClick = { vm.deleteAll(); showDeleteAllDialog = false }) {
-                    Text("Delete All", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.delete_all), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteAllDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showDeleteAllDialog = false }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
@@ -50,7 +53,7 @@ fun HistoryScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text("OBSERVATIONS", style = MaterialTheme.typography.titleLarge,
+                        Text(stringResource(R.string.observations), style = MaterialTheme.typography.titleLarge,
                              fontWeight = FontWeight.Bold)
                         Text("$count saved", style = MaterialTheme.typography.labelSmall,
                              color = MaterialTheme.colorScheme.primary)
@@ -58,7 +61,7 @@ fun HistoryScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
                     }
                 },
                 actions = {
@@ -85,11 +88,11 @@ fun HistoryScreen(
                          modifier = Modifier.size(64.dp),
                          tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f))
                     Spacer(Modifier.height(16.dp))
-                    Text("No observations yet",
+                    Text(stringResource(R.string.new_observation),
                          style = MaterialTheme.typography.titleMedium,
                          color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f))
                     Spacer(Modifier.height(8.dp))
-                    Text("Tap SCAN on the main screen to record your first observation.",
+                    Text(stringResource(R.string.first_observation),
                          style = MaterialTheme.typography.bodySmall,
                          color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f))
                 }
@@ -101,7 +104,7 @@ fun HistoryScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(entries, key = { it.id }) { entry ->
-                    ObservationCard(entry, vm)
+                    ObservationCard(entry, vm, onOpen)
                 }
             }
         }
@@ -109,27 +112,28 @@ fun HistoryScreen(
 }
 
 @Composable
-private fun ObservationCard(entry: FieldEntry, vm: HistoryViewModel) {
+private fun ObservationCard(entry: FieldEntry, vm: HistoryViewModel, onOpen: (FieldEntry) -> Unit) {
     val dateFmt = remember { SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault()) }
     var showDelete by remember { mutableStateOf(false) }
 
     if (showDelete) {
         AlertDialog(
             onDismissRequest = { showDelete = false },
-            title  = { Text("Delete Observation?") },
-            text   = { Text("Delete this observation? This cannot be undone.") },
+            title  = { Text(stringResource(R.string.delete_one)) },
+            text   = { Text(stringResource(R.string.delete_warning)) },
             confirmButton = {
                 TextButton(onClick = { vm.deleteEntry(entry); showDelete = false }) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDelete = false }) { Text("Cancel") }
+                TextButton(onClick = { showDelete = false }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
 
     Card(
+        onClick = { onOpen(entry) },
         colors   = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         modifier = Modifier.fillMaxWidth()
     ) {
