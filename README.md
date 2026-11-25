@@ -1,6 +1,8 @@
 # 🚀 FIELD INTELLIGENCE CONSOLE
 ## BETA
 
+**[Download the beta8 development APK for Android testing](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.8.dev1/FieldIntelligenceConsole-BETA8-ANDROID-TEST.apk)**. Sign in to GitHub and use an Android 10 or newer test phone where `com.fieldconsole.debug` is absent. The published beta7 APK has the same package ID and a different signer. Keep it on its current phone. Physical-device validation is pending. [Installation, checksums and companion downloads](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.8.dev1)
+
 **[Download Field Intelligence Console 4.0.0-beta.7](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.7)** from the private repository. The prerelease includes the Windows x64 EXE, Android testing APK and Python wheel. Verify the download against `SHA256SUMS.txt`. The [Mission 002 recovery record](docs/mission/MISSION_002.md) links the test reports and release verification.
 
 **ONE TAP. INSTANT AWARENESS.**

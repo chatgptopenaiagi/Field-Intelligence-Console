@@ -1,6 +1,6 @@
 # Mission 003 · development
 
-Mission 003 development is at `4.0.0-beta.8.dev1` (`1bdad1607736306278bfb49f0d39014935d30bd6`). All three hosted platform gates passed on that exact source. The emulator passed all eight instrumentation tests. Windows, the clean wheel, and the cross-platform document round trip passed. Physical handset and official receiving-app validation remain open. Beta7 remains the published private prerelease. [Test history and limitations](MISSION_003.md) · [Exchange results](evidence/mission-003/cross-platform-exchange.json)
+The private `v4.0.0-beta.8.dev1` testing prerelease was published on 2026-11-25 from `1bdad1607736306278bfb49f0d39014935d30bd6`. All four downloaded assets matched their local SHA-256 values. On that source, all three hosted platform gates passed, including eight Android emulator instrumentation tests, packaged Windows and wheel checks, and the cross-platform document round trip. Physical handset and official receiving-app validation remain open. Beta7 is the verified baseline. [Download verification](evidence/mission-003/testing-prerelease.json) · [Test history and limitations](MISSION_003.md) · [Exchange results](evidence/mission-003/cross-platform-exchange.json)
 
 # Mission 002 · 2026-11-24
 

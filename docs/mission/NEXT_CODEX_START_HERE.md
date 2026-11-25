@@ -1,6 +1,8 @@
 # Mission 003 · development
 
-The owner resumed Mission 003 on 2026-11-24. Start from product source `1bdad1607736306278bfb49f0d39014935d30bd6` on `v4-development`. The local artifact directory is keyed by that full SHA. [Read the validation record](MISSION_003.md) and [check the development hashes](evidence/mission-003/SHA256SUMS.txt). Private beta7 is the latest published release. A physical Android device with Google Earth and ChatGPT is needed for the remaining receiver checks. Use the synthetic fixtures and retain original data.
+On 2026-11-25 the owner authorized private distribution of the archived `v4.0.0-beta.8.dev1` development build at `1bdad1607736306278bfb49f0d39014935d30bd6`. The APK, Windows EXE, Python wheel and checksum file were downloaded from the published release and verified. Beta7 remains the verified baseline. [Testing prerelease](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.8.dev1) · [Download verification](evidence/mission-003/testing-prerelease.json)
+
+Resume with a separate Android 10+ test phone where `com.fieldconsole.debug` is absent. The beta7 and dev1 signers differ. Verify the native Google Earth destination and official ChatGPT composer with the existing synthetic fixtures and record what survives returning to FIC. Final beta8 is pending. [Installation and recovery](MISSION_003.md#installation-and-recovery)
 
 # Mission 002 · 2026-11-24
 

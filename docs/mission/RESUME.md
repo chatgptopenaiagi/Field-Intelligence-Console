@@ -1,6 +1,6 @@
 # Mission 003 · development
 
-Use the [Mission 003 recovery procedure](MISSION_003.md#installation-and-recovery). Recover exact development source `1bdad1607736306278bfb49f0d39014935d30bd6`, and validate the [three packaged distributions](evidence/mission-003/development-artifacts.json) against their hashes. The Android emulator migration, document picker and packaged Windows/Python round trip have evidence. Continue with a physical handset, Google Earth destination readback, and the official ChatGPT composer. Once these pass, follow the retained-signature candidate gates before publishing beta8.
+Sign in to the private repository and download the APK from the [dev1 testing prerelease](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.8.dev1). The tag points to product source `1bdad1607736306278bfb49f0d39014935d30bd6`. Use a separate Android 10+ phone with no installation of `com.fieldconsole.debug`. Preserve the phone running beta7. Continue with Google Earth destination readback and the official ChatGPT composer. Once the physical checks pass, follow the retained-signature candidate gates for final beta8. [Mission 003 recovery procedure](MISSION_003.md#installation-and-recovery) · [Verified downloads](evidence/mission-003/testing-prerelease.json)
 
 # Mission 002 · 2026-11-24
 

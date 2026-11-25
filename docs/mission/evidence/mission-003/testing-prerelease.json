@@ -1,0 +1,86 @@
+{
+  "tag": "v4.0.0-beta.8.dev1",
+  "source_sha": "1bdad1607736306278bfb49f0d39014935d30bd6",
+  "release_id": 457700893,
+  "title": "FIELD INTELLIGENCE CONSOLE 4.0.0 BETA 8 | ANDROID TESTING",
+  "published_at": "2026-11-25T05:46:23Z",
+  "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.8.dev1",
+  "visibility": "PRIVATE",
+  "draft": false,
+  "prerelease": true,
+  "purpose": "Physical Android testing",
+  "verification": "Authenticated download of each published asset, comparison to uploaded bytes and GitHub digest. All three packages also matched the original archived bytes and the downloaded checksum list.",
+  "assets": [
+    {
+      "name": "FieldIntelligenceConsole-4.0.0-beta.8.dev1-windows-x64.exe",
+      "bytes": 16227002,
+      "downloaded_sha256": "81d5b623e63e6adbcd57426112a671a880d823a6f7a2520f09782569a9e5087d",
+      "github_digest": "sha256:81d5b623e63e6adbcd57426112a671a880d823a6f7a2520f09782569a9e5087d",
+      "download_url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.8.dev1/FieldIntelligenceConsole-4.0.0-beta.8.dev1-windows-x64.exe"
+    },
+    {
+      "name": "FieldIntelligenceConsole-BETA8-ANDROID-TEST.apk",
+      "bytes": 60872706,
+      "downloaded_sha256": "dfce9b1396e4954d85c1152da55b122dd43b9a1059a440b40610fd382761b8d3",
+      "github_digest": "sha256:dfce9b1396e4954d85c1152da55b122dd43b9a1059a440b40610fd382761b8d3",
+      "download_url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.8.dev1/FieldIntelligenceConsole-BETA8-ANDROID-TEST.apk"
+    },
+    {
+      "name": "field_intelligence_console-4.0.0b8.dev1-py3-none-any.whl",
+      "bytes": 65733,
+      "downloaded_sha256": "2e56d2a2feb3a902680f9c7122e8bb3a5f98575ad48ed756cf0b068b81263e3d",
+      "github_digest": "sha256:2e56d2a2feb3a902680f9c7122e8bb3a5f98575ad48ed756cf0b068b81263e3d",
+      "download_url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.8.dev1/field_intelligence_console-4.0.0b8.dev1-py3-none-any.whl"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 365,
+      "downloaded_sha256": "c424a5939767ff4927d0bf7d784a42fb5fecb78c8ee6a69d4ce30d0295fc3e58",
+      "github_digest": "sha256:c424a5939767ff4927d0bf7d784a42fb5fecb78c8ee6a69d4ce30d0295fc3e58",
+      "download_url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.8.dev1/SHA256SUMS.txt"
+    }
+  ],
+  "android": {
+    "package_id": "com.fieldconsole.debug",
+    "version_name": "4.0.0-beta.8.dev1",
+    "version_code": 11,
+    "min_sdk": 29,
+    "target_sdk": 34,
+    "native_abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "signer_subject": "C=US, O=Android, CN=Android Debug",
+    "signer_certificate_sha256": "d8c8505ace1420fa6bb6e5022efbc37175a691c3d818d5d714a88ed2ca7c8731",
+    "signature_scheme": "v2",
+    "public_key": "RSA 2048",
+    "verification_tools": [
+      "aapt dump badging",
+      "apksigner verify --verbose --print-certs"
+    ]
+  },
+  "beta7": {
+    "tag": "v4.0.0-beta.7",
+    "release_id": 457349077,
+    "source_sha": "8987a0c894dba9002cde1820e9e185e3766ef865",
+    "asset_inventory_comparison": "All 11 asset names, sizes and digests identical before and after dev1 publication.",
+    "package_id": "com.fieldconsole.debug",
+    "version_code": 10,
+    "signer_certificate_sha256": "3d19d2bf5995a48c262fa41184978195d68526810aa637eb8bab7527029e095f",
+    "compatibility": "Same package ID, different signing certificate. Use a separate device for dev1 to preserve beta7."
+  },
+  "tag_workflow": {
+    "run": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45555882328",
+    "conclusion": "cancelled",
+    "build_step": "skipped",
+    "reason": "Owner requested the verified archived packages."
+  },
+  "pending": [
+    "Physical handset installation and runtime",
+    "Native Google Earth destination and return",
+    "Official ChatGPT composer readback",
+    "Final beta8 candidate validation"
+  ]
+}
