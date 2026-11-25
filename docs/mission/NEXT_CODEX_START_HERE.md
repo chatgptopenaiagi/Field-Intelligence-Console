@@ -1,3 +1,7 @@
+# Mission 005 · Cognitive Experience Engine
+
+Start with the private beta10 dev1 testing release from `43175c2fd97988c6095a1bff10060a860c34da13`. The product includes in-app source exploration and Android 2D recovery after WebView renderer loss. Continue with the physical Vivo upgrade and receiving-app checks. [Mission, installation and recovery](MISSION_005.md) · [Package hashes and execution receipts](evidence/mission-005/verification.json)
+
 # Mission 004 · beta9 development testing
 
 Start at product source `ccb3fe8c574c7ac1bd14bc026ecaf271bc4ce985` on `v4-development`. The private testing prerelease contains the APK, Windows EXE, Python wheel and checksums. WORLD INTELLIGENCE opens the Cognitive Earth Engine from the original Matrix. The next gate needs a physical Android phone. [Testing prerelease](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.9.dev1) · [Mission 004 verification and phone procedure](MISSION_004.md) · [Distribution receipt](evidence/mission-004/verification.json)

@@ -1,3 +1,7 @@
+# Mission 005 · physical handset verification
+
+Recover `v4.0.0-beta.10.dev1` in the existing private repository. Compare its APK to `SHA256SUMS.txt`, preserve the existing beta8/beta9 test installation and use synthetic observations on the Vivo. Check touch rotation, 2D recovery, forecast rendering, cold restart, Google Earth destination and reviewed ChatGPT text. The candidate's raw local receipts are in `.local/evidence/mission005/candidate/`. [Exact starting point and procedure](MISSION_005.md#15-next-codex-recovery-point) · [Verified packages](evidence/mission-005/verification.json)
+
 # Mission 004 · physical Android testing
 
 Use development source `ccb3fe8c574c7ac1bd14bc026ecaf271bc4ce985` and the APK digest in the distribution receipt. Preserve beta7 on its original phone. Complete the physical device procedure with synthetic data, including weak GPU, cold restart, Google Earth and ChatGPT. [Install, recover and continue](MISSION_004.md#install-recover-and-continue) · [Distribution receipt](evidence/mission-004/verification.json)

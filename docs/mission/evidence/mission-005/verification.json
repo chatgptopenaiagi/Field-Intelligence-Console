@@ -1,0 +1,361 @@
+{
+  "version": "4.0.0-beta.10.dev1",
+  "source": "43175c2fd97988c6095a1bff10060a860c34da13",
+  "baseline": {
+    "branch": "v4-development",
+    "handoff": "a2999d4d683c5e1279116630c7f2279f5e7d443a",
+    "beta9_product": "ccb3fe8c574c7ac1bd14bc026ecaf271bc4ce985"
+  },
+  "github_actions": [
+    {
+      "conclusion": "success",
+      "headSha": "43175c2fd97988c6095a1bff10060a860c34da13",
+      "status": "completed",
+      "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45572409715",
+      "workflowName": "Python core"
+    },
+    {
+      "conclusion": "success",
+      "headSha": "43175c2fd97988c6095a1bff10060a860c34da13",
+      "status": "completed",
+      "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45572409700",
+      "workflowName": "Windows workstation"
+    },
+    {
+      "conclusion": "success",
+      "headSha": "43175c2fd97988c6095a1bff10060a860c34da13",
+      "status": "completed",
+      "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45572409687",
+      "workflowName": "Android"
+    }
+  ],
+  "provider_probe": {
+    "weather": {
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 0,
+      "elapsed_ms": 912,
+      "line_prefixes": []
+    },
+    "earthquakes": {
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 36461,
+      "elapsed_ms": 404,
+      "keys": [
+        "type",
+        "metadata",
+        "features",
+        "bbox"
+      ],
+      "reason": null,
+      "hourly_count": 0,
+      "features": 51
+    },
+    "satellites": {
+      "status": 200,
+      "content_type": "text/plain",
+      "bytes": 168,
+      "elapsed_ms": 952,
+      "line_prefixes": [
+        "ISS (ZA",
+        "1 25544",
+        "2 25544"
+      ]
+    },
+    "weather-with-parameters": {
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 1413,
+      "elapsed_ms": 911,
+      "keys": [
+        "latitude",
+        "longitude",
+        "generationtime_ms",
+        "utc_offset_seconds",
+        "timezone",
+        "timezone_abbreviation",
+        "elevation",
+        "hourly_units",
+        "hourly"
+      ],
+      "reason": null,
+      "hourly_count": 48,
+      "features": 0
+    }
+  },
+  "assets": [
+    {
+      "name": "field_intelligence_console-4.0.0b10.dev1-py3-none-any.whl",
+      "bytes": 276454,
+      "sha256": "b4c67df9fd70bbaf158bbe9512f81b27bf7f882e5a9056f9d0fdc84f96db5d0d"
+    },
+    {
+      "name": "FieldIntelligenceConsole-4.0.0-beta.10.dev1-android-test.apk",
+      "bytes": 61722124,
+      "sha256": "9fa8bd7a20930ba237a2b57a6bbea7c5a39ae694a060c35d1d4ad1685edb577d"
+    },
+    {
+      "name": "FieldIntelligenceConsole-4.0.0-beta.10.dev1-windows-x64.exe",
+      "bytes": 16445665,
+      "sha256": "23e8b30542ec3037fcbd332cf274916ccb98a4907a3017cc142d78dac5f4e0a2"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 377,
+      "sha256": "1b25b1cfa01e8a7355ba7a8f2aec6246aa09280b0c7178888abd66fd9376395c"
+    }
+  ],
+  "android": {
+    "package": "com.fieldconsole.debug",
+    "code": 13,
+    "signer_sha256": "d8c8505ace1420fa6bb6e5022efbc37175a691c3d818d5d714a88ed2ca7c8731",
+    "scheme": "v2",
+    "min_sdk": 29,
+    "target_sdk": 34,
+    "platform": "Owned Android 14 API 34 x86_64 emulator, WebView 113",
+    "installed_apk_matches": true,
+    "instrumented_tests": 9,
+    "unit_tests": [
+      {
+        "variant": "Debug",
+        "skipped": 0,
+        "errors": 0,
+        "tests": 102,
+        "failures": 0,
+        "status": "PASS"
+      },
+      {
+        "variant": "Release",
+        "skipped": 0,
+        "errors": 0,
+        "tests": 102,
+        "failures": 0,
+        "status": "PASS"
+      }
+    ],
+    "lint": [
+      {
+        "variant": "Debug",
+        "status": "PASS",
+        "errors": 0,
+        "warnings": 7,
+        "warning_ids": [
+          "AndroidGradlePluginVersion",
+          "AppBundleLocaleChanges",
+          "OldTargetApi",
+          "PluralsCandidate",
+          "UnusedAttribute"
+        ]
+      },
+      {
+        "variant": "Release",
+        "status": "PASS",
+        "errors": 0,
+        "warnings": 6,
+        "warning_ids": [
+          "AndroidGradlePluginVersion",
+          "AppBundleLocaleChanges",
+          "OldTargetApi",
+          "PluralsCandidate",
+          "UnusedAttribute"
+        ]
+      }
+    ],
+    "matrix": [
+      "AI ANALYSIS",
+      "EMERGENCY EXIT",
+      "FINANCIAL",
+      "GOOGLE EARTH",
+      "HISTORY",
+      "INFO SCAN",
+      "LOGISTICS",
+      "NAVIGATION",
+      "RISK / SAFETY",
+      "WORLD INTELLIGENCE"
+    ],
+    "renderer": "cesium-webgl",
+    "dom_content_loaded_ms": 349.7,
+    "redraw_frame_ms": 7,
+    "touch": {
+      "home": {
+        "hash": -207227981,
+        "colors": 211
+      },
+      "rotated": {
+        "hash": -1771104696,
+        "colors": 217
+      },
+      "restored": {
+        "hash": -207227981,
+        "colors": 211
+      }
+    },
+    "context_loss": {
+      "renderer": "2d",
+      "explanation": "WebGL unavailable. The interactive 2D map is active.",
+      "colors": 195
+    },
+    "restored_after_loss": true,
+    "native_renderer_termination_test": "reopened a new WebView in 2D",
+    "lifecycle": {
+      "app_pss_kib": 137971,
+      "renderer_pss_kib": 52563,
+      "saf_rows": 20,
+      "share_chooser": true,
+      "original_browser_return": true,
+      "earth_browser_return": true,
+      "background_return": true,
+      "home": true,
+      "cold_restart": true
+    },
+    "locale": {
+      "manual_language": "ro",
+      "regional_override": "RO",
+      "system_locale_preserved": true,
+      "ro_weather_chart": true,
+      "narrow_overflow": false,
+      "background_process_reclaimed": true,
+      "reopened": true
+    },
+    "sources": {
+      "earthquakes": {
+        "rows": 51,
+        "elapsed_ms": 792,
+        "passes": 0,
+        "chart": false
+      },
+      "weather": {
+        "rows": 24,
+        "elapsed_ms": 837,
+        "passes": 0,
+        "chart": true
+      },
+      "satellites": {
+        "rows": 31,
+        "elapsed_ms": 5993,
+        "passes": 5,
+        "chart": false
+      },
+      "wildfires": {
+        "rows": 40,
+        "elapsed_ms": 1066,
+        "passes": 0,
+        "chart": false
+      },
+      "aviation": {
+        "rows": 20,
+        "elapsed_ms": 6,
+        "passes": 0,
+        "chart": false
+      },
+      "maritime": {
+        "rows": 2,
+        "elapsed_ms": 5,
+        "passes": 0,
+        "chart": false
+      }
+    },
+    "hubble_rows": 31,
+    "hubble_passes": 0,
+    "offline_weather": "No internet connection. The weather source is temporarily unavailable.",
+    "offline_archive_rows": 20,
+    "process_gfxinfo": {
+      "frames": 628,
+      "janky": 149,
+      "p50_ms": 26,
+      "p95_ms": 97
+    },
+    "preservation": {
+      "beta9_to_candidate_rows": {
+        "field_entries": 13,
+        "network_entities": 2,
+        "exchange_reports": 1
+      },
+      "older_reader": "4.0.0b9.dev1",
+      "android_saf_rows": 20,
+      "filtered_rows": 1,
+      "prior_export_filtered_rows": 1,
+      "beta8_published_wheel_read_candidate_network_and_report": true
+    },
+    "original_actions": {
+      "tap_to_confirmed_globe_ms": 750,
+      "destinations": {
+        "earthquakes": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
+        "satellites": "https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE",
+        "weather": "https://api.open-meteo.com/v1/forecast?latitude=48.21&longitude=16.37&hourly=temperature_2m&forecast_days=2&timezone=GMT"
+      }
+    }
+  },
+  "windows": {
+    "focused": 14,
+    "packaged": 30,
+    "native": 7,
+    "local_exe_checks": 30,
+    "signature": "NotSigned",
+    "desktop": {
+      "status": "PASS",
+      "viewport": 320,
+      "source_popup": true,
+      "filters": 3,
+      "review": true,
+      "forecast": true,
+      "weather_failure": true,
+      "regional_switch": true,
+      "offline_archive": 20,
+      "language": "de",
+      "horizontal_overflow": false
+    },
+    "graphics": {
+      "weakGpu": {
+        "renderer": "2d",
+        "colors": 207
+      },
+      "mapToCard": true,
+      "switchDuringFetch": true,
+      "staleOrbit": true
+    }
+  },
+  "python": {
+    "unit_tests": 53,
+    "installed_workflows": "six checks passed outside checkout, including offline diagnostics and shared invalid-contract vectors",
+    "locally_installed_results": {
+      "earthquakes": 51,
+      "weather": 24,
+      "satellites": 31
+    }
+  },
+  "js_tests": 5,
+  "client_asset_sha256": {
+    "adapter.cjs": "0246c50efabb90fbf0ef0a8d007f3f8a8c131aa52c9b9fef4c86acded2682a11",
+    "aviation.json": "9d2ce5227e3778098e7fe347fec9cbdbfb51c80f34541285dbf8a5c9155c2688",
+    "Cesium-LICENSE.txt": "45eb26e8e557cde2674f892f2210873eec82324e41e9bc2abf53a91fced5dde0",
+    "core.js": "58f28ffe6291becb2bbc0befe2dfa7435c7b19f8b9fa1ee9932a5dc9072b0c53",
+    "earth.css": "22b34bf48d51c6b230403159fb5f4bc72e49af37e4d0a4d106ad0314025fa308",
+    "Gods-Eye-View-LICENSE.txt": "65bfc694b67094c80855179812bcac989da6e55840add547fd2e428b3e4175c3",
+    "gpu.js": "e8d2101f43b8c0ec6d4b90d0f2c511de9e19b6a1926311e46d52007e03837604",
+    "index.html": "c0c7e28a95c6198159148a65cc17bd9ec9c5ffe5a31084a1446ce47a10142b82",
+    "map.js": "9fc673c15b27442363cd39b105070aa3028df3fec4335732940d179ec81a997b",
+    "panel.js": "377265306a0455afc728a092aaa78c06f36f8f399d10086887b2039c09dfe22f",
+    "Satellite-LICENSE.txt": "68f09159260abc93ae30985052af180e38cc62d16b4ba1f58a98d576fbaa0859",
+    "sources.json": "3cffca6b2d83fa95b0d0661c7a398cdf7be61071131f5e0552eafb6e4987bdd7"
+  },
+  "pending": [
+    "Physical Vivo upgrade, ARM GPU performance and thermal measurements",
+    "Official Google Earth destination and ChatGPT composer on a physical handset",
+    "Dedicated hardware GPU allocation and energy use"
+  ],
+  "release": {
+    "tag": "v4.0.0-beta.10.dev1",
+    "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.10.dev1",
+    "published_at": "2026-11-25T08:14:58Z",
+    "visibility": "PRIVATE",
+    "downloaded_files_verified": 4
+  },
+  "previous_releases_verified": {
+    "beta7": 11,
+    "beta8_dev1": 4,
+    "beta9_dev1": 4,
+    "comparison": "GitHub asset names, sizes and digests before and after publication"
+  }
+}

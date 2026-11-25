@@ -1,3 +1,7 @@
+# Mission 005
+
+[Acceptance tests, measurements and engineering history](MISSION_005.md) · [Sanitized platform receipts, provenance and published package hashes](evidence/mission-005/verification.json)
+
 # Mission 004
 
 [Packaged verification and recovery](MISSION_004.md) · [Testing prerelease inventory](evidence/mission-004/verification.json)

@@ -1,3 +1,7 @@
+# Mission 005 · beta10 dev1 development testing
+
+The existing private repository distributes Android code 13, the Windows x64 EXE and the Python wheel from `43175c2fd97988c6095a1bff10060a860c34da13`. The emulator, packaged workstation, installed wheel and v1 exchange were tested. Vivo hardware, thermal behavior and official third-party receivers remain open. [Mission 005 report](MISSION_005.md) · [Execution and distribution evidence](evidence/mission-005/verification.json)
+
 # Mission 004 · beta9 testing prerelease
 
 The private `v4.0.0-beta.9.dev1` prerelease was published on 2026-11-25 at `ccb3fe8c574c7ac1bd14bc026ecaf271bc4ce985`. The hosted Android, Windows and Python checks passed. The packaged emulator, Windows UI and cross-platform Earth export were exercised. Physical phone and third-party receiving-app checks remain open. Beta7 and beta8 dev1 retain their original assets. [Release and downloads](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.9.dev1) · [Mission record](MISSION_004.md)
