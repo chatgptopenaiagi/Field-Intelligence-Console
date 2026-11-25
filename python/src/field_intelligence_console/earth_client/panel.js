@@ -104,7 +104,7 @@ function setPlace(lat,lon,provenance='manual',stamp=null){
 function reset(){
  request?.abort();request=null;checked=null;rows=[];visible=[];passes=[];selected=null;
  for(const id of ['card','forecast','analysis','region','legend'])$(id).hidden=true;
- $('analysis').open=false;$('preview').value='';$('shareStatus').textContent='';
+ $('analysis').open=false;$('preview').value='';$('shareStatus').textContent='';$('card').replaceChildren();
  $('passes').textContent='';$('results').replaceChildren();map?.show([]);map?.select(null);
  $('magBox').hidden=$('ageBox').hidden=topic.value!=='earthquakes';
  $('satChoice').hidden=topic.value!=='satellites';
@@ -113,7 +113,7 @@ function reset(){
  $('scope').textContent=activeSource()[0]+' · '+topics[topic.value][1];
  const url=directories[topic.value]?.[1] || (origin && FicEarth.originalUrl(topic.value,origin,$('satellite').value));
  $('original').hidden=!url;if(url)reference($('original'),url,original);
- $('status').textContent=tr('Ready to explore','Bereit zum Erkunden','Pregătit pentru explorare');
+ $('status').textContent=tr('Ready to explore · availability unchecked','Bereit zum Erkunden · Verfügbarkeit ungeprüft','Pregătit pentru explorare · disponibilitate neverificată');
 }
 function recordTitle(r){
  switch(r.category){
@@ -190,7 +190,9 @@ function render(){
  }
  $('status').textContent=shown.length?shown.length+' / '+visible.length+' · '+tr('results','Ergebnisse','rezultate'):
  tr('No results in the consulted data for these filters.','Keine Ergebnisse im abgefragten Datensatz für diese Filter.','Nu există rezultate în setul de date consultat pentru aceste filtre.');
- $('status').textContent+=' · '+tr('Checked','Geprüft','Consultat la')+' '+time(checked);
+ const availability=['aviation','maritime','infrastructure'].includes(category)
+   ?tr('Local catalog','Lokaler Katalog','Catalog local'):tr('Source responded','Quelle erreichbar','Sursa a răspuns');
+ $('status').textContent+=' · '+availability+' · '+time(checked);
  $('save').disabled=false;
  if(shown.length)choose(shown.find(r=>r.id===selected?.id)||shown[0]);else{
    selected=null;map.select(null);$('card').hidden=$('analysis').hidden=true;$('preview').value='';

@@ -10,6 +10,13 @@ async function run() {
   try {
     const ctx = await browser.newContext({viewport:{width:320,height:720}});
     const page = await ctx.newPage(), errors=[];
+    // The first paint may precede texture initialization on Android WebView.
+    await page.addInitScript(()=>{
+      const ImageElement=window.Image;
+      window.Image=class extends ImageElement {
+        set onload(handler){this.addEventListener('load',()=>setTimeout(handler,120));}
+      };
+    });
     page.on('pageerror',e=>errors.push(e.message));
     const now = Date.now(), recent = new Date(now + 3600000);
     const quake = (id,lon,mag,age) => ({id,geometry:{type:'Point',coordinates:[lon,0,null]},
@@ -25,6 +32,8 @@ async function run() {
     const requests=[];
     page.on('request',r=>{if(r.url().startsWith('https:'))requests.push(r.url());});
     await page.goto(target+'#lat=0&lon=0&lang=ro');
+    await page.waitForFunction(()=>document.getElementById('globe').dataset.renderer==='cesium-webgl' ||
+      (document.getElementById('mode').disabled && !document.getElementById('fallback').hidden));
     assert.equal(await page.locator('#refresh').innerText(),'Explorează');
     assert.equal(requests.length,0);
     await page.click('#refresh');

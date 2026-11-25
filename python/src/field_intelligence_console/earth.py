@@ -146,6 +146,9 @@ def query(source, origin, radius_km=None, satellite="25544"):
         except subprocess.TimeoutExpired as exc:
             raise ValidationError("Earth provider timed out") from exc
         if process.returncode:
+            message = process.stderr.decode(errors="replace").strip()
+            if message in {"Orbital elements outside the seven-day window.", "Source does not cover the selected region."}:
+                raise ValidationError(message)
             raise ValidationError("Earth provider unavailable (UNKNOWN). Verify Node 22+, connectivity and regional coverage.")
         document = json.loads(process.stdout)
         return select(document, origin, radius_km)

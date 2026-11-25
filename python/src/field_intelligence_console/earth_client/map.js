@@ -35,7 +35,7 @@ function earthMap(canvas, origin, select, modeChanged) {
   function draw() {
     frame=0;
     const accelerated=!flat && gpu && gpu(camera);
-    if (!accelerated && !flat && img.complete) { flat=true;modeChanged(true,true); }
+    if (gpu && !accelerated && !flat) { flat=true;modeChanged(true,true); }
     canvas.dataset.renderer=accelerated?'cesium-webgl':'2d';
     ctx.clearRect(0,0,width,height);
     if (!accelerated) {
