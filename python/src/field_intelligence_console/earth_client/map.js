@@ -1,53 +1,95 @@
-// Redraw on input only. The small fixed backing buffer bounds memory on older phones.
-function earthMap(canvas, origin) {
-  const ctx=canvas.getContext('2d'), width=canvas.width, height=canvas.height;
-  const rad=Math.PI/180, radius=height*.475;
-  let camera={...origin}, records=[],flat=false,pixels=null,gpu=null,frame=0,last=null;
-  const img=new Image();
-  img.onload=()=>{
-    const off=document.createElement('canvas');off.width=img.width;off.height=img.height;
-    const c=off.getContext('2d');c.drawImage(img,0,0);pixels=c.getImageData(0,0,img.width,img.height).data;
-    try{gpu=earthGPU(document.getElementById("gpu"),img,schedule);}catch{gpu=null;}
+// A frame is requested only for a change of view, selection, data or GPU context.
+function earthMap(canvas, origin, select, modeChanged) {
+  const ctx = canvas.getContext('2d'), gpuCanvas = document.getElementById('gpu');
+  const {width, height} = canvas, radius = height * .475, rad = Math.PI / 180;
+  const wrap = angle => ((angle + 180) % 360 + 360) % 360 - 180;
+  let camera = {...origin}, records = [], selected = null, track = false;
+  let flat = false, gpu = null, frame = 0, hitPoints = [], drag = null;
+  const img = new Image();
+
+  function schedule() { if (!frame) frame = requestAnimationFrame(draw); }
+  function setGpu() {
+    try { gpu = earthGPU(gpuCanvas, img); } catch { gpu = null; }
+    if (!gpu) flat = true;
+    modeChanged(flat, !gpu);
     schedule();
-  };
-  img.src=FicEarth.texture;
-  function draw(){
-    frame=0;if(!ctx)return;
-    const accelerated=!flat && gpu && gpu(camera);
-    canvas.dataset.renderer=flat?'2d':accelerated?'cesium-webgl':'canvas-globe';
-    if(accelerated)ctx.clearRect(0,0,width,height);else{ctx.fillStyle='#09151b';ctx.fillRect(0,0,width,height);}
-    const phi=camera.lat*rad,lambda=camera.lon*rad,sp=Math.sin(phi),cp=Math.cos(phi);
-    if(flat && pixels)ctx.drawImage(img,0,0,width,height);
-    if(!flat && !accelerated){
-      const side=Math.ceil(2*radius),raster=ctx.createImageData(side,side);
-      for(let row=0;row<side;row++)for(let col=0;col<side;col++){
-        const x=(col-radius)/radius,y=(radius-row)/radius,z2=1-x*x-y*y;
-        if(z2<0)continue;
-        const z=Math.sqrt(z2),lat=Math.asin(Math.max(-1,Math.min(1,y*cp+z*sp)));
-        const lon=lambda+Math.atan2(x,z*cp-y*sp);
-        const tx=Math.floor(((lon/(2*Math.PI)+1.5)%1)*img.width);
-        const ty=Math.min(img.height-1,Math.max(0,Math.floor((.5-lat/Math.PI)*img.height)));
-        const src=(ty*img.width+tx)*4,dst=(row*side+col)*4;
-        for(let i=0;i<3;i++)raster.data[dst+i]=pixels?pixels[src+i]:[46,87,113][i];
-        raster.data[dst+3]=255;
-      }
-      ctx.putImageData(raster,Math.round(width/2-radius),Math.round(height/2-radius));
-    }
-    function mark(lat,lon,color,size){
-      const a=lat*rad,d=lon*rad-lambda;
-      if(!flat && Math.sin(a)*sp+Math.cos(a)*cp*Math.cos(d)<0)return;
-      const x=flat?(lon+180)/360*width:width/2+radius*Math.cos(a)*Math.sin(d);
-      const y=flat?(90-lat)/180*height:height/2-radius*(Math.sin(a)*cp-Math.cos(a)*sp*Math.cos(d));
-      ctx.beginPath();ctx.arc(x,y,size,0,2*Math.PI);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#17232e';ctx.stroke();
-    }
-    for(const r of records)mark(r.latitude,r.longitude,'#ffca76',3);
-    mark(origin.lat,origin.lon,'#4fffd5',5);
   }
-  function schedule(){if(!frame)frame=requestAnimationFrame(draw);}
-  canvas.onpointerdown=e=>{last=[e.clientX,e.clientY];canvas.setPointerCapture(e.pointerId);};
-  canvas.onpointermove=e=>{if(last&&!flat){camera.lon=((camera.lon+(last[0]-e.clientX)*.55+540)%360)-180;
-    camera.lat=Math.max(-90,Math.min(90,camera.lat+(e.clientY-last[1])*.5));last=[e.clientX,e.clientY];schedule();}};
-  canvas.onpointerup=canvas.onpointercancel=()=>{last=null};schedule();
-  return {show(list){records=list;schedule();},center(p){camera={...p};schedule();},setOrigin(p){origin=p;camera={...p};schedule();},
-    toggle(){flat=!flat;schedule();return flat;},get flat(){return flat;}};
+  gpuCanvas.addEventListener('webglcontextlost', event => {
+    event.preventDefault();
+    gpu = null; flat = true; modeChanged(true, true); schedule();
+  });
+  gpuCanvas.addEventListener('webglcontextrestored', setGpu);
+  img.onload = setGpu;
+  img.src = FicEarth.texture;
+  function project(lat, lon) {
+    if (flat) return [width / 2 + width * wrap(lon-camera.lon)/360, height / 2 - height * (lat-camera.lat)/180];
+    const a=lat*rad, b=camera.lat*rad, d=(lon-camera.lon)*rad;
+    if (Math.sin(a)*Math.sin(b)+Math.cos(a)*Math.cos(b)*Math.cos(d)<0) return null;
+    return [width/2+radius*Math.cos(a)*Math.sin(d), height/2-radius*(Math.sin(a)*Math.cos(b)-Math.cos(a)*Math.sin(b)*Math.cos(d))];
+  }
+  function dot(pos,color,size) {
+    if (!pos) return;
+    ctx.beginPath(); ctx.arc(...pos,size,0,2*Math.PI); ctx.fillStyle=color;ctx.fill();
+    ctx.strokeStyle='#14222b';ctx.lineWidth=1;ctx.stroke();
+  }
+  function draw() {
+    frame=0;
+    const accelerated=!flat && gpu && gpu(camera);
+    if (!accelerated && !flat && img.complete) { flat=true;modeChanged(true,true); }
+    canvas.dataset.renderer=accelerated?'cesium-webgl':'2d';
+    ctx.clearRect(0,0,width,height);
+    if (!accelerated) {
+      ctx.fillStyle='#09151b';ctx.fillRect(0,0,width,height);
+      if(img.naturalWidth) {
+        const x=-camera.lon*width/360, y=camera.lat*height/180;
+        for(const offset of [-width,0,width]) ctx.drawImage(img,x+offset,y,width,height);
+      }
+    }
+    hitPoints=records.map(r=>({record:r,pos:project(r.latitude,r.longitude)}));
+    if(track) {
+      ctx.beginPath();let previous=null;
+      for(const {pos,record} of hitPoints) {
+        const contiguous=previous && Math.abs(pos?.[0]-previous.pos[0])<width/2 &&
+          Date.parse(record.valid_at)-Date.parse(previous.time)===180000;
+        if(pos) { if(contiguous) ctx.lineTo(...pos); else ctx.moveTo(...pos); }
+        previous=pos?{pos,time:record.valid_at}:null;
+      }
+      ctx.strokeStyle='#ffcc72';ctx.lineWidth=2;ctx.stroke();
+    }
+    for(const {pos,record} of hitPoints) dot(pos,record.id===selected?'#fff':'#ffca76',record.id===selected?5:3);
+    const place=project(origin.lat,origin.lon);
+    if(place){ctx.beginPath();ctx.arc(...place,7,0,2*Math.PI);ctx.strokeStyle='#50ffe0';ctx.lineWidth=2;ctx.stroke();}
+  }
+  canvas.onpointerdown=e=>{ drag={x:e.clientX,y:e.clientY,lat:camera.lat,lon:camera.lon,moved:false};canvas.setPointerCapture(e.pointerId); };
+  canvas.onpointermove=e=>{
+    if(!drag)return;
+    const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+    if(Math.hypot(dx,dy)>4)drag.moved=true;
+    if(drag.moved){
+      camera={lat:Math.max(-90,Math.min(90,drag.lat+dy*180/canvas.clientHeight)),
+        lon:wrap(drag.lon-dx*360/canvas.clientWidth)};schedule();
+    }
+  };
+  canvas.onpointercancel=()=>{drag=null;};
+  canvas.onpointerup=e=>{
+    if(drag && !drag.moved) {
+      const rect=canvas.getBoundingClientRect(),x=(e.clientX-rect.left)*width/rect.width,y=(e.clientY-rect.top)*height/rect.height;
+      let nearest=null, best=16*width/rect.width;
+      for(const {record,pos} of hitPoints) if(pos) {
+        const d=Math.hypot(x-pos[0],y-pos[1]);if(d<best){best=d;nearest=record;}
+      }
+      if(nearest)select(nearest);
+    }
+    drag=null;
+  };
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule();});
+  schedule();
+  return {
+    show(list,drawTrack=false){records=list;track=drawTrack;schedule();},
+    center(p){camera={...p};schedule();},
+    select(id){selected=id;schedule();},
+    setOrigin(p){origin=p;camera={...p};schedule();},
+    toggle(){if(gpu)flat=!flat;modeChanged(flat,!gpu);schedule();},
+    get flat(){return flat;}
+  };
 }

@@ -37,6 +37,10 @@ class EarthTests(unittest.TestCase):
         self.assertEqual((rows[0]["latitude"], rows[0]["longitude"]), (48,13))
         self.assertEqual(rows[0]["freshness"], "older-than-24h")
         self.assertIsNone(rows[0]["measurements"]["depth"])
+        doc = {"schema":"fic.earth-keypoints", "version":1, "records":rows}
+        self.assertEqual(earth.select(doc,(48,13),min_magnitude=3)["matching_count"],1)
+        self.assertEqual(earth.select(doc,(48,13),min_magnitude=4)["records"],[])
+        self.assertEqual(earth.select(doc,(48,13),since=datetime.now(timezone.utc))["records"],[])
         feature["geometry"]["coordinates"] = [999,48,None]
         with self.assertRaises(ValidationError):
             earth.earthquake_records({"features":[feature]},datetime.now(timezone.utc))

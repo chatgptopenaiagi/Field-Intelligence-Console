@@ -1,5 +1,5 @@
 // One static Cesium ellipsoid, one relief texture, no tile streaming or animation timer.
-function earthGPU(canvas, image, redraw) {
+function earthGPU(canvas, image) {
   const gl=canvas.getContext('webgl',{alpha:false,antialias:false,powerPreference:'low-power'});
   if(!gl)return null;
   const vs='attribute vec3 p; uniform mat3 camera; uniform vec2 scale; varying vec3 world; void main(){world=p; vec3 v=camera*p;gl_Position=vec4(v.xy*scale,-v.z*.75,1.0);}';
@@ -21,7 +21,6 @@ function earthGPU(canvas, image, redraw) {
   gl.enable(gl.DEPTH_TEST);gl.clearColor(.035,.082,.106,1);
   gl.uniform2f(gl.getUniformLocation(program,'scale'),.95*canvas.height/canvas.width,.95);
   const camera=gl.getUniformLocation(program,'camera');
-  canvas.addEventListener('webglcontextlost',redraw);
   return ({lat,lon})=>{
     if(gl.isContextLost())return false;
     const a=lat*Math.PI/180,b=lon*Math.PI/180,ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(b),sb=Math.sin(b);

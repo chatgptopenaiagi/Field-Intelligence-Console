@@ -18,7 +18,7 @@ from field_intelligence_console import (
     parse_import, query_network, validate_report, now_iso,
 )
 
-VERSION = "4.0.0-beta.9.dev1"
+VERSION = "4.0.0-beta.10.dev1"
 MAX_BYTES = 5 * 1024 * 1024
 SCOPES = ("street", "radius", "neighborhood", "city", "region", "country", "building")
 ADDRESS_FIELDS = ("street", "neighborhood", "locality", "region", "postal_code", "country")
@@ -653,7 +653,7 @@ class Workstation:
 
     def open_earth_engine(self):
         from field_intelligence_console.earth import client_url
-        url = client_url(self.place.get("latitude"), self.place.get("longitude"))
+        url = client_url(self.place.get("latitude"), self.place.get("longitude"), language=None)
         if not webbrowser.open(url, new=1):
             raise ValueError("Unable to open the Earth panel in the default browser.")
         self.status.set("World Intelligence opened for the selected place.")

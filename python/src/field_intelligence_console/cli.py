@@ -1,5 +1,6 @@
 """Explicit-input/output CLI. Diagnostics contain counts, never contact values."""
 import argparse
+from datetime import datetime
 from importlib import resources
 import json
 from pathlib import Path
@@ -26,7 +27,7 @@ def _write(path, data):
 
 def parser():
     result = argparse.ArgumentParser(prog="fic", description="Offline FIC validation, conversion and saved-association search")
-    result.add_argument("--version", action="version", version="4.0.0b9.dev1")
+    result.add_argument("--version", action="version", version="4.0.0b10.dev1")
     commands = result.add_subparsers(dest="command", required=True)
     commands.add_parser("diagnostics", help="Check version and bundled schemas offline; never open user data")
     earth = commands.add_parser("earth", help="Query public Earth records or filter a client export")
@@ -35,6 +36,8 @@ def parser():
     earth.add_argument("--satellite", choices=["25544","20580"], default="25544", help="ISS or Hubble catalog ID")
     earth.add_argument("--coordinates", nargs=2, type=float, metavar=("LAT","LON"))
     earth.add_argument("--radius-km", type=float)
+    earth.add_argument("--min-magnitude", type=float, help="Include records with at least this magnitude")
+    earth.add_argument("--since", type=datetime.fromisoformat, help="Earliest observation (ISO time with UTC offset)")
     earth.add_argument("--input", type=Path, help="Existing Earth client export")
     earth.add_argument("--output", type=Path, help="Write a new JSON document")
     regional = commands.add_parser("emergency", help="Offline lookup for an explicitly selected country or place")
@@ -93,6 +96,9 @@ def main(argv=None):
                     result = earth.select(json_loads(_read(args.input)), args.coordinates, args.radius_km)
                 else:
                     result = earth.query(args.source, args.coordinates, args.radius_km, args.satellite)
+                if args.min_magnitude is not None or args.since is not None:
+                    result = earth.select(result, args.coordinates, args.radius_km,
+                                          min_magnitude=args.min_magnitude, since=args.since)
             encoded = json.dumps(result, ensure_ascii=True, allow_nan=False)
             if args.output:
                 _write(args.output, encoded.encode("utf-8"))

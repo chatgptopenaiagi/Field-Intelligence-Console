@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.0-beta.10.dev1 · Cognitive Experience Engine
+
+WORLD INTELLIGENCE now offers in-app exploration and a separate original-source action for the selected topic. The USGS view supports magnitude, time and distance filters. The forecast chart uses hourly Celsius values. Satellite cards show the element epoch, orbit track, geometric pass times and peak sampled elevation. Earth results carry coverage and limitations through JSON export. Android can share one reviewed result. Windows can copy the reviewed text. A lost WebGL context switches the view to a labelled interactive 2D map.
+
+
 ## 4.0.0-beta.9.dev1 · Earth Engine testing
 
 WORLD INTELLIGENCE opens a keyless globe from the existing Matrix. It adds sourced geographical queries, dated observations and predictions, local map rendering, offline archives and Earth keypoint exchange on Android, Windows and Python. The development build includes a fix for browsers that reuse a panel for a new location and language. Physical handset validation is pending. [Mission 004 record](docs/mission/MISSION_004.md)

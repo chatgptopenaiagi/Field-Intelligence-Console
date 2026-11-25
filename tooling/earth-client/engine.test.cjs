@@ -26,3 +26,27 @@ test('archived aircraft and expedition have independent dated records',async()=>
   await assert.rejects(core.query('earthquakes',{lat:91,lon:0}),/location/);
   assert.ok(core.globeMesh().indices.length>2000);
 });
+test('source and forecast use identical selected coordinates, times and Celsius units',async t=>{
+  const origin={lat:0,lon:0};
+  const time=new Date(Date.now()+3600000).toISOString().slice(0,16);
+  const forecast={latitude:0,longitude:0,hourly_units:{temperature_2m:'°C'},hourly:{time:[time],temperature_2m:[0]}};
+  const fetch=t.mock.method(globalThis,'fetch',async()=>Response.json(forecast));
+  const result=await core.query('weather',origin);
+  const [r]=result.records;
+  assert.equal(new URL(r.source).searchParams.get('latitude'),'0');
+  assert.equal(fetch.mock.calls[0].arguments[0],core.originalUrl('weather',origin));
+  assert.equal(r.source,fetch.mock.calls[0].arguments[0]);
+  assert.equal(r.valid_at,time+':00.000Z');assert.equal(r.observed_at,null);
+  assert.deepEqual(r.measurements.temperature,{value:0,unit:'°C'});
+  assert.ok(r.coverage && r.limitations && r.description && result.checked_at);
+  forecast.hourly.temperature_2m=[null];assert.equal((await core.query('weather',origin)).records.length,0);
+  forecast.hourly.temperature_2m=['hot'];await assert.rejects(core.query('weather',origin),/forecast/);
+  forecast.hourly_units.temperature_2m='°F';await assert.rejects(core.query('weather',origin),/forecast/);
+});
+test('NWS coverage errors differ from provider outages',async t=>{
+  let status=404;
+  t.mock.method(globalThis,'fetch',async()=>new Response('',{status}));
+  await assert.rejects(core.query('warnings',{lat:0,lon:0}),/coverage/);
+  status=503;await assert.rejects(core.query('warnings',{lat:0,lon:0}),/HTTP 503/);
+  assert.match(core.originalUrl('satellites',{lat:0,lon:0},'20580'),/CATNR=20580/);
+});

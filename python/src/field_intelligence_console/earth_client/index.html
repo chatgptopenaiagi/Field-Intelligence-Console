@@ -5,13 +5,23 @@
 <script defer src="core.js"></script><script defer src="gpu.js"></script><script defer src="map.js"></script><script defer src="panel.js"></script></head>
 <body><main>
 <header><div><small>FIELD INTELLIGENCE CONSOLE</small><h1 id="title"></h1></div><button id="back"></button></header>
-<div class="map"><canvas id="gpu" width="560" height="260" aria-hidden="true"></canvas><canvas id="globe" width="560" height="260" role="img" aria-label="Earth"></canvas>
-<div class="maptools"><button id="mode"></button><button id="center">◎</button></div></div>
-<small>Natural Earth II · Cesium · WGS84</small>
 <p id="location"></p>
 <details><summary id="change"></summary><div class="row"><label><span id="latLabel"></span><input id="lat" type="number" min="-90" max="90" step="any"></label><label><span id="lonLabel"></span><input id="lon" type="number" min="-180" max="180" step="any"></label><button id="apply"></button></div></details>
 <label for="topic" id="queryLabel"></label><select id="topic"></select>
-<label id="satChoice" hidden>Satellite <select id="satellite"><option value="25544">ISS (ZARYA)</option><option value="20580">Hubble Space Telescope</option></select></label><div class="row"><label for="range" id="rangeLabel"></label><select id="range"><option value="0">🌐</option><option>100</option><option>500</option><option>2000</option></select><button id="refresh" class="primary"></button></div>
-<p id="scope"></p><output id="status" aria-live="polite"></output><div id="passes"></div><ol id="results"></ol>
+<label id="satChoice" hidden><span id="satLabel"></span> <select id="satellite"><option value="25544">ISS</option><option value="20580">Hubble</option></select></label>
+<p id="scope"></p><div class="row"><button id="refresh" class="primary"></button><a id="original"></a></div>
+<output id="status" aria-live="polite"></output><button id="region" hidden></button>
+<div class="map"><canvas id="gpu" width="560" height="260" aria-hidden="true"></canvas><canvas id="globe" width="560" height="260" role="img"></canvas></div>
+<div class="row maptools"><small>Natural Earth II · WGS84</small><button id="mode">2D</button><button id="center"></button></div>
+<p id="fallback" hidden></p><p id="legend" hidden></p>
+<details id="filterBox"><summary id="filters"></summary><div class="row"><label><span id="rangeLabel"></span><select id="range"><option value="0"></option><option>100</option><option>500</option><option>2000</option></select></label>
+<label id="magBox"><span id="magLabel"></span><select id="mag"><option>2.5</option><option>4</option><option>5</option><option>6</option></select></label>
+<label id="ageBox"><span id="ageLabel"></span><select id="age"><option value="0"></option><option value="1">1 h</option><option value="6">6 h</option><option value="12">12 h</option><option value="24">24 h</option></select></label></div></details>
+<section id="forecast" hidden><h2 id="chartTitle"></h2><canvas id="chart" width="560" height="170" role="img"></canvas></section>
+<p id="passes"></p><article id="card" hidden></article>
+<details id="analysis" hidden><summary id="analysisLabel"></summary><label for="preview" id="review"></label><textarea id="preview" rows="8" maxlength="12000"></textarea><button id="share"></button><output id="shareStatus"></output></details>
+<ol id="results"></ol>
 <footer><button id="save"></button><button id="earth">Google Earth</button><button id="home"></button></footer>
+<label id="languageBox" hidden><span id="languageLabel"></span>
+<select id="language"><option value="en">English</option><option value="de">Deutsch</option><option value="ro">Română</option></select></label>
 </main></body></html>

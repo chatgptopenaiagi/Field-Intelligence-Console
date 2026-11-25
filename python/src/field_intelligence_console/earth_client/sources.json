@@ -6,47 +6,74 @@
     "earthquakes": {
       "provider": "USGS",
       "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
-      "access": "on-demand"
+      "access": "on-demand",
+      "description": "Earthquake reported by USGS",
+      "coverage": "Global daily M2.5+ catalog",
+      "limitations": "Reported magnitude and epicentral distance do not measure local danger."
     },
     "aviation": {
       "provider": "NOAA National Hurricane Center",
       "url": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
-      "access": "bundled"
+      "access": "bundled",
+      "description": "Archived hurricane reconnaissance measurement",
+      "coverage": "AF304, Idalia, 29 August 2023",
+      "limitations": "Twenty archived observations from a single mission."
     },
     "satellites": {
       "provider": "CelesTrak",
       "url": "https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE",
-      "access": "on-demand"
+      "access": "on-demand",
+      "description": "Geometric SGP4 estimate",
+      "coverage": "ISS or Hubble, selected observer",
+      "limitations": "One-minute pass sampling above 10 degrees for 24 hours. Optical visibility depends on light, clouds and terrain."
     },
     "weather": {
       "provider": "Open-Meteo",
       "url": "https://api.open-meteo.com/v1/forecast",
-      "access": "on-demand"
+      "access": "on-demand",
+      "description": "Hourly model temperature at two metres",
+      "coverage": "Open-Meteo forecast grid cell for the selected coordinates",
+      "limitations": "Up to 24 future hourly values. Grid cell can differ from the requested location."
     },
     "wildfires": {
       "provider": "NASA EONET",
       "url": "https://eonet.gsfc.nasa.gov/api/v3/events?category=wildfires&status=open&limit=40",
-      "access": "on-demand"
+      "access": "on-demand",
+      "description": "Reported wildfire catalog event",
+      "coverage": "NASA EONET global open wildfire catalog",
+      "limitations": "Latest dated point in up to 40 open entries. Current fire activity is unconfirmed."
     },
     "transport": {
       "provider": "Citi Bike GBFS",
       "url": "https://gbfs.citibikenyc.com/gbfs/en/station_information.json",
-      "access": "on-demand"
+      "access": "on-demand",
+      "description": "Bike-share station inventory",
+      "coverage": "NYC Citi Bike directory",
+      "limitations": "A 100 km regional selection around NYC. Capacity is dock inventory."
     },
     "infrastructure": {
       "provider": "NOAA NDBC",
       "url": "https://www.ndbc.noaa.gov/station_page.php?station=46042",
-      "access": "bundled"
+      "access": "bundled",
+      "description": "Published buoy station",
+      "coverage": "Monterey buoy 46042",
+      "limitations": "Single station with a watch circle. Its listed position is approximate."
     },
     "maritime": {
       "provider": "Schmithüsen (2021), AWI / PANGAEA · CC BY 4.0",
       "url": "https://doi.org/10.1594/PANGAEA.935218",
-      "access": "bundled"
+      "access": "bundled",
+      "description": "Historical expedition endpoint",
+      "coverage": "Polarstern PS119, April to May 2019",
+      "limitations": "Two documented endpoints. Route between them is unknown."
     },
     "warnings": {
       "provider": "US National Weather Service",
       "url": "https://api.weather.gov/alerts/active",
-      "access": "on-demand"
+      "access": "on-demand",
+      "description": "Weather alert reported for a query point",
+      "coverage": "Points covered by the US National Weather Service",
+      "limitations": "A marker identifies the query point within the alert area."
     }
   },
   "headless_queries": {

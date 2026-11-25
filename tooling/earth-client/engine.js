@@ -22,6 +22,15 @@ export function globeMesh(){
 }
 import catalog from '../../python/src/field_intelligence_console/earth_client/sources.json';
 export const sources = Object.fromEntries(Object.entries(catalog.feeds).map(([id, v]) => [id, [v.provider, v.url]]));
+export function originalUrl(category, origin, catalogId='25544'){
+  const url = sources[category][1];
+  if(category === 'weather') return url+'?'+new URLSearchParams({
+    latitude:origin.lat, longitude:origin.lon, hourly:'temperature_2m', forecast_days:2, timezone:'GMT'
+  });
+  if(category === 'satellites') return url.replace('25544', catalogId);
+  if(category === 'warnings') return url+'?point='+origin.lat.toFixed(4)+','+origin.lon.toFixed(4);
+  return url;
+}
 
 function point(category,id,label,lat,lon,time,received,kind,measurements={},metadata={},source=sources[category][1]){
   if(!isGeoPoint({lat,lon})) throw Error('Invalid provider coordinates');
@@ -63,7 +72,7 @@ export function orbit(text,origin,now,catalogId='25544'){
 }
 async function read(url,signal,asText=false){
   const response=await fetch(url,{signal,credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store'});
-  if(!response.ok)throw Error('HTTP '+response.status);
+  if(!response.ok)throw Object.assign(Error('HTTP '+response.status),{status:response.status});
   const reader=response.body.getReader(),decoder=new TextDecoder();
   let bytes=0,text='';
   try{while(true){const {done,value}=await reader.read();if(done)break;
@@ -72,10 +81,10 @@ async function read(url,signal,asText=false){
   }finally{reader.releaseLock();}
   text+=decoder.decode();return asText?text:JSON.parse(text);
 }
-export async function query(category,origin,signal,catalogId='25544'){
+async function fetchCategory(category,origin,signal,catalogId){
   if(!isGeoPoint(origin))throw Error('Invalid selected location');
   const now=Date.now(),received=utc(now);
-  const url=sources[category][1];
+  const url=originalUrl(category,origin,catalogId);
   switch(category){
     case 'aviation':return {records:aviation};
     case 'infrastructure':return {records:[point(category,'46042','46042 · Monterey ocean observation buoy',36.787,-122.408,null,'2026-11-25','REPORTED',{}, {scope:'Published station location; buoy moves within its watch circle.'})]};
@@ -85,9 +94,11 @@ export async function query(category,origin,signal,catalogId='25544'){
     ].map(([id,lat,lon,time])=>({...point(category,'PS119:'+id,'Polarstern · PS119 · '+id,lat,lon,time,'2026-11-25','HISTORICAL',{}, {scope:'Published expedition endpoint'}),freshness:'historical'}))};
     case 'warnings':{
       const coords=origin.lat.toFixed(4)+','+origin.lon.toFixed(4);
-      const zone=await read('https://api.weather.gov/points/'+coords,signal);
+      let zone;
+      try {zone=await read('https://api.weather.gov/points/'+coords,signal);}
+      catch(error){if(error.status===404)throw Error('Outside confirmed NWS coverage');throw error;}
       if(!zone.properties?.forecastZone)throw Error('Outside confirmed NWS coverage');
-      const endpoint=url+'?point='+coords;
+      const endpoint=url;
       const data=await read(endpoint,signal);
       if(!Array.isArray(data.features))throw Error('Invalid NWS response');
       return {records:data.features.map(f=>point(category,f.id,f.properties.headline||f.properties.event,origin.lat,origin.lon,
@@ -96,14 +107,17 @@ export async function query(category,origin,signal,catalogId='25544'){
     case 'earthquakes':return {records:quakes(await read(url,signal),received)};
     case 'satellites':{
       if(!['25544','20580'].includes(catalogId))throw Error('Unsupported satellite');
-      return orbit(await read(url.replace('25544',catalogId),signal,true),origin,now,catalogId);
+      return orbit(await read(url,signal,true),origin,Date.now(),catalogId);
     }
     case 'weather':{
-      const endpoint=url+'?latitude='+origin.lat+'&longitude='+origin.lon+'&hourly=temperature_2m&forecast_days=2&timezone=GMT';
+      const endpoint=url;
       const w=await read(endpoint,signal);
-      if(w.hourly_units?.temperature_2m!=='°C'||!Array.isArray(w.hourly?.time)||w.hourly.time.length!==w.hourly.temperature_2m?.length)throw Error('Invalid forecast');
+      if(w.hourly_units?.temperature_2m!=='°C'||!isGeoPoint({lat:w.latitude,lon:w.longitude})||
+         !Array.isArray(w.hourly?.time)||!Array.isArray(w.hourly.temperature_2m)||
+         w.hourly.time.length!==w.hourly.temperature_2m.length)throw Error('Invalid forecast');
       return {records:w.hourly.time.flatMap((t,i)=>{
-        const valid=utc(t+'Z'), temp=measurement(w.hourly.temperature_2m[i],'°C');
+        const value=w.hourly.temperature_2m[i], valid=utc(t+'Z'), temp=measurement(value,'°C');
+        if(!valid || (value!==null && !temp))throw Error('Invalid hourly forecast value');
         return valid && Date.parse(valid)>=now && temp?[point(category,valid,'2 m temperature',w.latitude,w.longitude,valid,received,'PREDICTED',{temperature:temp},{},endpoint)]:[];
       }).slice(0,24)};
     }
@@ -112,7 +126,10 @@ export async function query(category,origin,signal,catalogId='25544'){
       if(!Array.isArray(data.events))throw Error('Invalid EONET snapshot');
       return {records:data.events.flatMap(e=>{
         const g=e.geometry?.filter(p=>p.type==='Point' && utc(p.date)).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date))[0];
-        return g?[point(category,e.id,String(e.title),g.coordinates[1],g.coordinates[0],utc(g.date),received,'REPORTED',{}, {scope:'Latest reported point per open event'},'https://eonet.gsfc.nasa.gov/api/v3/events/'+encodeURIComponent(e.id))]:[];
+        return g?[point(category,e.id,String(e.title),g.coordinates[1],g.coordinates[0],utc(g.date),received,'REPORTED',{}, {
+          event_category:e.categories?.map(c=>c.title).filter(Boolean).join(', ')||null,
+          region:typeof e.region==='string'?e.region:null, catalog_status:'open',
+          scope:'Latest reported point per open event'},'https://eonet.gsfc.nasa.gov/api/v3/events/'+encodeURIComponent(e.id))]:[];
       })};
     }
     case 'transport':{
@@ -123,4 +140,15 @@ export async function query(category,origin,signal,catalogId='25544'){
     }
     default:throw Error('Unknown source');
   }
+}
+
+export async function query(category,origin,signal,catalogId='25544'){
+  const result=await fetchCategory(category,origin,signal,catalogId);
+  if(new Set(result.records.map(r=>r.id)).size!==result.records.length)throw Error('Duplicate provider record');
+  const feed=catalog.feeds[category];
+  const checked_at=new Date().toISOString();
+  return {...result,checked_at,records:result.records.map(row=>({
+    ...row,description:feed.description,coverage:feed.coverage,limitations:feed.limitations,
+    retrieved_at:feed.access==='bundled'?row.retrieved_at:checked_at
+  }))};
 }

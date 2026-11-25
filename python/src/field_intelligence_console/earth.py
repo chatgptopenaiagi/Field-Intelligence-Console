@@ -36,13 +36,20 @@ def client_url(lat, lon, language="en"):
     page = Path(str(ASSETS.joinpath("index.html"))).resolve()
     if not page.is_file():
         raise ValidationError("Bundled Earth client unavailable")
-    return page.as_uri() + "#" + urlencode({"lat":lat, "lon":lon, "lang":language})
+    params = {"lat":lat, "lon":lon}
+    if language:
+        params["lang"] = language
+    return page.as_uri() + "#" + urlencode(params)
 
 
-def select(document, origin, radius_km=None):
+def select(document, origin, radius_km=None, *, min_magnitude=None, since=None):
     coordinates(*origin)
     if radius_km is not None and (not math.isfinite(radius_km) or radius_km < 0):
         raise ValidationError("Radius must be finite and nonnegative")
+    if min_magnitude is not None and not math.isfinite(min_magnitude):
+        raise ValidationError("Minimum magnitude must be finite")
+    if since is not None and (not isinstance(since, datetime) or since.utcoffset() is None):
+        raise ValidationError("Use a timezone-aware observation cutoff")
     if not isinstance(document, dict) or document.get("schema") != "fic.earth-keypoints" or document.get("version") != 1:
         raise ValidationError("Unsupported Earth document")
     rows = document.get("records")
@@ -63,12 +70,26 @@ def select(document, origin, radius_km=None):
                                       or not math.isfinite(value["value"]) or not isinstance(value.get("unit"),str)):
                 raise ValidationError("Invalid measurement")
         distance = distance_km(origin, (row.get("latitude"),row.get("longitude")))
-        if radius_km is None or distance <= radius_km:
-            filtered.append(row)
+        if radius_km is not None and distance > radius_km:
+            continue
+        magnitude = row["measurements"].get("magnitude")
+        if min_magnitude is not None and (not magnitude or magnitude["value"] < min_magnitude):
+            continue
+        if since is not None:
+            stamp = row.get("observed_at")
+            if not stamp:
+                continue
+            try:
+                observed = datetime.fromisoformat(stamp)
+                if observed.utcoffset() is None or observed < since:
+                    continue
+            except (ValueError, TypeError) as exc:
+                raise ValidationError("Invalid observation timestamp") from exc
+        filtered.append(row)
     # Pass windows are specific to their original observer.
     same_place = document.get("selection") == {"lat":origin[0], "lon":origin[1]}
     return {**document, "selection":{"lat":origin[0],"lon":origin[1]}, "radius_km":radius_km,
-            "records":filtered, "passes":document.get("passes",[]) if same_place else []}
+            "records":filtered, "matching_count":len(filtered), "passes":document.get("passes",[]) if same_place else []}
 
 
 def earthquake_records(data, received):
@@ -128,4 +149,8 @@ def query(source, origin, radius_km=None, satellite="25544"):
             raise ValidationError("Earth provider unavailable (UNKNOWN). Verify Node 22+, connectivity and regional coverage.")
         document = json.loads(process.stdout)
         return select(document, origin, radius_km)
-    return select({"schema":"fic.earth-keypoints","version":1,"category":source,"records":rows},origin,radius_km)
+    feed = json.loads(ASSETS.joinpath("sources.json").read_text("utf-8"))["feeds"][source]
+    context = {key:feed[key] for key in ("description","coverage","limitations")}
+    return select({"schema":"fic.earth-keypoints","version":1,"category":source,
+                   "checked_at":datetime.now(timezone.utc).isoformat(),
+                   "records":[{**row, **context} for row in rows]},origin,radius_km)

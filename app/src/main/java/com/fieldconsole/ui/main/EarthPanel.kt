@@ -66,6 +66,16 @@ internal fun EarthPanel(geo: GeoContext, back: () -> Unit, home: () -> Unit) {
                         when (uri.host) {
                             "back" -> back()
                             "home" -> home()
+                            "share" -> view.evaluateJavascript("window.ficReviewed()") { json ->
+                                val text = runCatching { JSONTokener(json).nextValue() as? String }.getOrNull()
+                                if (text.isNullOrBlank() || text.length > 12000) fail()
+                                else {
+                                    val send = Intent(Intent.ACTION_SEND).setType("text/plain")
+                                        .putExtra(Intent.EXTRA_TEXT, text)
+                                    if (!MatrixHandoff.launch(context, Intent(send).setPackage(MatrixHandoff.CHATGPT)) &&
+                                        !MatrixHandoff.launch(context, Intent.createChooser(send, null))) fail()
+                                }
+                            }
                             "export" -> view.evaluateJavascript("window.ficExport()") { json ->
                                 val text = runCatching { JSONTokener(json).nextValue() as? String }.getOrNull()
                                 if (text.isNullOrEmpty() || text.length > 1024 * 1024) fail()
@@ -88,7 +98,9 @@ internal fun EarthPanel(geo: GeoContext, back: () -> Unit, home: () -> Unit) {
                 }
             }
             val lang = activity.resources.configuration.locales[0].language
-            loadUrl("https://fic-earth.invalid/index.html#lat=${geo.latitude}&lon=${geo.longitude}&lang=$lang")
+            val via = when { geo.saved -> "saved"; geo.manual -> "manual"; else -> "scan" }
+            val stamp = if (geo.measuredAt != "UNKNOWN") "&at=${Uri.encode(geo.measuredAt)}" else ""
+            loadUrl("https://fic-earth.invalid/index.html#lat=${geo.latitude}&lon=${geo.longitude}&lang=$lang&via=$via$stamp")
         }
     })
     DisposableEffect(Unit) { onDispose { web?.stopLoading(); web?.destroy() } }
