@@ -26,9 +26,17 @@ def _write(path, data):
 
 def parser():
     result = argparse.ArgumentParser(prog="fic", description="Offline FIC validation, conversion and saved-association search")
-    result.add_argument("--version", action="version", version="4.0.0b8.dev1")
+    result.add_argument("--version", action="version", version="4.0.0b9.dev1")
     commands = result.add_subparsers(dest="command", required=True)
     commands.add_parser("diagnostics", help="Check version and bundled schemas offline; never open user data")
+    earth = commands.add_parser("earth", help="Query public Earth records or filter a client export")
+    earth.add_argument("source", choices=["status","aviation","earthquakes","satellites","wildfires",
+                       "weather","warnings","transport","maritime","infrastructure","export"])
+    earth.add_argument("--satellite", choices=["25544","20580"], default="25544", help="ISS or Hubble catalog ID")
+    earth.add_argument("--coordinates", nargs=2, type=float, metavar=("LAT","LON"))
+    earth.add_argument("--radius-km", type=float)
+    earth.add_argument("--input", type=Path, help="Existing Earth client export")
+    earth.add_argument("--output", type=Path, help="Write a new JSON document")
     regional = commands.add_parser("emergency", help="Offline lookup for an explicitly selected country or place")
     place = regional.add_mutually_exclusive_group(required=True)
     place.add_argument("--country", help="Confirmed two-letter country code")
@@ -72,6 +80,24 @@ def main(argv=None):
                               "python": ".".join(map(str, sys.version_info[:3])),
                               "bundled_schemas": "PASS", "network": "not accessed",
                               "user_data": "not accessed"}))
+        elif args.command == "earth":
+            from . import earth
+            if args.source == "status":
+                result = json.loads(earth.ASSETS.joinpath("sources.json").read_text("utf-8"))
+            else:
+                if args.coordinates is None:
+                    raise ValidationError("Specify --coordinates LAT LON")
+                if args.source == "export":
+                    if args.input is None:
+                        raise ValidationError("Specify --input for an Earth export")
+                    result = earth.select(json_loads(_read(args.input)), args.coordinates, args.radius_km)
+                else:
+                    result = earth.query(args.source, args.coordinates, args.radius_km, args.satellite)
+            encoded = json.dumps(result, ensure_ascii=True, allow_nan=False)
+            if args.output:
+                _write(args.output, encoded.encode("utf-8"))
+            else:
+                print(encoded)
         elif args.command == "emergency":
             from .regional import emergency_services, interior_country
             code = args.country.strip().upper() if args.country else interior_country(*args.coordinates)

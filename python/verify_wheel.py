@@ -24,6 +24,9 @@ assert interior_country(44.43, 26.10) == 'RO'
 assert {row['number'] for row in emergency_services('RO')} == {'112'}
 assert emergency_services('ZZ') == []
 resource = resources.files('field_intelligence_console')
+from field_intelligence_console import earth
+assert len(earth.query("aviation", (0,0))["records"]) == 20
+assert earth.ASSETS.joinpath("core.js").is_file() and earth.ASSETS.joinpath("gpu.js").is_file()
 data = resource.joinpath('fixtures', 'contacts.vcf').read_bytes()
 preview = fic.parse_import(data, 'vcf')
 assert preview.valid_count == 2 and preview.invalid_count == 0
@@ -44,7 +47,7 @@ with fic.Store('synthetic.sqlite') as store:
     store.save_report(report)
     assert store.get_report(report['id']) == report
     assert 'network' not in fic.ai_packet(report)
-assert metadata.version('field-intelligence-console') == '4.0.0b8.dev1'
+assert metadata.version('field-intelligence-console') == '4.0.0b9.dev1'
 for case in json.loads(resource.joinpath('fixtures','invalid-contracts.json').read_text('utf-8'))['cases']:
     document=json.loads(resource.joinpath('fixtures',case['fixture']).read_text('utf-8'))
     target=document

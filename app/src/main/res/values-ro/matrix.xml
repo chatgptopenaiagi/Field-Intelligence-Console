@@ -8,6 +8,8 @@
     <string name="action_financial">FINANȚE</string>
     <string name="action_emergency">URGENȚĂ</string>
     <string name="google_earth">GOOGLE EARTH</string>
+    <string name="world_intelligence">INTELIGENȚĂ GLOBALĂ</string>
+    <string name="earth_operation_failed">Acțiunea nu a putut fi efectuată.</string>
     <string name="open_source">Deschide sursa în browser</string>
     <string name="review_ai">Verifică solicitarea IA</string>
     <string name="share_review">Verificați locația și observația înainte de partajare.</string>

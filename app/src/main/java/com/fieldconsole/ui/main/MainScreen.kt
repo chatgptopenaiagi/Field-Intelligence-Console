@@ -319,6 +319,11 @@ private fun ActionMatrixContent(
     var review by androidx.compose.runtime.saveable.rememberSaveable(entry.id) { mutableStateOf<String?>(null) }
     var options by androidx.compose.runtime.saveable.rememberSaveable(entry.id) { mutableStateOf<String?>(null) }
     var earthFallback by androidx.compose.runtime.saveable.rememberSaveable(entry.id) { mutableStateOf(false) }
+    var world by androidx.compose.runtime.saveable.rememberSaveable(entry.id) { mutableStateOf(false) }
+    if (world) {
+        EarthPanel(geo, back = { world = false }, home = { world = false; onBack() })
+        return
+    }
     val warn = stringResource(R.string.no_receiver)
     fun unavailable() = android.widget.Toast.makeText(context, warn, android.widget.Toast.LENGTH_LONG).show()
     val offline = stringResource(R.string.offline_web)
@@ -419,7 +424,8 @@ private fun ActionMatrixContent(
             Triple("LOGISTICS",      Icons.Default.LocalShipping,         ColorLogistics),
             Triple("FINANCIAL",      Icons.Default.Business,              ColorFinancial),
             Triple("EMERGENCY EXIT", Icons.AutoMirrored.Filled.ExitToApp, ColorEmergency),
-            Triple("GOOGLE EARTH", Icons.Default.Public, Color(0xFF103A75))
+            Triple("GOOGLE EARTH", Icons.Default.Public, Color(0xFF103A75)),
+            Triple("WORLD INTELLIGENCE", Icons.Default.Language, Color(0xFF185858))
         )
 
         buttons.chunked(2).forEach { row ->
@@ -434,6 +440,7 @@ private fun ActionMatrixContent(
                         color   = color,
                         onClick = {
                             when (label) {
+                                "WORLD INTELLIGENCE" -> world = true
                                 "GOOGLE EARTH" -> if (!geo.validCoordinates) unavailable() else earthFallback = !MatrixHandoff.openEarth(context, geo)
                                 "AI ANALYSIS" -> review = label
                                 "INFO SCAN", "HISTORY", "RISK / SAFETY", "FINANCIAL" -> options = label
@@ -542,5 +549,6 @@ private fun matrixLabel(key: String): String = when (key) {
     "FINANCIAL" -> stringResource(R.string.action_financial)
     "EMERGENCY EXIT" -> stringResource(R.string.action_emergency)
     "GOOGLE EARTH" -> stringResource(R.string.google_earth)
+    "WORLD INTELLIGENCE" -> stringResource(R.string.world_intelligence)
     else -> key
 }

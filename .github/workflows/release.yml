@@ -12,7 +12,7 @@ on:
         type: boolean
         default: false
   push:
-    tags: ["v*-beta.*"]
+    tags: ["v*-beta.*", "!v*-beta.*.dev*"]
 permissions:
   contents: read
 concurrency:

@@ -52,6 +52,11 @@ def run_checks(args):
                 receipt["runtime"].update(tcl=str(root.tk.call("info", "patchlevel")), tk=str(root.tk.call("package", "require", "Tk")))
                 app = Workstation(root, args.profile)
                 root.update()
+                with patch.dict(app.place, latitude=48.25, longitude=16.125), patch("fic_windows.webbrowser.open", return_value=True) as opened:
+                    app.earth_button.invoke()
+                    uri = opened.call_args.args[0]
+                    check("World Intelligence button transfers selected coordinates to the packaged renderer",
+                          uri.startswith("file:") and uri.endswith("index.html#lat=48.25&lon=16.125&lang=en"))
                 with patch("tkinter.simpledialog.askstring", return_value="RO"), patch("fic_windows.messagebox.showinfo") as panel:
                     app.show_country_numbers()
                     details = panel.call_args.args[1]

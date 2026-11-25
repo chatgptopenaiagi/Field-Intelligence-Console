@@ -1,0 +1,522 @@
+[
+  {
+    "id": "nhc:AF304:2023-08-29T01:04:00Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.7,
+    "longitude": -85.75,
+    "observed_at": "2023-08-29T01:04:00Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3122,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:04:30Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.666666666666668,
+    "longitude": -85.75,
+    "observed_at": "2023-08-29T01:04:30Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3123,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:05:00Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.633333333333333,
+    "longitude": -85.73333333333333,
+    "observed_at": "2023-08-29T01:05:00Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3122,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:05:30Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.6,
+    "longitude": -85.73333333333333,
+    "observed_at": "2023-08-29T01:05:30Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3127,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:06:00Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.566666666666666,
+    "longitude": -85.73333333333333,
+    "observed_at": "2023-08-29T01:06:00Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3122,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:06:30Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.533333333333335,
+    "longitude": -85.73333333333333,
+    "observed_at": "2023-08-29T01:06:30Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3123,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:07:00Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.5,
+    "longitude": -85.73333333333333,
+    "observed_at": "2023-08-29T01:07:00Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3125,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:07:30Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.466666666666665,
+    "longitude": -85.73333333333333,
+    "observed_at": "2023-08-29T01:07:30Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3124,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:08:00Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.433333333333334,
+    "longitude": -85.73333333333333,
+    "observed_at": "2023-08-29T01:08:00Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3126,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:08:30Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.4,
+    "longitude": -85.73333333333333,
+    "observed_at": "2023-08-29T01:08:30Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3126,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:09:00Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.366666666666667,
+    "longitude": -85.71666666666667,
+    "observed_at": "2023-08-29T01:09:00Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3129,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:09:30Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.333333333333332,
+    "longitude": -85.71666666666667,
+    "observed_at": "2023-08-29T01:09:30Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3130,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:10:00Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.3,
+    "longitude": -85.71666666666667,
+    "observed_at": "2023-08-29T01:10:00Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3130,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:10:30Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.266666666666666,
+    "longitude": -85.71666666666667,
+    "observed_at": "2023-08-29T01:10:30Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3130,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:11:00Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.233333333333334,
+    "longitude": -85.71666666666667,
+    "observed_at": "2023-08-29T01:11:00Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3134,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:11:30Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.2,
+    "longitude": -85.71666666666667,
+    "observed_at": "2023-08-29T01:11:30Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3134,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:12:00Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.166666666666668,
+    "longitude": -85.71666666666667,
+    "observed_at": "2023-08-29T01:12:00Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3131,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:12:30Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.133333333333333,
+    "longitude": -85.7,
+    "observed_at": "2023-08-29T01:12:30Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3134,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:13:00Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.1,
+    "longitude": -85.7,
+    "observed_at": "2023-08-29T01:13:00Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3134,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  },
+  {
+    "id": "nhc:AF304:2023-08-29T01:13:30Z",
+    "category": "aviation",
+    "label": "AF304 · Idalia weather flight",
+    "latitude": 21.066666666666666,
+    "longitude": -85.7,
+    "observed_at": "2023-08-29T01:13:30Z",
+    "retrieved_at": "2026-11-25T06:17:22+00:00",
+    "provider": "NOAA National Hurricane Center",
+    "source": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+    "kind": "HISTORICAL",
+    "verification": "provider-reported",
+    "measurements": {
+      "geopotential_height": {
+        "value": 3137,
+        "unit": "m"
+      }
+    },
+    "metadata": {
+      "mission": "0910A IDALIA",
+      "aircraft": "AF304",
+      "speed": null,
+      "heading": null
+    },
+    "freshness": "historical"
+  }
+]

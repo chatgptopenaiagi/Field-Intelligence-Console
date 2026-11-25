@@ -8,6 +8,8 @@
     <string name="action_financial">FINANCIAL</string>
     <string name="action_emergency">EMERGENCY EXIT</string>
     <string name="google_earth">GOOGLE EARTH</string>
+    <string name="world_intelligence">WORLD INTELLIGENCE</string>
+    <string name="earth_operation_failed">Unable to complete this action.</string>
     <string name="open_source">Open source in browser</string>
     <string name="review_ai">Review AI request</string>
     <string name="share_review">Review the location and observation below before sharing.</string>

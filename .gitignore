@@ -11,6 +11,7 @@ local.properties
 .DS_Store
 Thumbs.db
 .local/
+tooling/earth-client/node_modules/
 .venv*/
 **/__pycache__/
 **/*.egg-info/

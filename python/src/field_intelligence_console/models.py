@@ -8,7 +8,7 @@ import re
 from uuid import uuid4
 from jsonschema import Draft202012Validator, FormatChecker
 
-APP_VERSION = "4.0.0-beta.8.dev1"
+APP_VERSION = "4.0.0-beta.9.dev1"
 MAX_BYTES = 5 * 1024 * 1024
 MAX_RECORDS = 5000
 FORMATS = FormatChecker()

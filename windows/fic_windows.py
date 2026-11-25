@@ -18,7 +18,7 @@ from field_intelligence_console import (
     parse_import, query_network, validate_report, now_iso,
 )
 
-VERSION = "4.0.0-beta.8.dev1"
+VERSION = "4.0.0-beta.9.dev1"
 MAX_BYTES = 5 * 1024 * 1024
 SCOPES = ("street", "radius", "neighborhood", "city", "region", "country", "building")
 ADDRESS_FIELDS = ("street", "neighborhood", "locality", "region", "postal_code", "country")
@@ -614,6 +614,7 @@ class Workstation:
         self.button(bar, "Emergency numbers", lambda: self.guard("Emergency numbers", self.show_country_numbers))
         self.save_place_button = self.button(bar, "Use this manual place", lambda: self.guard("Place", self.save_place))
         self.button(bar, "Open map for saved point", self.open_map)
+        self.earth_button = self.button(bar, "World Intelligence", lambda: self.guard("World Intelligence", self.open_earth_engine))
         ttk.Label(self.place_tab, text="Street/neighborhood text matches require locality and country context. Missing evidence is unavailable, not zero people. Radius means distance to a qualified saved point, not walking distance or current whereabouts. External geocoding is OFF; no imported address is transmitted.", wraplength=950).pack(anchor="w")
 
     def save_place(self):
@@ -649,6 +650,13 @@ class Workstation:
         rows = emergency_services(country)
         text = "\n\n".join(f"{r['category']} · {r['number']}\n{r['verified']} · {r['source']}" for r in rows)
         messagebox.showinfo("Emergency numbers", text or "EMERGENCY NUMBER NOT VERIFIED", parent=self.root)
+
+    def open_earth_engine(self):
+        from field_intelligence_console.earth import client_url
+        url = client_url(self.place.get("latitude"), self.place.get("longitude"))
+        if not webbrowser.open(url, new=1):
+            raise ValueError("Unable to open the Earth panel in the default browser.")
+        self.status.set("World Intelligence opened for the selected place.")
 
     def open_map(self):
         lat, lon = self.place.get("latitude"), self.place.get("longitude")

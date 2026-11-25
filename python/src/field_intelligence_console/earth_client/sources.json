@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "upstream_revision": "1d92040d6eaa9dbdd2363608d27e228b4b8ce273",
+  "key_required": false,
+  "feeds": {
+    "earthquakes": {
+      "provider": "USGS",
+      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
+      "access": "on-demand"
+    },
+    "aviation": {
+      "provider": "NOAA National Hurricane Center",
+      "url": "https://www.nhc.noaa.gov/archive/recon/2023/AHONT1/AHONT1-KNHC.202308290125.txt",
+      "access": "bundled"
+    },
+    "satellites": {
+      "provider": "CelesTrak",
+      "url": "https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE",
+      "access": "on-demand"
+    },
+    "weather": {
+      "provider": "Open-Meteo",
+      "url": "https://api.open-meteo.com/v1/forecast",
+      "access": "on-demand"
+    },
+    "wildfires": {
+      "provider": "NASA EONET",
+      "url": "https://eonet.gsfc.nasa.gov/api/v3/events?category=wildfires&status=open&limit=40",
+      "access": "on-demand"
+    },
+    "transport": {
+      "provider": "Citi Bike GBFS",
+      "url": "https://gbfs.citibikenyc.com/gbfs/en/station_information.json",
+      "access": "on-demand"
+    },
+    "infrastructure": {
+      "provider": "NOAA NDBC",
+      "url": "https://www.ndbc.noaa.gov/station_page.php?station=46042",
+      "access": "bundled"
+    },
+    "maritime": {
+      "provider": "Schmithüsen (2021), AWI / PANGAEA · CC BY 4.0",
+      "url": "https://doi.org/10.1594/PANGAEA.935218",
+      "access": "bundled"
+    },
+    "warnings": {
+      "provider": "US National Weather Service",
+      "url": "https://api.weather.gov/alerts/active",
+      "access": "on-demand"
+    }
+  },
+  "headless_queries": {
+    "python": [
+      "aviation",
+      "earthquakes"
+    ],
+    "optional_node_22": [
+      "infrastructure",
+      "maritime",
+      "satellites",
+      "transport",
+      "warnings",
+      "weather",
+      "wildfires"
+    ]
+  },
+  "importable": "fic.earth-keypoints v1"
+}

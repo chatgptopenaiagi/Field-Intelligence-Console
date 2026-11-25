@@ -8,6 +8,8 @@
     <string name="action_financial">FINANZEN</string>
     <string name="action_emergency">NOTFALL</string>
     <string name="google_earth">GOOGLE EARTH</string>
+    <string name="world_intelligence">WELTINFORMATIONEN</string>
+    <string name="earth_operation_failed">Die Aktion konnte nicht abgeschlossen werden.</string>
     <string name="open_source">Quelle im Browser öffnen</string>
     <string name="review_ai">KI-Anfrage prüfen</string>
     <string name="share_review">Prüfen Sie Standort und Beobachtung vor der Weitergabe.</string>

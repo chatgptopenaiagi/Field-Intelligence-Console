@@ -1,0 +1,7 @@
+{
+  "name": "fic-earth-client",
+  "private": true,
+  "scripts": {"build": "node build.mjs"},
+  "dependencies": {"@cesium/engine": "22.3.0", "satellite.js": "6.0.2"},
+  "devDependencies": {"esbuild": "0.25.12"}
+}
