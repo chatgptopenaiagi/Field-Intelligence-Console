@@ -1,5 +1,9 @@
 # Changelog
 
+## Testing prerelease · 4.0.0-beta.11.dev1
+
+AI Analysis adds a local RO/DE/EN catalog of 35 questions, an editable preview, explicit location disclosure and selection of individual Earth results. The Windows workstation and headless Python library share the catalog. The signed beta10-to-beta11 update preserved all synthetic records and regional preferences on API 34. [Mission 006 verification and limitations](docs/mission/MISSION_006.md)
+
 ## 4.0.0-beta.10.dev1 · Cognitive Experience Engine
 
 WORLD INTELLIGENCE now offers in-app exploration and a separate original-source action for the selected topic. The USGS view supports magnitude, time and distance filters. The forecast chart uses hourly Celsius values. Satellite cards show the element epoch, orbit track, geometric pass times and peak sampled elevation. Earth results carry coverage and limitations through JSON export. Android can share one reviewed result. Windows can copy the reviewed text. A lost WebGL context switches the view to a labelled interactive 2D map.

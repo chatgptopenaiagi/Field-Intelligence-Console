@@ -1,3 +1,7 @@
+# Resume after Mission 006
+
+The verified source is `cc2df9c69c8dfe2595be642f5573bdc5d6034462`, tagged `v4.0.0-beta.11.dev1`. Check `git status -sb`, `git rev-parse 'v4.0.0-beta.11.dev1^{commit}'` and `gh release view v4.0.0-beta.11.dev1`. Recover exact packages using `gh release download v4.0.0-beta.11.dev1 --dir .local/evidence/mission006/vivo-download` in a fresh directory. Verify SHA256SUMS.txt. Continue with section 15 of the report on a compatible physical Vivo. [Mission 006](MISSION_006.md) · [Package and test receipts](evidence/mission-006/verification.json)
+
 # Mission 005 · physical handset verification
 
 Recover `v4.0.0-beta.10.dev1` in the existing private repository. Compare its APK to `SHA256SUMS.txt`, preserve the existing beta8/beta9 test installation and use synthetic observations on the Vivo. Check touch rotation, 2D recovery, forecast rendering, cold restart, Google Earth destination and reviewed ChatGPT text. The candidate's raw local receipts are in `.local/evidence/mission005/candidate/`. [Exact starting point and procedure](MISSION_005.md#15-next-codex-recovery-point) · [Verified packages](evidence/mission-005/verification.json)

@@ -1,3 +1,7 @@
+# Mission 006 evidence
+
+The sanitized receipt records product SHA, three CI URLs, package SHA-256, catalog and synthetic prompt parity, direct upgrade table digests, measured timings and open hardware checks. Local execution evidence lives in the ignored `.local/evidence/mission006/final/`. [Package and test receipts](evidence/mission-006/verification.json) · [Published asset readback](evidence/mission-006/distribution.json) · [Mission 006](MISSION_006.md)
+
 # Mission 005
 
 [Acceptance tests, measurements and engineering history](MISSION_005.md) · [Sanitized platform receipts, provenance and published package hashes](evidence/mission-005/verification.json)

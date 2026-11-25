@@ -1,3 +1,7 @@
+# Mission 006 status · 25 November 2026
+
+Beta11 dev1 is a private testing prerelease. Android API 34 in-place upgrade, synthetic receiving activity, Windows packaged UI, wheel install and source/package catalog parity passed. Vivo and the official ChatGPT composer remain pending. [Mission 006](MISSION_006.md) · [Private testing release](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.11.dev1)
+
 # Mission 005 · beta10 dev1 development testing
 
 The existing private repository distributes Android code 13, the Windows x64 EXE and the Python wheel from `43175c2fd97988c6095a1bff10060a860c34da13`. The emulator, packaged workstation, installed wheel and v1 exchange were tested. Vivo hardware, thermal behavior and official third-party receivers remain open. [Mission 005 report](MISSION_005.md) · [Execution and distribution evidence](evidence/mission-005/verification.json)

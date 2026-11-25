@@ -1,0 +1,46 @@
+{
+  "repository": "chatgptopenaiagi/Field-Intelligence-Console",
+  "visibility": "PRIVATE",
+  "source": "cc2df9c69c8dfe2595be642f5573bdc5d6034462",
+  "tag": "v4.0.0-beta.11.dev1",
+  "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.11.dev1",
+  "draft": false,
+  "prerelease": true,
+  "published_readback_verified": true,
+  "older_remote_tags_preserved": true,
+  "beta10_release_digests_preserved": true,
+  "assets": {
+    "CHANGELOG.md": {
+      "sha256": "40f5395ce2c07a2e08b57ae33eda060a25355522d6810539aab86c15296bb211",
+      "bytes": 434
+    },
+    "FieldIntelligenceConsole-4.0.0-beta.11.dev1-android-test.apk": {
+      "sha256": "e35e21590eacea54ebea45120e210b401ccd2b2c43dc918d9aee1c0041c0043d",
+      "bytes": 61673441
+    },
+    "FieldIntelligenceConsole-4.0.0-beta.11.dev1-windows-x64.exe": {
+      "sha256": "063bab0ea85b8d5bd999baa5df4c8034db12dddbb35f6780b3968e2e97e74903",
+      "bytes": 16474725
+    },
+    "field_intelligence_console-4.0.0b11.dev1-py3-none-any.whl": {
+      "sha256": "dfd0368521ee31a9141071d4bca6c1d6e4912724177aefdfb9959d311c1e9564",
+      "bytes": 287926
+    },
+    "INSTALLATION.md": {
+      "sha256": "deda5a70e0114324b6246f0da036265c1ee9eeae14d337f76db19a41ed8eaf60",
+      "bytes": 1320
+    },
+    "RELEASE_NOTES.md": {
+      "sha256": "a5f7bb3e18857ec79eccefb56469b3eec94c446a8fdb01808a378ea47041b9c2",
+      "bytes": 757
+    },
+    "SHA256SUMS.txt": {
+      "sha256": "ce2a82f8599a00e85597e3b5329477b8bfefe2ead4052e6212e2ae294655c8c0",
+      "bytes": 710
+    },
+    "VERIFICATION_REPORT.md": {
+      "sha256": "2ea1b4a13d3dab3e0f7ee47eb09b69867436734fe54907699894252a00a41e6a",
+      "bytes": 10685
+    }
+  }
+}

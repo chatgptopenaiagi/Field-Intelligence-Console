@@ -1,0 +1,303 @@
+{
+  "version": "4.0.0-beta.11.dev1",
+  "source": "cc2df9c69c8dfe2595be642f5573bdc5d6034462",
+  "branch": "v4-development",
+  "baseline_product": "43175c2fd97988c6095a1bff10060a860c34da13",
+  "baseline_handoff": "1a3c659048d3807b3e803936cb4f5cd07368185e",
+  "assets": [
+    {
+      "name": "FieldIntelligenceConsole-4.0.0-beta.11.dev1-android-test.apk",
+      "bytes": 61673441,
+      "sha256": "e35e21590eacea54ebea45120e210b401ccd2b2c43dc918d9aee1c0041c0043d"
+    },
+    {
+      "name": "FieldIntelligenceConsole-4.0.0-beta.11.dev1-windows-x64.exe",
+      "bytes": 16474725,
+      "sha256": "063bab0ea85b8d5bd999baa5df4c8034db12dddbb35f6780b3968e2e97e74903"
+    },
+    {
+      "name": "field_intelligence_console-4.0.0b11.dev1-py3-none-any.whl",
+      "bytes": 287926,
+      "sha256": "dfd0368521ee31a9141071d4bca6c1d6e4912724177aefdfb9959d311c1e9564"
+    }
+  ],
+  "ci": [
+    {
+      "conclusion": "success",
+      "databaseId": 45579323635,
+      "headSha": "cc2df9c69c8dfe2595be642f5573bdc5d6034462",
+      "status": "completed",
+      "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45579323635",
+      "workflowName": "Python core"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45579323531,
+      "headSha": "cc2df9c69c8dfe2595be642f5573bdc5d6034462",
+      "status": "completed",
+      "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45579323531",
+      "workflowName": "Windows workstation"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45579323614,
+      "headSha": "cc2df9c69c8dfe2595be642f5573bdc5d6034462",
+      "status": "completed",
+      "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45579323614",
+      "workflowName": "Android"
+    }
+  ],
+  "catalog": {
+    "questions": 35,
+    "categories": 7,
+    "question_translations": 105,
+    "shared_asset_sha256": "1d486af9340ff668382205d9850c82b9dec8065db3914f45d6b74a689e672f80",
+    "identical_assets": 13,
+    "q08_synthetic_prompt_sha256": {
+      "ro": "ec3b58a92d131fe4787310896d1ad635ce7a5b8359d86d695ce7bb95ca59fdc6",
+      "de": "b084a1fb2db3596d5b3362510ad91f595d2a0fade38d23f432ff7d40ccaafed7",
+      "en": "9147146b2983673651d182cb9fcaa0c350d6951070326f5bbb77ddb9bf20bdea"
+    }
+  },
+  "android": {
+    "package": "com.fieldconsole.debug",
+    "version_code": 14,
+    "signer_sha256": "d8c8505ace1420fa6bb6e5022efbc37175a691c3d818d5d714a88ed2ca7c8731",
+    "emulator": "API 34 x86_64",
+    "instrumented": 11,
+    "unit": [
+      {
+        "skipped": 0,
+        "tests": 102,
+        "status": "PASS",
+        "variant": "Debug",
+        "errors": 0,
+        "failures": 0
+      },
+      {
+        "skipped": 0,
+        "tests": 102,
+        "status": "PASS",
+        "variant": "Release",
+        "errors": 0,
+        "failures": 0
+      }
+    ],
+    "lint": [
+      {
+        "status": "PASS",
+        "warning_ids": [
+          "AndroidGradlePluginVersion",
+          "AppBundleLocaleChanges",
+          "OldTargetApi",
+          "PluralsCandidate",
+          "UnusedAttribute"
+        ],
+        "warnings": 7,
+        "errors": 0,
+        "variant": "Debug"
+      },
+      {
+        "status": "PASS",
+        "warning_ids": [
+          "AndroidGradlePluginVersion",
+          "AppBundleLocaleChanges",
+          "OldTargetApi",
+          "PluralsCandidate",
+          "UnusedAttribute"
+        ],
+        "warnings": 6,
+        "errors": 0,
+        "variant": "Release"
+      }
+    ],
+    "scan_open_matrix_world_back": "PASS",
+    "matrix": {
+      "INFO SCAN": "Source and review actions visible",
+      "HISTORY": "Source and review actions visible",
+      "RISK / SAFETY": "Source and review actions visible",
+      "FINANCIAL": "Source and review actions visible",
+      "NAVIGATION": "org.chromium.webview_shell",
+      "LOGISTICS": "org.chromium.webview_shell",
+      "EMERGENCY EXIT": "Offline emergency screen visible",
+      "GOOGLE EARTH": "Fallback choices visible",
+      "official_receiver": "Absent; user-visible copy fallback",
+      "return_from_background": "Same preview visible after returning",
+      "privacy": "Changing exact to none removed generated coordinate fields"
+    },
+    "earth_single_result": {
+      "single_historical_record": true,
+      "provider_and_dates": true,
+      "coordinates_excluded": true,
+      "network_submission": false
+    },
+    "ui_languages": {
+      "ro": {
+        "Q30_question": true,
+        "target_language_confirmation": true,
+        "system_locale_unchanged": true
+      },
+      "de": {
+        "Q30_question": true,
+        "target_language_confirmation": true,
+        "system_locale_unchanged": true
+      }
+    },
+    "direct_upgrade": {
+      "versions": [
+        13,
+        14
+      ],
+      "beta10": "9fa8bd7a20930ba237a2b57a6bbea7c5a39ae694a060c35d1d4ad1685edb577d",
+      "installed_beta11": "e35e21590eacea54ebea45120e210b401ccd2b2c43dc918d9aee1c0041c0043d",
+      "before": {
+        "tables": {
+          "field_entries": {
+            "count": 16,
+            "sha256": "8b07440052323f76efa89ce1962ef9322eb051ade28ce38396d216c20011a44b"
+          },
+          "weather_cache": {
+            "count": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "emergency_services": {
+            "count": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "network_entities": {
+            "count": 2,
+            "sha256": "eb804d4a1429e44f758b58fed951f5039a773ad00654ad382d964f4a4adbf3fb"
+          },
+          "exchange_reports": {
+            "count": 1,
+            "sha256": "7095271360eab81dcd159c0da14bc4ac10ef6dab318577c44d4e6eb5d2867ce4"
+          }
+        },
+        "regional_sha256": "4c677c632220da5594581a1bf8762397eac3745a4d068c3198dbbd66e9caf45f"
+      },
+      "after": {
+        "tables": {
+          "field_entries": {
+            "count": 16,
+            "sha256": "8b07440052323f76efa89ce1962ef9322eb051ade28ce38396d216c20011a44b"
+          },
+          "weather_cache": {
+            "count": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "emergency_services": {
+            "count": 0,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "network_entities": {
+            "count": 2,
+            "sha256": "eb804d4a1429e44f758b58fed951f5039a773ad00654ad382d964f4a4adbf3fb"
+          },
+          "exchange_reports": {
+            "count": 1,
+            "sha256": "7095271360eab81dcd159c0da14bc4ac10ef6dab318577c44d4e6eb5d2867ce4"
+          }
+        },
+        "regional_sha256": "4c677c632220da5594581a1bf8762397eac3745a4d068c3198dbbd66e9caf45f"
+      }
+    }
+  },
+  "windows": {
+    "focused": 14,
+    "widgets": 34,
+    "native": 7,
+    "downloaded_exe_self_checks": 8,
+    "pe_metadata": {
+      "machine": "AMD64",
+      "subsystem": "Windows GUI",
+      "file_version": "4.0.0.11",
+      "product_version": "4.0.0-beta.11.dev1",
+      "python": "3.14.7",
+      "packager": "PyInstaller 6.22.3",
+      "bytes": 16474725,
+      "sha256": "063bab0ea85b8d5bd999baa5df4c8034db12dddbb35f6780b3968e2e97e74903"
+    }
+  },
+  "python": {
+    "isolated_install_checks": 6,
+    "unit_on_installed_wheel": 56,
+    "hosted_unit": 56
+  },
+  "performance": {
+    "android_beta10": {
+      "cold_activity_ms": [
+        2428,
+        2840,
+        2646
+      ],
+      "total_pss_home_kib": 94269,
+      "tap_to_uiautomator_snapshot_ms": 2628,
+      "total_pss_ai_kib": 102642
+    },
+    "android_beta11": {
+      "cold_activity_ms": [
+        2955,
+        2761,
+        2336
+      ],
+      "total_pss_home_kib": 94245,
+      "tap_to_uiautomator_snapshot_ms": 2717,
+      "total_pss_ai_kib": 102924
+    },
+    "windows": [
+      {
+        "binary": "FieldIntelligenceConsole-4.0.0-beta.10.dev1-windows-x64",
+        "trial": 1,
+        "window_title_ms": 2976,
+        "renderer_working_set_bytes": 50864128
+      },
+      {
+        "binary": "FieldIntelligenceConsole-4.0.0-beta.11.dev1-windows-x64",
+        "trial": 1,
+        "window_title_ms": 2282,
+        "renderer_working_set_bytes": 50634752
+      },
+      {
+        "binary": "FieldIntelligenceConsole-4.0.0-beta.10.dev1-windows-x64",
+        "trial": 2,
+        "window_title_ms": 2187,
+        "renderer_working_set_bytes": 50724864
+      },
+      {
+        "binary": "FieldIntelligenceConsole-4.0.0-beta.11.dev1-windows-x64",
+        "trial": 2,
+        "window_title_ms": 2769,
+        "renderer_working_set_bytes": 50864128
+      },
+      {
+        "binary": "FieldIntelligenceConsole-4.0.0-beta.10.dev1-windows-x64",
+        "trial": 3,
+        "window_title_ms": 2902,
+        "renderer_working_set_bytes": 50749440
+      },
+      {
+        "binary": "FieldIntelligenceConsole-4.0.0-beta.11.dev1-windows-x64",
+        "trial": 3,
+        "window_title_ms": 2413,
+        "renderer_working_set_bytes": 50450432
+      }
+    ],
+    "python_wheel": {
+      "uncached_catalog_ms": {
+        "median": 0.492,
+        "iterations": 100
+      },
+      "compose_ms": {
+        "median": 0.0189,
+        "iterations": 1000
+      }
+    }
+  },
+  "limitations": [
+    "Physical Vivo testing pending",
+    "Official ChatGPT receiving composer unverified",
+    "Native Google Earth destination unverified",
+    "Windows browser URL contract tested with a browser test double",
+    "Synthetic data only"
+  ]
+}

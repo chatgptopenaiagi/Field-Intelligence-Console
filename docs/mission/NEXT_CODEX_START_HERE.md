@@ -1,3 +1,7 @@
+# Mission 006 · Human Context Intelligence
+
+Start at the beta11 dev1 product commit `cc2df9c69c8dfe2595be642f5573bdc5d6034462` on `v4-development`. The private testing release includes the Android APK, Windows EXE, Python wheel, installation notes and checksum file. Review the direct beta10 upgrade receipt and use the Vivo procedure in section 15 of the mission report. The remaining checks require a physical phone and the receiving apps. [Mission 006](MISSION_006.md) · [Package and test receipts](evidence/mission-006/verification.json) · [Private testing release](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.11.dev1)
+
 # Mission 005 · Cognitive Experience Engine
 
 Start with the private beta10 dev1 testing release from `43175c2fd97988c6095a1bff10060a860c34da13`. The product includes in-app source exploration and Android 2D recovery after WebView renderer loss. Continue with the physical Vivo upgrade and receiving-app checks. [Mission, installation and recovery](MISSION_005.md) · [Package hashes and execution receipts](evidence/mission-005/verification.json)
