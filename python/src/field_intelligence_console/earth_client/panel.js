@@ -121,4 +121,6 @@ $('mode').textContent='2D';$('mode').onclick=()=>{if(map)$('mode').textContent=m
 $('center').ariaLabel=tr('Recenter','Zentrieren','Recentrează');$('center').onclick=()=>map?.center(origin);
 $('refresh').onclick=refresh;topics.onchange=reset;$('satellite').onchange=reset;$('range').onchange=()=>{if(loaded)render();};
 window.addEventListener('pagehide',()=>request?.abort());
+// A browser can reuse this document for a new workstation selection.
+window.addEventListener('hashchange',()=>location.reload());
 reset();setPlace(params.get('lat'),params.get('lon'));
