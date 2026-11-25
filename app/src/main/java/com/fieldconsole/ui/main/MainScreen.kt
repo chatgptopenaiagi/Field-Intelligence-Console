@@ -320,8 +320,15 @@ private fun ActionMatrixContent(
     var options by androidx.compose.runtime.saveable.rememberSaveable(entry.id) { mutableStateOf<String?>(null) }
     var earthFallback by androidx.compose.runtime.saveable.rememberSaveable(entry.id) { mutableStateOf(false) }
     var world by androidx.compose.runtime.saveable.rememberSaveable(entry.id) { mutableStateOf(false) }
+    var excerpt by androidx.compose.runtime.saveable.rememberSaveable(entry.id) { mutableStateOf("") }
     if (world) {
-        EarthPanel(geo, back = { world = false }, home = { world = false; onBack() })
+        EarthPanel(geo, back = { world = false }, home = { world = false; onBack() }, analyze = {
+            excerpt = it; world = false; review = "AI ANALYSIS"
+        })
+        return
+    }
+    if (review == "AI ANALYSIS") {
+        HumanAnalysis(geo, excerpt, entry.note, close = { review = null; excerpt = "" }, emergency = onEmergency)
         return
     }
     val warn = stringResource(R.string.no_receiver)

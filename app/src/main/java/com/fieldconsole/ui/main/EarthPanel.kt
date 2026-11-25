@@ -39,7 +39,7 @@ private val sourceHosts = setOf("earthquake.usgs.gov", "celestrak.org", "www.nhc
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-internal fun EarthPanel(geo: GeoContext, back: () -> Unit, home: () -> Unit) {
+internal fun EarthPanel(geo: GeoContext, back: () -> Unit, home: () -> Unit, analyze: (String) -> Unit = {}) {
     val context = LocalContext.current
     var rendererGone by rememberSaveable { mutableStateOf(false) }
     var flatOnly by rememberSaveable { mutableStateOf(false) }
@@ -87,6 +87,10 @@ internal fun EarthPanel(geo: GeoContext, back: () -> Unit, home: () -> Unit) {
                         when (uri.host) {
                             "back" -> back()
                             "home" -> home()
+                            "question" -> view.evaluateJavascript("window.ficQuestionExcerpt()") { json ->
+                                val text = runCatching { JSONTokener(json).nextValue() as? String }.getOrNull()
+                                if (text.isNullOrBlank() || text.length > 12000) fail() else analyze(text)
+                            }
                             "share" -> view.evaluateJavascript("window.ficReviewed()") { json ->
                                 val text = runCatching { JSONTokener(json).nextValue() as? String }.getOrNull()
                                 if (text.isNullOrBlank() || text.length > 12000) fail()

@@ -47,7 +47,10 @@ with fic.Store('synthetic.sqlite') as store:
     store.save_report(report)
     assert store.get_report(report['id']) == report
     assert 'network' not in fic.ai_packet(report)
-assert metadata.version('field-intelligence-console') == '4.0.0b10.dev1'
+assert metadata.version('field-intelligence-console') == '4.0.0b11.dev1'
+from field_intelligence_console import human_context as hc
+assert len(hc.questions()) == 35 and len(hc.categories()) == 7
+assert all(q['question'][lang] in hc.compose(q['id'], lang) for q in hc.questions() for lang in hc.LANGUAGES)
 for case in json.loads(resource.joinpath('fixtures','invalid-contracts.json').read_text('utf-8'))['cases']:
     document=json.loads(resource.joinpath('fixtures',case['fixture']).read_text('utf-8'))
     target=document

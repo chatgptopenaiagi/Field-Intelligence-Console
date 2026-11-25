@@ -52,6 +52,29 @@ def run_checks(args):
                 receipt["runtime"].update(tcl=str(root.tk.call("info", "patchlevel")), tk=str(root.tk.call("package", "require", "Tk")))
                 app = Workstation(root, args.profile)
                 root.update()
+                with patch("webbrowser.open", return_value=True) as browser:
+                    app.analysis_button.invoke()
+                    dialog = app.analysis
+                    dialog.browse()
+                    box = next(w for w in dialog.frame.winfo_children() if isinstance(w, tk.Listbox))
+                    box.selection_set(15)
+                    box.event_generate("<Return>")
+                    if dialog.identifier is None:
+                        for widget in dialog.frame.winfo_children()[-1].winfo_children():
+                            if str(widget.cget("text")) == dialog.t("question"):
+                                widget.invoke()
+                                break
+                    check("Offline catalog opens Q16 through Tk selection", dialog.identifier == "Q16")
+                    dialog.preview()
+                    check("Preview before external action", "Q16" in dialog.editor.get("1.0","end") and not browser.called)
+                    edited = "Întrebare sintetică & 東京?\n" * 256
+                    dialog.editor.delete("1.0","end")
+                    dialog.editor.insert("1.0",edited)
+                    dialog.copy()
+                    check("Edited Unicode clipboard matches exactly", root.clipboard_get() == edited)
+                    dialog.open_chat()
+                    check("Browser receives only ChatGPT home URL", browser.call_args.args == ("https://chatgpt.com/",))
+                    dialog.destroy()
                 with patch.dict(app.place, latitude=48.25, longitude=16.125), patch("fic_windows.webbrowser.open", return_value=True) as opened:
                     app.earth_button.invoke()
                     uri = opened.call_args.args[0]

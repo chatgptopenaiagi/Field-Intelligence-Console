@@ -21,6 +21,14 @@ object MatrixHandoff {
 
     fun chatIntent(reviewed: String): Intent {
         require(completeText(reviewed))
+        return reviewedIntent(reviewed)
+    }
+
+    fun reviewable(text: String): Boolean = text.isNotBlank() && text.length <= MAX_BYTES &&
+        text.toByteArray(Charsets.UTF_8).size <= MAX_BYTES && Charsets.UTF_8.newEncoder().canEncode(text)
+
+    fun reviewedIntent(reviewed: String): Intent {
+        require(reviewable(reviewed))
         return Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             setPackage(CHATGPT)

@@ -27,7 +27,7 @@ def _write(path, data):
 
 def parser():
     result = argparse.ArgumentParser(prog="fic", description="Offline FIC validation, conversion and saved-association search")
-    result.add_argument("--version", action="version", version="4.0.0b10.dev1")
+    result.add_argument("--version", action="version", version="4.0.0b11.dev1")
     commands = result.add_subparsers(dest="command", required=True)
     commands.add_parser("diagnostics", help="Check version and bundled schemas offline; never open user data")
     earth = commands.add_parser("earth", help="Query public Earth records or filter a client export")

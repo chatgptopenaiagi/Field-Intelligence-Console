@@ -48,12 +48,17 @@ class MatrixTransferDeviceTest {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val target = instrumentation.targetContext
         val dispatcher = IntentDispatcher(FieldPromptGenerator())
-        for (count in listOf(1, 120)) {
+        for (count in listOf(1, 120, 2, 500)) {
             val entry = FieldEntry(latitude=44.43,longitude=26.10,accuracy=4.25f,
                 timestamp=1700000000123L,note="București 🌍 東京 & café\n".repeat(count),tag="synthetic")
-            val reviewed = dispatcher.reviewPrompt("AI ANALYSIS",entry,GeoContext(latitude=entry.latitude,
-                longitude=entry.longitude,accuracy=entry.accuracy,timestamp=entry.timestamp,provider="synthetic"))
-            val launch = MatrixHandoff.chatIntent(reviewed)
+            val geo = GeoContext(latitude=entry.latitude, longitude=entry.longitude,accuracy=entry.accuracy,
+                timestamp=entry.timestamp,provider="synthetic")
+            val catalog = com.fieldconsole.prompt.HumanContext(target, "ro")
+            val legacy = count == 1 || count == 120
+            val reviewed = if (legacy) dispatcher.reviewPrompt("AI ANALYSIS",entry,geo)
+                else catalog.compose("Q16",catalog.local(catalog.questions[15],"question"),geo,null,
+                    if (count == 2) "none" else "exact", observation=entry.note)
+            val launch = if (legacy) MatrixHandoff.chatIntent(reviewed) else MatrixHandoff.reviewedIntent(reviewed)
             assertEquals(MatrixHandoff.CHATGPT,launch.`package`)
             val token = "com.fieldconsole.test.receipt." + UUID.randomUUID()
             val inbox = LinkedBlockingQueue<String>()

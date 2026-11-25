@@ -13,8 +13,8 @@ android {
         applicationId   = "com.fieldconsole"
         minSdk          = 29
         targetSdk       = 34
-        versionCode     = 13
-        versionName     = "4.0.0-beta.10.dev1"
+        versionCode     = 14
+        versionName     = "4.0.0-beta.11.dev1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
@@ -57,6 +57,7 @@ android {
     }
     sourceSets.getByName("androidTest").assets.srcDir("src/test/resources")
     sourceSets.getByName("main").assets.srcDir(rootProject.file("python/src/field_intelligence_console/earth_client"))
+    sourceSets.getByName("main").assets.srcDir(rootProject.file("python/src/field_intelligence_console/human_context_data"))
     sourceSets.getByName("androidTest").assets.srcDir("schemas")
     sourceSets.getByName("androidTest").assets.srcDir(rootProject.file("shared"))
     sourceSets.getByName("test").resources.srcDir("schemas")

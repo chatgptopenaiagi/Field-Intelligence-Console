@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "field-intelligence-console"
-version = "4.0.0b10.dev1"
+version = "4.0.0b11.dev1"
 description = "Local field reports and saved geographic contact associations"
 readme = "README.md"
 license = "MIT"
@@ -20,4 +20,4 @@ fic = "field_intelligence_console.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-field_intelligence_console = ["schemas/*.json", "fixtures/*", "regional_data/*.json", "earth_client/*"]
+field_intelligence_console = ["schemas/*.json", "fixtures/*", "regional_data/*.json", "earth_client/*", "human_context_data/*.json"]

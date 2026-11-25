@@ -228,6 +228,21 @@ async function refresh(){
 window.ficExport=()=>checked?JSON.stringify({schema:'fic.earth-keypoints',version:1,selection:origin,category:topic.value,
  checked_at:checked,radius_km:Number($('range').value)||null,matching_count:visible.length,records:visible.slice(0,80),passes},null,2):'';
 window.ficReviewed=()=>!$('analysis').hidden && $('analysis').open?$('preview').value:'';
+// Only the explicitly selected record. Request URLs and observer coordinates stay local.
+window.ficQuestionExcerpt=()=>{
+ if(!selected || !$('analysis').open || $('analysis').hidden)return '';
+ const {provider,kind,observed_at,valid_at,retrieved_at,measurements,metadata}=selected;
+ const epoch=metadata?.element_epoch;
+ return JSON.stringify({provider,kind,observed_at,valid_at,retrieved_at,measurements,element_epoch:epoch},null,2);
+};
+$('questionExcerpt').textContent=nativeHost?'AI ANALYSIS':tr('Copy excerpt for AI Analysis','Auszug für KI-Analyse kopieren','Copiază extrasul pentru analiza AI');
+$('questionExcerpt').onclick=async()=>{
+ const excerpt=window.ficQuestionExcerpt();
+ if(!excerpt)return;
+ if(nativeHost){location.href='fic-local://question';return;}
+ $('preview').value=excerpt;
+ $('share').click();
+};
 $('share').onclick=async()=>{
  if(!window.ficReviewed().trim())return;
  if(nativeHost){location.href='fic-local://share';return;}

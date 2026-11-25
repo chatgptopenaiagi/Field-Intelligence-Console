@@ -18,7 +18,7 @@ from field_intelligence_console import (
     parse_import, query_network, validate_report, now_iso,
 )
 
-VERSION = "4.0.0-beta.10.dev1"
+VERSION = "4.0.0-beta.11.dev1"
 MAX_BYTES = 5 * 1024 * 1024
 SCOPES = ("street", "radius", "neighborhood", "city", "region", "country", "building")
 ADDRESS_FIELDS = ("street", "neighborhood", "locality", "region", "postal_code", "country")
@@ -82,6 +82,7 @@ class Workstation:
             prefs = {}
         self.place = prefs.get("place", {})
         self.place_origin = prefs.get("place_origin", "No place selected")
+        self.analysis_language = prefs.get("analysis_language", "en")
         self.preview = self.preview_window = self.editor_window = None
         self.status = tk.StringVar(value="Offline ready. Nothing is transmitted automatically.")
         root.title(f"Field Intelligence Console {VERSION}")
@@ -258,6 +259,10 @@ class Workstation:
             self.status.set("Select a report first.")
             return
         self.place = {key: report["location"].get(key) for key in ("latitude", "longitude")}
+        point = report["location"]
+        self.place.update(accuracy=point.get("accuracy_m"), manual_origin=point.get("source") == "manual",
+                          geocoded=point.get("address") if point.get("address_source") == "device_geocoder" else None,
+                          measured=report.get("observed_at") if point.get("source") == "device" else None)
         self.place_origin = "Report-derived place"
         self.sync_place()
         self.save_preferences()
@@ -615,6 +620,7 @@ class Workstation:
         self.save_place_button = self.button(bar, "Use this manual place", lambda: self.guard("Place", self.save_place))
         self.button(bar, "Open map for saved point", self.open_map)
         self.earth_button = self.button(bar, "World Intelligence", lambda: self.guard("World Intelligence", self.open_earth_engine))
+        self.analysis_button = self.button(bar, "AI Analysis", lambda: self.guard("AI Analysis", self.open_analysis))
         ttk.Label(self.place_tab, text="Street/neighborhood text matches require locality and country context. Missing evidence is unavailable, not zero people. Radius means distance to a qualified saved point, not walking distance or current whereabouts. External geocoding is OFF; no imported address is transmitted.", wraplength=950).pack(anchor="w")
 
     def save_place(self):
@@ -650,6 +656,19 @@ class Workstation:
         rows = emergency_services(country)
         text = "\n\n".join(f"{r['category']} · {r['number']}\n{r['verified']} · {r['source']}" for r in rows)
         messagebox.showinfo("Emergency numbers", text or "EMERGENCY NUMBER NOT VERIFIED", parent=self.root)
+
+    def open_analysis(self):
+        from human_analysis import AnalysisDialog
+        from field_intelligence_console.regional import interior_country
+        ctx = dict(self.place)
+        lat, lon = ctx.get("latitude"), ctx.get("longitude")
+        origin = {"Manual place": "manual", "Report-derived place": "historical"}.get(self.place_origin, "unknown")
+        ctx.update(origin=origin, area=ctx.get("region"), override=ctx.get("country") if origin == "manual" else None,
+                   detected=interior_country(lat, lon) if lat is not None and lon is not None else None)
+        def save(language):
+            self.analysis_language = language
+            self.save_preferences()
+        self.analysis = AnalysisDialog(self.root, ctx, self.analysis_language, save)
 
     def open_earth_engine(self):
         from field_intelligence_console.earth import client_url
@@ -719,7 +738,7 @@ class Workstation:
 
     def save_preferences(self):
         prefs = {"theme": self.theme.get(), "text_size": int(self.text_size.get()), "place": self.place,
-                 "place_origin": self.place_origin, "radius_m": self.radius.get()}
+                 "place_origin": self.place_origin, "radius_m": self.radius.get(), "analysis_language": self.analysis_language}
         atomic_write(self.prefs_file, json.dumps(prefs, allow_nan=False).encode("utf-8"))
 
     def close(self):
