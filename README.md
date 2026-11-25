@@ -1,95 +1,75 @@
-# 🚀 FIELD INTELLIGENCE CONSOLE
+# Field Intelligence Console
 
-**[Download beta11 dev1 for Android testing](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.11.dev1/FieldIntelligenceConsole-4.0.0-beta.11.dev1-android-test.apk)**. Open **SCAN → OPEN MATRIX → AI ANALYSIS** to write your own question or choose one of 35 offline questions in Romanian, German and English. Choose the location detail and review the editable message before copying or opening ChatGPT. The direct update from beta10 passed on an Android 14 emulator. Physical Vivo validation is pending. [Windows, Python and checksums](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.11.dev1) · [Verification and installation](docs/mission/MISSION_006.md)
-## BETA
+**Small software. Big intelligence.** One tap. Instant awareness. One button. Multiple cognitive capabilities.
 
-**[Download the beta10 dev1 Android testing APK](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.10.dev1/FieldIntelligenceConsole-4.0.0-beta.10.dev1-android-test.apk)**. In **SCAN → OPEN MATRIX → WORLD INTELLIGENCE**, select a topic and choose **Explore** for its map, forecast chart or result card. **Original source** opens the provider document. Install in place over the signed beta8 or beta9 development package on Android 10+. Physical Vivo validation is pending. [Windows, Python and checksums](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.10.dev1) · [Test report and installation](docs/mission/MISSION_005.md)
+## 🚀 Beta 11 · Human Context Intelligence
 
-**[Download the beta9 Cognitive Earth Engine Android test APK](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.9.dev1/FieldIntelligenceConsole-BETA9-ANDROID-TEST.apk)**. Sign in to the private repository. Use **SCAN → OPEN MATRIX → WORLD INTELLIGENCE** to open the globe and geographical queries. Android 10+ is required. The APK can update the published beta8 development installation. Keep beta7 on a separate phone. Physical validation is pending. [Windows EXE, Python wheel and checksums](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.9.dev1) · [Test evidence](docs/mission/MISSION_004.md)
+**Recommended public download for testing** · `4.0.0-beta.11.dev1` · Experimental prerelease
 
-**[Download the beta8 development APK for Android testing](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.8.dev1/FieldIntelligenceConsole-BETA8-ANDROID-TEST.apk)**. Sign in to GitHub and use an Android 10 or newer test phone where `com.fieldconsole.debug` is absent. The published beta7 APK has the same package ID and a different signer. Keep it on its current phone. Physical-device validation is pending. [Installation, checksums and companion downloads](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.8.dev1)
+[📱 Download for Android · APK](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.11.dev1/FieldIntelligenceConsole-4.0.0-beta.11.dev1-android-test.apk) | [🖥 Download for Windows · EXE](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.11.dev1/FieldIntelligenceConsole-4.0.0-beta.11.dev1-windows-x64.exe) | [🐍 Download for Python · WHL](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.11.dev1/field_intelligence_console-4.0.0b11.dev1-py3-none-any.whl)
 
-**[Download Field Intelligence Console 4.0.0-beta.7](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.7)** from the private repository. The prerelease includes the Windows x64 EXE, Android testing APK and Python wheel. Verify the download against `SHA256SUMS.txt`. The [Mission 002 recovery record](docs/mission/MISSION_002.md) links the test reports and release verification.
+[Installation](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.11.dev1/INSTALLATION.md) · [Release notes](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.11.dev1/RELEASE_NOTES.md) · [Verification report](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.11.dev1/VERIFICATION_REPORT.md) · [SHA-256 checksums](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.11.dev1/SHA256SUMS.txt)
 
-**ONE TAP. INSTANT AWARENESS.**
+### One location, 35 questions
 
-FIC organizes a place and moment into awareness, intelligence, persistent field
-memory and a local Known Network. It informs the human; the human decides.
-The recovered Kotlin application is preserved alongside a Windows workstation and
-an independently installable Python core. This is experimental software.
+Field Intelligence Console turns a selected place into a starting point for questions and actions. In the original Manus AI design, one **SCAN** opens the **Cognitive Matrix**. Choose the information you need, review its source and decide what to do.
 
-## Get and run FIC
+On Android, follow **SCAN → OPEN MATRIX → AI ANALYSIS**. Write a question or browse 35 prepared questions in seven categories, in English, German or Romanian. For example, choose **Taxi and mobility → Q16** to ask about documented taxi stands near the selected place. Choose the region, exact coordinates or no location. Review and edit the full message before copying or sharing it. The catalog works offline.
 
-Artifacts are delivered through the original
-[repository releases](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases).
-The published prerelease includes installation notes, a manifest and SHA-256 checksums.
+| Category | Example question |
+|---|---|
+| Survival | Where are documented shelters nearby? |
+| Emergency and medical | Which official emergency services cover this region? |
+| Public safety | How can I write a factual incident report? |
+| Taxi and mobility | Where are authorized taxi stands? |
+| Finance and logistics | What information do I need to plan a delivery? |
+| Essential services | How can I explain my problem in the language of local authorities? |
+| Earth and environment | Which earthquakes were reported nearby, and when? |
 
-- **Android:** install `FieldIntelligenceConsole-BETA-Android.apk`, a debug/testing APK, on Android 10/API29
-  or newer. It uses `com.fieldconsole.debug`; the release application identity remains
-  `com.fieldconsole`. Check signing compatibility before upgrading an existing app.
-  Never uninstall a working installation to bypass a certificate mismatch. SCAN
-  records coordinates, measurement time and reported accuracy; resolution is not
-  guaranteed. Tools opens Known Network, field reports, appearance and settings.
-- **Windows x64:** download `FieldIntelligenceConsole-BETA-Windows-x64.exe` and run it. Python/Java/Gradle
-  are not required by the packaged user application. It is unsigned; verify the
-  published SHA-256 and provenance without disabling Windows security. Use reports,
-  Known Network and manually/report-selected places in one native window. Desktop
-  location is not presented as GPS. Data persists in the current user's local app data.
-- **Python/developers:** install the wheel in a virtual environment with
-  `python -m pip install field_intelligence_console-4.0.0b7-py3-none-any.whl`, then
-  `fic --help` or `fic diagnostics`. Diagnostics checks packaged schemas offline
-  without accessing a user database. The core has no GUI/server/
-  credential requirement for local workflows. Python 3.14 is locally tested;
-  the package declares 3.11+, with other interpreter coverage documented by CI.
+<details>
+<summary>See the editable Android preview</summary>
 
-## Use Known Network
+<img src="docs/images/beta11-ai-preview-ro.png" width="256" alt="Beta 11 Android preview in Romanian for Q30 with location omitted, editable text, Copy and Share with ChatGPT controls">
 
-Select VCF, CSV or FIC JSON, parse, review valid/invalid/duplicate counts, select
-records and confirm. Cancel leaves the store unchanged. Repeat source records do
-not silently create duplicates or overwrite unrelated records. Create/edit/search/
-delete local contacts and organizations; open details intentionally to reveal
-numbers and notes. Android VCF import uses the document picker without broad storage
-or Contacts permission. Optional phone-contact import requests read-only permission
-only at that action and never modifies the system address book.
+Beta 11 running on the Android 14 test emulator. Q30 asks how to explain a situation to local authorities. The user has chosen to omit the location.
 
-Select a place and scope: building, street, radius, neighborhood, city, region or
-country. Text matches need qualifying address fields; meter-level radius requires
-a suitable saved point. Unknown scopes remain unavailable, not reassuring zeroes.
-**Saved geographic association is not current physical presence.** A home/work
-label is source metadata, not proof of current residence, ownership or whereabouts.
+</details>
 
-Exports require selection and preview. Canonical FIC JSON carries ancestry and
-geographic provenance. VCF3/4 text and documented CSV are narrower formats with
-visible loss warnings. CSV export neutralizes spreadsheet formulas while JSON
-preserves original values, including `+` phone numbers. See
-[shared contracts](shared/CONTRACT.md) for bounds, CSV columns and compatibility.
-No automatic PHOTO/URL/KEY fetching or original-file retention occurs.
+### What the console can do
 
-## Offline use and providers
+- **World Intelligence** opens the Cognitive Earth Engine. Explore earthquake records, weather forecasts, estimated satellite passes and historical tracks. Each result keeps its source and time.
+- **Field actions** offer navigation, safety and security, financial and logistics lookups. Emergency information includes an offline country selection and official numbers.
+- **Field records** keep observations, history and local contact associations. Review and share selected reports. External lookups and AI handoffs require user action.
 
-Local history, contact management, manual associations and offline emergency numbers
-remain available without provider credentials. External lookups can fail or become
-stale; failure is distinct from a successful empty lookup. Emergency actions open a
-dialer for human confirmation. FIC never automatically calls anyone.
+### Platforms and verification
 
-Optional forward geocoding is off by default. It previews the address/provider and
-requires an explicit send action and key; select a returned candidate deliberately.
-An address is private data even without a name. Provider terms/trial limits apply.
-AI ANALYSIS retains the external prompt action. In-app AI/weather/CAD adapters and
-legacy hooks are not all connected; saving a key does not make them operational.
-NETWORK details and counts are excluded from ordinary reports and AI packets.
+| Platform | Getting started | Beta 11 verification |
+|---|---|---|
+| Android 10+ | Install the testing APK. An in-place upgrade requires a matching signer. Keep an existing installation if Android reports a signature mismatch. | API 34 emulator, 11 instrumented tests, plus 102 unit tests per Debug and Release variant. A direct beta10 upgrade preserved synthetic observations, contacts, a report and regional preferences. |
+| Windows x64 | Run the portable, unsigned EXE. Open **Selected place → AI Analysis**. | 34 checks in the packaged interface, 14 focused tests and seven native checks. |
+| Python 3.11+ | Install the wheel with `python -m pip install ./field_intelligence_console-4.0.0b11.dev1-py3-none-any.whl`. Run `fic --help`. | 56 tests against the installed wheel. The catalog bytes match Android and Windows. |
 
-## Privacy, removal and development
+**Known limitations.** Physical Vivo validation is pending. Android text transfer was verified using a synthetic receiver. Receipt in the official ChatGPT composer and the native Google Earth destination remain unverified. External geographic data varies in coverage and freshness. Local databases are unencrypted. [Verification details](docs/mission/MISSION_006.md) · [Security and privacy](SECURITY.md)
 
-No automatic contact cloud sync or contact telemetry. Android backup is disabled;
-local databases are not encrypted. Deliberate exports, OS backups and copied files
-have separate retention. Deleting a record is not forensic secure erasure. Android
-uninstall removes app-private data; export anything needed first. On Windows, close
-the app before intentionally deleting its documented profile; remove the portable
-EXE separately. Python can be uninstalled with `pip uninstall field-intelligence-console`;
-explicitly created data/output files are retained until you remove them.
+### Previous releases / development history
 
-Read [security](SECURITY.md), [building](BUILDING.md), [release process](RELEASING.md),
-[architecture](docs/ARCHITECTURE.md) and [mission evidence](docs/mission/STATUS.md).
-Software retains the [MIT license](LICENSE). This grants no rights over imported
-contact data; owners remain responsible for authorized use and sharing.
+<details>
+<summary>Five historical distributions and earlier source checkpoints</summary>
+
+| Distribution | Role |
+|---|---|
+| [v4.0.0-beta.10.dev1](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.10.dev1) | Cognitive Experience Engine testing |
+| [v4.0.0-beta.9.dev1](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.9.dev1) | Cognitive Earth Engine testing |
+| [v4.0.0-beta.8.dev1](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.8.dev1) | Historical development release |
+| [v4.0.0-beta.7](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.7) | Historical development release |
+| [v4.0.0-beta.1](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.1) | Historical experimental distribution |
+
+Source checkpoints without release downloads: [Beta 2](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/tree/v4.0.0-beta.2) · [Beta 3](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/tree/v4.0.0-beta.3) · [Beta 4](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/tree/v4.0.0-beta.4) · [Beta 5](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/tree/v4.0.0-beta.5) · [Beta 6](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/tree/v4.0.0-beta.6) · [Recovered v3 baseline](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/tree/v3-recovered-baseline).
+
+</details>
+
+[All GitHub releases](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases) · [All tags](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/tags)
+
+### Development
+
+[Build and test](BUILDING.md) · [Architecture](docs/ARCHITECTURE.md) · [Human Context catalog and Python API](docs/architecture/HUMAN_CONTEXT_INTELLIGENCE.md) · [Shared data contracts](shared/CONTRACT.md) · [Release process](RELEASING.md) · [License](LICENSE)
