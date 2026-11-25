@@ -4,6 +4,7 @@ on:
   push:
     branches: [v4-development]
     paths:
+      - '.gitattributes'
       - 'app/**'
       - 'shared/**'
       - 'python/src/field_intelligence_console/regional_data/**'
@@ -16,6 +17,7 @@ on:
       - '.github/workflows/android-ci.yml'
   pull_request:
     paths:
+      - '.gitattributes'
       - 'app/**'
       - 'shared/**'
       - 'python/src/field_intelligence_console/regional_data/**'

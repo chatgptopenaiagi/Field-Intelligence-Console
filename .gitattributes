@@ -3,5 +3,9 @@ gradlew.bat text eol=crlf
 gradle/wrapper/gradle-wrapper.jar binary
 python/src/field_intelligence_console/earth_client/* text eol=lf
 python/src/field_intelligence_console/human_context_data/*.json text eol=lf
+shared/schemas/*.json text eol=lf
+shared/fixtures/* text eol=lf
+python/src/field_intelligence_console/schemas/*.json text eol=lf
+python/src/field_intelligence_console/fixtures/* text eol=lf
 tooling/earth-client/*.js text eol=lf
 tooling/earth-client/upstream/*.js text eol=lf

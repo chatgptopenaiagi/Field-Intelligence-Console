@@ -53,6 +53,13 @@ class HumanContextTests(unittest.TestCase):
         self.assertIn("Measurement time · Unknown", text)
 
     def test_explicit_text_and_limits(self):
+        from field_intelligence_console.earth import query
+        document = query("aviation", (21.7, -85.75), 1)
+        excerpt = hc.earth_excerpt(document, document["records"][0]["id"])
+        self.assertIn("HISTORICAL", excerpt)
+        self.assertIn("retrieved_at", excerpt)
+        self.assertNotIn("latitude", excerpt)
+        self.assertNotIn("https://", excerpt)
         sample = "Știință & 東京?\n" * 550
         draft = hc.compose("Q30", "ro", observation=sample, target_language="italiano",
                            earth_excerpt="USGS · synthetic · 2001-02-03T04:05:06Z")

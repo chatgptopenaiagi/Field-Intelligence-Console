@@ -42,6 +42,26 @@ def reviewable(text):
         return False
 
 
+def earth_excerpt(document, record_id):
+    """Format one explicitly chosen Earth Engine result without observer coordinates or query URLs."""
+    from .earth import select
+    records = select(document, (0, 0))["records"]
+    row = next((r for r in records if r["id"] == record_id), None)
+    if row is None:
+        raise KeyError(record_id)
+    excerpt = {key: row.get(key) for key in ("provider", "category", "kind", "observed_at", "valid_at",
+                                             "retrieved_at", "measurements", "limitations")}
+    if row["category"] in ("earthquakes", "wildfires"):
+        excerpt["event"] = row.get("label")
+    if row["category"] == "satellites":
+        for key in ("element_epoch", "catalog_id"):
+            excerpt[key] = row["metadata"].get(key)
+        passes = document.get("passes")
+        if passes and isinstance(passes[0], dict):
+            excerpt["next_pass"] = {key: passes[0].get(key) for key in ("first_sample", "last_sample", "max_elevation_deg")}
+    return json.dumps(excerpt, ensure_ascii=False, indent=2, allow_nan=False)
+
+
 def _number(value):
     return isinstance(value, (float, int)) and not isinstance(value, bool) and math.isfinite(value)
 

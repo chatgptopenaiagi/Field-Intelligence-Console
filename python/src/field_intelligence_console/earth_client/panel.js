@@ -231,9 +231,11 @@ window.ficReviewed=()=>!$('analysis').hidden && $('analysis').open?$('preview').
 // Only the explicitly selected record. Request URLs and observer coordinates stay local.
 window.ficQuestionExcerpt=()=>{
  if(!selected || !$('analysis').open || $('analysis').hidden)return '';
- const {provider,kind,observed_at,valid_at,retrieved_at,measurements,metadata}=selected;
- const epoch=metadata?.element_epoch;
- return JSON.stringify({provider,kind,observed_at,valid_at,retrieved_at,measurements,element_epoch:epoch},null,2);
+ const {provider,category,kind,observed_at,valid_at,retrieved_at,measurements,metadata,limitations}=selected;
+ const event=['wildfires','earthquakes'].includes(category)?selected.label:undefined;
+ const next_pass=category==='satellites'?passes[0]:undefined;
+ return JSON.stringify({provider,category,event,kind,observed_at,valid_at,retrieved_at,measurements,
+  element_epoch:metadata?.element_epoch,catalog_id:metadata?.catalog_id,next_pass,limitations},null,2);
 };
 $('questionExcerpt').textContent=nativeHost?'AI ANALYSIS':tr('Copy excerpt for AI Analysis','Auszug für KI-Analyse kopieren','Copiază extrasul pentru analiza AI');
 $('questionExcerpt').onclick=async()=>{
