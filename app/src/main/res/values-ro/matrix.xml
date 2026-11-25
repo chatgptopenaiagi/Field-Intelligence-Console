@@ -112,4 +112,6 @@
     <string name="longitude">Longitudine</string>
     <string name="permission_location_rationale">Cu permisiunea dumneavoastră, Field Intelligence Console obține coordonatele dispozitivului la scanare. Puteți alege și un loc manual.</string>
     <string name="confirm_selection">Confirmă țara</string>
+    <string name="earth_renderer_stopped">Procesul de afișare a hărții s-a oprit. Poți redeschide harta la locația din Matrice.</string>
+    <string name="earth_reopen_2d">Redeschide în 2D</string>
 </resources>

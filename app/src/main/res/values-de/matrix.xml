@@ -112,4 +112,6 @@
     <string name="longitude">Längengrad</string>
     <string name="permission_location_rationale">Beim Scannen erfasst Field Intelligence Console mit Ihrer Erlaubnis die Gerätekoordinaten. Sie können den Ort auch manuell wählen.</string>
     <string name="confirm_selection">Land bestätigen</string>
+    <string name="earth_renderer_stopped">Die Kartendarstellung wurde beendet. Öffnen Sie die Karte erneut am Ort der Matrix.</string>
+    <string name="earth_reopen_2d">In 2D öffnen</string>
 </resources>

@@ -9,7 +9,8 @@ function earthMap(canvas, origin, select, modeChanged) {
 
   function schedule() { if (!frame) frame = requestAnimationFrame(draw); }
   function setGpu() {
-    try { gpu = earthGPU(gpuCanvas, img); } catch { gpu = null; }
+    const flatOnly = new URLSearchParams(location.hash.slice(1)).get('renderer') === '2d';
+    try { gpu = flatOnly ? null : earthGPU(gpuCanvas, img); } catch { gpu = null; }
     if (!gpu) flat = true;
     modeChanged(flat, !gpu);
     schedule();

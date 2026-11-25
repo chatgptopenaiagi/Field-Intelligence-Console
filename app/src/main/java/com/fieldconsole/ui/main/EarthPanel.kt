@@ -3,6 +3,7 @@ package com.fieldconsole.ui.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
+import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
@@ -12,9 +13,17 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.fieldconsole.R
 import com.fieldconsole.intent.MatrixHandoff
@@ -32,7 +41,8 @@ private val sourceHosts = setOf("earthquake.usgs.gov", "celestrak.org", "www.nhc
 @Composable
 internal fun EarthPanel(geo: GeoContext, back: () -> Unit, home: () -> Unit) {
     val context = LocalContext.current
-    var web by remember { mutableStateOf<WebView?>(null) }
+    var rendererGone by rememberSaveable { mutableStateOf(false) }
+    var flatOnly by rememberSaveable { mutableStateOf(false) }
     var pendingExport by remember { mutableStateOf<String?>(null) }
     fun fail() = Toast.makeText(context, R.string.earth_operation_failed, Toast.LENGTH_LONG).show()
     val save = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
@@ -43,15 +53,26 @@ internal fun EarthPanel(geo: GeoContext, back: () -> Unit, home: () -> Unit) {
             }.isFailure)) fail()
     }
     BackHandler(onBack = back)
-    AndroidView(modifier = Modifier.fillMaxSize(), factory = { activity ->
+    if (rendererGone) {
+        Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.Center) {
+            Text(stringResource(R.string.earth_renderer_stopped))
+            Button(onClick = { flatOnly = true; rendererGone = false }) { Text(stringResource(R.string.earth_reopen_2d)) }
+            Button(onClick = back) { Text(stringResource(R.string.back)) }
+        }
+        return
+    }
+    AndroidView(modifier = Modifier.fillMaxSize(), onRelease = { it.destroy() }, factory = { activity ->
         WebView(activity).apply {
-            web = this
             settings.javaScriptEnabled = true
             settings.allowFileAccess = false
             settings.allowContentAccess = false
             settings.setGeolocationEnabled(false)
             settings.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_NEVER_ALLOW
             webViewClient = object : WebViewClient() {
+                override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
+                    rendererGone = true
+                    return true
+                }
                 override fun shouldInterceptRequest(view: WebView, req: WebResourceRequest): WebResourceResponse? {
                     val uri = req.url
                     if (uri.host != "fic-earth.invalid") return null
@@ -100,8 +121,8 @@ internal fun EarthPanel(geo: GeoContext, back: () -> Unit, home: () -> Unit) {
             val lang = activity.resources.configuration.locales[0].language
             val via = when { geo.saved -> "saved"; geo.manual -> "manual"; else -> "scan" }
             val stamp = if (geo.measuredAt != "UNKNOWN") "&at=${Uri.encode(geo.measuredAt)}" else ""
-            loadUrl("https://fic-earth.invalid/index.html#lat=${geo.latitude}&lon=${geo.longitude}&lang=$lang&via=$via$stamp")
+            val renderer = if (flatOnly) "&renderer=2d" else ""
+            loadUrl("https://fic-earth.invalid/index.html#lat=${geo.latitude}&lon=${geo.longitude}&lang=$lang&via=$via$stamp$renderer")
         }
     })
-    DisposableEffect(Unit) { onDispose { web?.stopLoading(); web?.destroy() } }
 }

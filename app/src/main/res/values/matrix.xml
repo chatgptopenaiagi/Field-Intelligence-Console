@@ -111,4 +111,6 @@
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="confirm_selection">Confirm country</string>
+    <string name="earth_renderer_stopped">The map renderer stopped. Reopen the map at the Matrix location.</string>
+    <string name="earth_reopen_2d">Reopen in 2D</string>
 </resources>

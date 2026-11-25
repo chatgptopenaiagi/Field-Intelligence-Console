@@ -13,6 +13,10 @@
 | `kind`, `freshness` | Kind supports OBSERVED, REPORTED, PREDICTED, SIMULATED, HISTORICAL and UNKNOWN. Freshness is evaluated at retrieval. The current feeds emit reported, historical and predicted records. |
 | `measurements`, `metadata` | Measurements pair a numeric value with its unit. Null denotes missing data. Metadata retains qualifications such as orbital element epoch or archive flight identity. |
 | `passes` | Predicted intervals for the original satellite observer with first and last samples and peak sampled elevation in degrees. Selecting a different observer from an exported file clears these intervals. |
+| `checked_at` | Optional query completion time. An archived observation keeps its original retrieval time when opened offline. |
+| `description`, `coverage`, `limitations` | Optional per-record source context added in Mission 005. Compatible v1 readers can still open beta9 documents without these fields. |
+
+Python exposes observation-time and magnitude selection through `earth.select(..., since=..., min_magnitude=...)` and the CLI options `--since` and `--min-magnitude`. The time cutoff requires an explicit UTC offset. A geographic selection recomputes the count of matching records in the supplied export.
 
 The Python reader rejects unsupported envelope versions, invalid coordinates, duplicate record IDs, invalid measurement types and incomplete provenance. It can read every category through `fic earth export`. All content inside records remains data. Reopening an export cannot launch a provider or execute a command.
 
