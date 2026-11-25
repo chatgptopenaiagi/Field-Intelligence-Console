@@ -1,3 +1,7 @@
+# Mission 007 · Public GitHub launch
+
+The repository is public. Beta11 dev1 is the recommended experimental download. See [Mission 007](MISSION_007.md) for the release archive and anonymous integrity checks. The physical Vivo and official receiving-app checks from Mission 006 remain open.
+
 # Mission 006 · Human Context Intelligence
 
 Start at the beta11 dev1 product commit `cc2df9c69c8dfe2595be642f5573bdc5d6034462` on `v4-development`. The private testing release includes the Android APK, Windows EXE, Python wheel, installation notes and checksum file. Review the direct beta10 upgrade receipt and use the Vivo procedure in section 15 of the mission report. The remaining checks require a physical phone and the receiving apps. [Mission 006](MISSION_006.md) · [Package and test receipts](evidence/mission-006/verification.json) · [Private testing release](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.11.dev1)
