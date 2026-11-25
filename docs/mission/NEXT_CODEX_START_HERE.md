@@ -1,3 +1,7 @@
+# Mission 004 · beta9 development testing
+
+Start at product source `ccb3fe8c574c7ac1bd14bc026ecaf271bc4ce985` on `v4-development`. The private testing prerelease contains the APK, Windows EXE, Python wheel and checksums. WORLD INTELLIGENCE opens the Cognitive Earth Engine from the original Matrix. The next gate needs a physical Android phone. [Testing prerelease](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.9.dev1) · [Mission 004 verification and phone procedure](MISSION_004.md) · [Distribution receipt](evidence/mission-004/verification.json)
+
 # Mission 003 · development
 
 On 2026-11-25 the owner authorized private distribution of the archived `v4.0.0-beta.8.dev1` development build at `1bdad1607736306278bfb49f0d39014935d30bd6`. The APK, Windows EXE, Python wheel and checksum file were downloaded from the published release and verified. Beta7 remains the verified baseline. [Testing prerelease](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.8.dev1) · [Download verification](evidence/mission-003/testing-prerelease.json)

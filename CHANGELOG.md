@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.0.0-beta.9.dev1 · Earth Engine testing
+
+WORLD INTELLIGENCE opens a keyless globe from the existing Matrix. It adds sourced geographical queries, dated observations and predictions, local map rendering, offline archives and Earth keypoint exchange on Android, Windows and Python. The development build includes a fix for browsers that reuse a panel for a new location and language. Physical handset validation is pending. [Mission 004 record](docs/mission/MISSION_004.md)
+
 ## In development · 4.0.0-beta.8.dev1
 
 Android adds a ninth Google Earth action, a reviewed ChatGPT text share, manual coordinate entry and foreground capture with measurement details. The emergency panel uses verified offline numbers and a manual country override. Regional controls and the Matrix support English, German and Romanian. Windows and Python include the same offline geographic data. [Engineering record](docs/mission/MISSION_003.md)

@@ -1,0 +1,16 @@
+# God's Eye View integration
+
+FIC integrates four JavaScript modules from Bilawal Sidhu's God's Eye View, version `0.3.0`, revision `1d92040d6eaa9dbdd2363608d27e228b4b8ce273`. The revision was inspected in a detached, sparse checkout under `.local/integrations/mission004/gods-eye-view`. The upstream project is a private npm package in a public source repository. FIC vendors the selected files under `tooling/earth-client/upstream`. Production builds read the pinned client already in the FIC tree. [Upstream revision](https://github.com/bilawalsidhu/gods-eye-view/tree/1d92040d6eaa9dbdd2363608d27e228b4b8ce273)
+
+| Upstream path | Interface used in FIC |
+| --- | --- |
+| `src/layers/earthquakes/records.js` | `normalizeEarthquakeSnapshot` validates complete USGS snapshots, normalizes coordinates, filters magnitude and detects duplicate IDs. |
+| `src/geoDistance.js` | `isGeoPoint` and `greatCircleKm` validate the selected place, filter by distance and decide regional availability. |
+| `src/sources/tle.js` | `parseTleText` reads matched orbital element pairs before SGP4 propagation. |
+| `src/sources/gbfsStations.js` | `parseStationInformation` normalizes the bike-share station identifiers, names, coordinates and capacity. |
+
+The upstream README, current-state and code-boundaries documents describe a browser application assembled in `src/app`. Layer owners handle scene presentation. Portable source modules parse provider responses, while services manage scene-dependent operations. The tools catalog exposes read operations through adapters. Its documented MCP setup starts the upstream app and connects server-side tools to its API routes. FIC uses the parsers directly and exposes an explicit read-only headless adapter. No upstream server, MCP listener or voice service starts with FIC. [Component boundaries](https://github.com/bilawalsidhu/gods-eye-view/blob/1d92040d6eaa9dbdd2363608d27e228b4b8ce273/docs/CODE-BOUNDARIES.md) · [Tool architecture](https://github.com/bilawalsidhu/gods-eye-view/blob/1d92040d6eaa9dbdd2363608d27e228b4b8ce273/docs/TOOLS.md) · [MCP setup](https://github.com/bilawalsidhu/gods-eye-view/blob/1d92040d6eaa9dbdd2363608d27e228b4b8ce273/docs/MCP_SETUP.md)
+
+Cesium engine `22.3.0` and satellite.js `6.0.2` match the inspected upstream lockfile. FIC uses Cesium ellipsoid geometry, a Natural Earth II relief texture derived from its level-one tiles, and satellite.js SGP4. The full scene, live surveillance layers, upstream data bundles, server-side providers and provider credentials are outside this distribution. Source code and survey data have separate licenses. The three library license notices ship in each package. The maritime records attribute the two published PS119 endpoints to Holger Schmithüsen (2021), AWI/PANGAEA, CC BY 4.0. [PS119 dataset and license](https://doi.org/10.1594/PANGAEA.935218)
+
+To update the client deliberately, review upstream changes against the pinned revision and compare the four files to their original paths. From `tooling/earth-client`, run `npm ci --ignore-scripts`, `npm run build` and `node --test engine.test.cjs`. Commit the reviewed sources, lockfile and generated `core.js` together. Recheck the packaged renderer and data licenses before adopting another upstream revision.

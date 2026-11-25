@@ -1,3 +1,7 @@
+# Mission 004
+
+[Packaged verification and recovery](MISSION_004.md) · [Testing prerelease inventory](evidence/mission-004/verification.json)
+
 # Mission 003
 
 [Development validation and remaining release gates](MISSION_003.md) · [Development artifact inventory](evidence/mission-003/development-artifacts.json) · [Synthetic ChatGPT captures](evidence/mission-003/synthetic-payloads.json)

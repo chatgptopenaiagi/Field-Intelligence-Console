@@ -1,6 +1,8 @@
 # 🚀 FIELD INTELLIGENCE CONSOLE
 ## BETA
 
+**[Download the beta9 Cognitive Earth Engine Android test APK](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.9.dev1/FieldIntelligenceConsole-BETA9-ANDROID-TEST.apk)**. Sign in to the private repository. Use **SCAN → OPEN MATRIX → WORLD INTELLIGENCE** to open the globe and geographical queries. Android 10+ is required. The APK can update the published beta8 development installation. Keep beta7 on a separate phone. Physical validation is pending. [Windows EXE, Python wheel and checksums](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.9.dev1) · [Test evidence](docs/mission/MISSION_004.md)
+
 **[Download the beta8 development APK for Android testing](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.8.dev1/FieldIntelligenceConsole-BETA8-ANDROID-TEST.apk)**. Sign in to GitHub and use an Android 10 or newer test phone where `com.fieldconsole.debug` is absent. The published beta7 APK has the same package ID and a different signer. Keep it on its current phone. Physical-device validation is pending. [Installation, checksums and companion downloads](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.8.dev1)
 
 **[Download Field Intelligence Console 4.0.0-beta.7](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.7)** from the private repository. The prerelease includes the Windows x64 EXE, Android testing APK and Python wheel. Verify the download against `SHA256SUMS.txt`. The [Mission 002 recovery record](docs/mission/MISSION_002.md) links the test reports and release verification.

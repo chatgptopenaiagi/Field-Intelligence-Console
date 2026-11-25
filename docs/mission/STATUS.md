@@ -1,3 +1,7 @@
+# Mission 004 · beta9 testing prerelease
+
+The private `v4.0.0-beta.9.dev1` prerelease was published on 2026-11-25 at `ccb3fe8c574c7ac1bd14bc026ecaf271bc4ce985`. The hosted Android, Windows and Python checks passed. The packaged emulator, Windows UI and cross-platform Earth export were exercised. Physical phone and third-party receiving-app checks remain open. Beta7 and beta8 dev1 retain their original assets. [Release and downloads](https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.9.dev1) · [Mission record](MISSION_004.md)
+
 # Mission 003 · development
 
 The private `v4.0.0-beta.8.dev1` testing prerelease was published on 2026-11-25 from `1bdad1607736306278bfb49f0d39014935d30bd6`. All four downloaded assets matched their local SHA-256 values. On that source, all three hosted platform gates passed, including eight Android emulator instrumentation tests, packaged Windows and wheel checks, and the cross-platform document round trip. Physical handset and official receiving-app validation remain open. Beta7 is the verified baseline. [Download verification](evidence/mission-003/testing-prerelease.json) · [Test history and limitations](MISSION_003.md) · [Exchange results](evidence/mission-003/cross-platform-exchange.json)

@@ -1,0 +1,314 @@
+{
+  "product_version": "4.0.0-beta.9.dev1",
+  "source_sha": "ccb3fe8c574c7ac1bd14bc026ecaf271bc4ce985",
+  "upstream": {
+    "project": "bilawalsidhu/gods-eye-view",
+    "version": "0.3.0",
+    "commit": "1d92040d6eaa9dbdd2363608d27e228b4b8ce273",
+    "original_blobs_verified": 4
+  },
+  "release": {
+    "tag": "v4.0.0-beta.9.dev1",
+    "id": 457749931,
+    "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/tag/v4.0.0-beta.9.dev1",
+    "visibility": "PRIVATE",
+    "prerelease": true,
+    "published": "2026-11-25T06:57:40Z",
+    "purpose": "Development testing"
+  },
+  "assets": [
+    {
+      "name": "FieldIntelligenceConsole-4.0.0-beta.9.dev1-windows-x64.exe",
+      "bytes": 16436858,
+      "sha256": "7ecee80ee86a522961868611efeeac7a354f430103dc9145f7040da0f13c6656",
+      "github_digest": "sha256:7ecee80ee86a522961868611efeeac7a354f430103dc9145f7040da0f13c6656",
+      "download_url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.9.dev1/FieldIntelligenceConsole-4.0.0-beta.9.dev1-windows-x64.exe"
+    },
+    {
+      "name": "FieldIntelligenceConsole-BETA9-ANDROID-TEST.apk",
+      "bytes": 61416336,
+      "sha256": "a1f97e728e2cccd40d3c14ff4bd664abd604725142b928b7d82900d403b3695d",
+      "github_digest": "sha256:a1f97e728e2cccd40d3c14ff4bd664abd604725142b928b7d82900d403b3695d",
+      "download_url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.9.dev1/FieldIntelligenceConsole-BETA9-ANDROID-TEST.apk"
+    },
+    {
+      "name": "field_intelligence_console-4.0.0b9.dev1-py3-none-any.whl",
+      "bytes": 268855,
+      "sha256": "d5ec75f7c4be1729e87877e99ba8aaa115228e02631823148464551d69c5249d",
+      "github_digest": "sha256:d5ec75f7c4be1729e87877e99ba8aaa115228e02631823148464551d69c5249d",
+      "download_url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.9.dev1/field_intelligence_console-4.0.0b9.dev1-py3-none-any.whl"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 365,
+      "sha256": "4c2a69d5708d7a6663e1febdd4a220881bdf59b3835784f737b8733807b14027",
+      "github_digest": "sha256:4c2a69d5708d7a6663e1febdd4a220881bdf59b3835784f737b8733807b14027",
+      "download_url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/releases/download/v4.0.0-beta.9.dev1/SHA256SUMS.txt"
+    }
+  ],
+  "authenticated_download_check": "All four files matched local bytes, GitHub digests and sizes. All three installer hashes matched the downloaded checksum list.",
+  "android": {
+    "package_id": "com.fieldconsole.debug",
+    "version_code": 12,
+    "min_api": 29,
+    "target_api": 34,
+    "signature_scheme": "v2",
+    "certificate_sha256": "d8c8505ace1420fa6bb6e5022efbc37175a691c3d818d5d714a88ed2ca7c8731",
+    "abi": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "environment": "API 34 x86_64 mission emulator",
+    "instrumentation_passed": 8,
+    "scan": {
+      "scan": "PASS",
+      "matrix": [
+        "AI ANALYSIS",
+        "EMERGENCY EXIT",
+        "FINANCIAL",
+        "GOOGLE EARTH",
+        "HISTORY",
+        "INFO SCAN",
+        "LOGISTICS",
+        "NAVIGATION",
+        "RISK / SAFETY",
+        "WORLD INTELLIGENCE"
+      ],
+      "world": "https://fic-earth.invalid/index.html#lat=48.21&lon=16.37&lang=en",
+      "back": "PASS"
+    },
+    "preservation": {
+      "field_entries": {
+        "beta8_rows": 11,
+        "final_rows": 13,
+        "original_rows_identical": true
+      },
+      "network_entities": {
+        "beta8_rows": 2,
+        "final_rows": 2,
+        "original_rows_identical": true
+      },
+      "exchange_reports": {
+        "beta8_rows": 1,
+        "final_rows": 1,
+        "original_rows_identical": true
+      }
+    },
+    "runtime_source_results": {
+      "aviation": {
+        "status": "20 / 20 · matching records",
+        "rows": 20,
+        "first": "HISTORICAL"
+      },
+      "earthquakes": {
+        "status": "49 / 49 · matching records",
+        "rows": 49,
+        "first": "REPORTED"
+      },
+      "wildfires": {
+        "status": "40 / 40 · matching records",
+        "rows": 40,
+        "first": "REPORTED"
+      },
+      "weather": {
+        "status": "24 / 24 · matching records",
+        "rows": 24,
+        "first": "PREDICTED"
+      },
+      "satellites": {
+        "status": "31 / 31 · matching records",
+        "rows": 31,
+        "first": "PREDICTED"
+      },
+      "sources": {
+        "status": "Source directory · availability is checked on refresh.",
+        "rows": 0
+      }
+    },
+    "renderer": "cesium-webgl",
+    "flat": "2d",
+    "dom_content_loaded_ms": 375.8,
+    "app_process_pss_kib": 138538,
+    "exported_rows": 20,
+    "offline": "Remote failure reported UNKNOWN; 20 archived aircraft reports remained accessible.",
+    "home": "SCAN restored",
+    "extra_checks": [
+      "Hubble pass query produced 31 ground-track samples",
+      "Yellowstone regional webcam directory opened in engine",
+      "US NWS alerts resolved for the synthetic NYC point"
+    ],
+    "hosted_unit_tests": [
+      {
+        "status": "PASS",
+        "skipped": 0,
+        "errors": 0,
+        "variant": "Debug",
+        "failures": 0,
+        "tests": 102
+      },
+      {
+        "status": "PASS",
+        "skipped": 0,
+        "errors": 0,
+        "variant": "Release",
+        "failures": 0,
+        "tests": 102
+      }
+    ],
+    "hosted_lint": [
+      {
+        "errors": 0,
+        "status": "PASS",
+        "variant": "Debug",
+        "warnings": 7
+      },
+      {
+        "errors": 0,
+        "status": "PASS",
+        "variant": "Release",
+        "warnings": 6
+      }
+    ]
+  },
+  "windows": {
+    "packaged_checks": 30,
+    "focused": 14,
+    "native": 7,
+    "signature": "unsigned",
+    "renderer": "cesium-webgl",
+    "dom_content_loaded_ms": 113.8,
+    "received": {
+      "aviation": {
+        "status": "20 / 20 · matching records",
+        "records": 20
+      },
+      "maritime": {
+        "status": "2 / 2 · matching records",
+        "records": 2
+      },
+      "infrastructure": {
+        "status": "1 / 1 · matching records",
+        "records": 1
+      },
+      "earthquakes": {
+        "status": "50 / 50 · matching records",
+        "records": 50
+      },
+      "weather": {
+        "status": "24 / 24 · matching records",
+        "records": 24
+      },
+      "wildfires": {
+        "status": "40 / 40 · matching records",
+        "records": 40
+      },
+      "satellites": {
+        "status": "31 / 31 · matching records",
+        "records": 31
+      },
+      "transport": {
+        "status": "80 / 2519 · matching records",
+        "records": 80
+      },
+      "warnings": {
+        "status": "2 / 2 · matching records",
+        "records": 2
+      },
+      "routing": {
+        "status": "Regional source",
+        "records": null
+      },
+      "cameras": {
+        "status": "UNKNOWN",
+        "records": null
+      }
+    },
+    "low_gpu": [
+      {
+        "title": "FIC Cognitive Earth Engine",
+        "heading": "Weltinformationen",
+        "renderer": "canvas-globe",
+        "colors": 195
+      },
+      {
+        "title": "FIC Cognitive Earth Engine",
+        "heading": "Informații globale",
+        "renderer": "canvas-globe",
+        "colors": 199
+      }
+    ],
+    "map_controls": {
+      "drag_changes_image": true,
+      "recenter_exact_pixels": true,
+      "earth_url": "https://earth.google.com/web/search/48.21,16.37/",
+      "selection_preserved": true,
+      "radius_excludes_distant_flight": true
+    }
+  },
+  "python": {
+    "tests": 53,
+    "export_filter_matches": 1,
+    "iss_records": 31,
+    "usgs_records": 50
+  },
+  "github_actions": [
+    {
+      "conclusion": "success",
+      "databaseId": 45562903957,
+      "headSha": "ccb3fe8c574c7ac1bd14bc026ecaf271bc4ce985",
+      "status": "completed",
+      "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45562903957",
+      "workflowName": "Windows workstation"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45562904142,
+      "headSha": "ccb3fe8c574c7ac1bd14bc026ecaf271bc4ce985",
+      "status": "completed",
+      "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45562904142",
+      "workflowName": "Python core"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45562903984,
+      "headSha": "ccb3fe8c574c7ac1bd14bc026ecaf271bc4ce985",
+      "status": "completed",
+      "url": "https://github.com/chatgptopenaiagi/Field-Intelligence-Console/actions/runs/45562903984",
+      "workflowName": "Android"
+    }
+  ],
+  "byte_identical_client_files": {
+    "Cesium-LICENSE.txt": "45eb26e8e557cde2674f892f2210873eec82324e41e9bc2abf53a91fced5dde0",
+    "Gods-Eye-View-LICENSE.txt": "65bfc694b67094c80855179812bcac989da6e55840add547fd2e428b3e4175c3",
+    "Satellite-LICENSE.txt": "68f09159260abc93ae30985052af180e38cc62d16b4ba1f58a98d576fbaa0859",
+    "adapter.cjs": "906482b323f7e93764f15421f01ace0c79c436af3a8c01899ea477336470f51a",
+    "aviation.json": "9d2ce5227e3778098e7fe347fec9cbdbfb51c80f34541285dbf8a5c9155c2688",
+    "core.js": "0693b0ce8474799c2a767d16342f0f733bfa02643d078f857cdf3e48039e505e",
+    "earth.css": "2025822139e3f566c4bbd36bb273970314ae4fc3d38721eb083aae2e7e9a09a0",
+    "gpu.js": "1844e3d949d44062a46ba0fb606c558198ca00475f3008ff83889e3655bd7ab1",
+    "index.html": "4c76fb8422f3ddd1142b8e01bbc660b0de4ef6b61bf59d2dd377456e3d6581b0",
+    "map.js": "dd39df98239abfaada3d457182fae87106a0fda87e8ff3769a26e4e3aec4e33e",
+    "panel.js": "ab561fcbd643b7cdfff0ae6f24b3a9a4d35b7376f7a6a67efd0818f117322e1e",
+    "sources.json": "0ce59dde7882c689457ab880719b951128f11dada1408ac34ddad37746790a56"
+  },
+  "previous_tags": {
+    "v4.0.0-beta.7": "8987a0c894dba9002cde1820e9e185e3766ef865",
+    "v4.0.0-beta.8.dev1": "1bdad1607736306278bfb49f0d39014935d30bd6"
+  },
+  "pending": [
+    "Physical Android hardware and GPU/thermal measurements",
+    "Official Google Earth and ChatGPT receiver checks",
+    "Final beta9 candidate validation"
+  ],
+  "prior_release_comparison": {
+    "beta8_assets": 4,
+    "beta7_assets": 11,
+    "comparison": "published asset names, sizes, SHA-256 digests"
+  },
+  "verification_limits": [
+    "Android application PSS excludes separately accounted WebView renderer processes.",
+    "Tested Windows coordinates were synthetic. Flight and maritime samples are dated archives."
+  ]
+}
